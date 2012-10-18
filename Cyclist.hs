@@ -31,13 +31,14 @@ instance Ord Cyclist where
              | a < b = a
              | otherwise = b
 
-genCyclist :: Population -> Rand StdGen Cyclist
-genCyclist stats = do
+genCyclist :: Rand StdGen Cyclist
+genCyclist = do
            max10 <- getRandom
            s_m <- getRandom
            c_b <- getRandom
            c_t <- getRandom
-           return Cyclist {max10 = max10, s_m = s_m, e_rem = (1/0), c_b = c_b, c_t = c_t, breakaway = False, speed = 0, distance = 0}
+           distance <- getRandom
+           return Cyclist {max10 = max10, s_m = s_m, e_rem = (1/0), c_b = c_b, c_t = c_t, breakaway = False, speed = 0, distance = distance * 20}
 
-genCyclists :: Int -> Population -> Rand StdGen [Cyclist]
-genCyclists n stats = sequence $ replicate n (genCyclist stats)
+genCyclists :: Int -> Rand StdGen [Cyclist]
+genCyclists n = sequence $ replicate n (genCyclist)
