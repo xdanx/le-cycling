@@ -19,5 +19,5 @@ getPacks cyclists =
     {-addToPackList ((Pack []):ps) c =
       (Pack [c]):ps-}
     addToPackList ((Pack (h:cs)):ps) c 
-      | abs((distance h) - (distance c)) < 3 = ((Pack (c:h:cs)):ps)
+      | (distance c) - (distance h) < 3 = ((Pack (c:h:cs)):ps)
       | otherwise = (Pack [c]):(Pack (h:cs)):ps
