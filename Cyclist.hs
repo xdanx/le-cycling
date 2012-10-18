@@ -31,3 +31,6 @@ genCyclist = do
            c_b <- getRandom
            c_t <- getRandom
            return Cyclist {max10 = max10, s_m = s_m, e_rem = e_rem, c_b = c_b, c_t = c_t, breakaway = False, speed = 0, distance = 0}
+
+genCyclists :: Int -> Rand StdGen [Cyclist]
+genCyclists n = sequence $ replicate n genCyclist
