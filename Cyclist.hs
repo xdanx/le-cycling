@@ -1,14 +1,14 @@
 module Cyclist where
 
 import Control.Monad.Random
-import Data.Random.Distribution.Normal
-import Data.RVar
+-- import Data.Random.Distribution.Normal
+-- import Data.RVar
 import System.Random
 
 import Population
 
-instance Data.RVar.MonadRandom IO where
-         getRandomDouble = randomIO
+{-instance Data.RVar.MonadRandom IO where
+         getRandomDouble = randomIO-}
 
 data Cyclist = Cyclist {max10 :: Double, s_m :: Double, e_rem :: Double, c_b :: Double, c_t :: Double, breakaway :: Bool, speed :: Double, distance :: Double}
      deriving (Show)
