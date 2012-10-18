@@ -1,5 +1,6 @@
 module Pack where
 
+import Control.Monad.Random
 import Cyclist
 import Data.List
 
