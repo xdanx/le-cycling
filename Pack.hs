@@ -6,6 +6,9 @@ import Data.List
 
 data Pack = Pack [Cyclist]
 
+instance Show Pack where
+         show (Pack l) = show $ map (distance) l
+
 getPacks :: [Cyclist] -> [Pack]
 getPacks cyclists =
   foldl addToPackList [] (sort cyclists) 
