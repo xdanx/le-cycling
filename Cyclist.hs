@@ -37,3 +37,6 @@ genCyclist stats = do
 
 genCyclists :: Int -> Population -> Rand StdGen [Cyclist]
 genCyclists n stats = replicateM n (genCyclist stats)
+
+genCyclistsIO :: Int -> Population -> IO [Cyclist]
+genCyclistsIO n stats = evalRandIO $ genCyclists n stats 
