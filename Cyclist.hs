@@ -1,14 +1,11 @@
 module Cyclist where
 
+import Control.Monad
 import Control.Monad.Random
--- import Data.Random.Distribution.Normal
--- import Data.RVar
 import System.Random
 
 import Population
-
-{-instance Data.RVar.MonadRandom IO where
-         getRandomDouble = randomIO-}
+import Stats
 
 data Cyclist = Cyclist {max10 :: Double, s_m :: Double, e_rem :: Double, c_b :: Double, c_t :: Double, breakaway :: Bool, speed :: Double, distance :: Double}
      deriving (Show)
@@ -31,14 +28,12 @@ instance Ord Cyclist where
              | a < b = a
              | otherwise = b
 
-genCyclist :: Rand StdGen Cyclist
-genCyclist = do
-           max10 <- getRandom
-           s_m <- getRandom
-           c_b <- getRandom
-           c_t <- getRandom
-           distance <- getRandom
-           return Cyclist {max10 = max10, s_m = s_m, e_rem = (1/0), c_b = c_b, c_t = c_t, breakaway = False, speed = 0, distance = distance * 20}
+genCyclist :: Population -> Rand StdGen Cyclist
+genCyclist stats = do
+           max10 <- normal . max10s $ stats
+           c_b <- normal . coops $ stats
+           c_t <- normal . coops $ stats
+           return Cyclist {max10 = max10, s_m = exp 2.478, e_rem = (1/0), c_b = c_b, c_t = c_t, breakaway = False, speed = 0, distance = 0}
 
-genCyclists :: Int -> Rand StdGen [Cyclist]
-genCyclists n = sequence $ replicate n (genCyclist)
+genCyclists :: Int -> Population -> Rand StdGen [Cyclist]
+genCyclists n stats = replicateM n (genCyclist stats)
