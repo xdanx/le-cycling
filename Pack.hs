@@ -19,3 +19,7 @@ getPacks cyclists =
     addToPackList ((Pack (h:cs)):ps) c 
       | (distance c) - (distance h) < 3 = ((Pack (c:h:cs)):ps)
       | otherwise = (Pack [c]):(Pack (h:cs)):ps
+
+unpack :: [Pack] -> [Cyclist]
+unpack [] = []
+unpack ((Pack p):ps) = p ++ (unpack ps) 

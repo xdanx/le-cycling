@@ -7,8 +7,16 @@ import System.Random
 import Population
 import Stats
 
-data Cyclist = Cyclist {max10 :: Double, s_m :: Double, e_rem :: Double, c_b :: Double, c_t :: Double, breakaway :: Bool, speed :: Double, distance :: Double, position :: Int}
-     deriving (Show)
+data Cyclist = Cyclist {max10 :: Double,    -- 10-min Max power (W/kg) 
+                        s_m :: Double,      -- Speed at max10 power output (m/s)
+                        e_rem :: Double,    -- Time until exhaustion (by Tlim)
+                        c_b :: Double,      -- Cooperation prob
+                        c_t :: Double,      -- Team cooperation prob
+                        breakaway :: Bool,  -- Breakaway state
+                        speed :: Double,   
+                        distance :: Double,
+                        position :: Int}   
+             deriving (Show)
 
 instance Eq Cyclist where
          a == b = (distance a == distance b)
