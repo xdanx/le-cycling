@@ -15,7 +15,7 @@ getPacks cyclists =
   where 
     addToPackList :: [Pack] -> Cyclist -> [Pack]
     addToPackList [] c = 
-      [Pack [c] _]
+      [Pack [c]]
     addToPackList ((Pack (h:cs)):ps) c 
       | (distance c) - (distance h) < 3 = ((Pack (c:h:cs)):ps)
       | otherwise = (Pack [c]):(Pack (h:cs)):ps
