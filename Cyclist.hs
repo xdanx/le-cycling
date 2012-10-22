@@ -12,7 +12,8 @@ data Cyclist = Cyclist {max10 :: Double,    -- 10-min Max power (W/kg)
                         e_rem :: Double,    -- Time until exhaustion (by Tlim)
                         c_b :: Double,      -- Cooperation prob
                         c_t :: Double,      -- Team cooperation prob
-                        breakaway :: Bool,  -- Breakaway state
+                        breakaway :: Int,   -- Breakaway state (0 : not breakaway, n > 0 breakaway
+                                            -- for n minutes or until they catch another pack )
                         speed :: Double,   
                         distance :: Double,
                         position :: Int,
@@ -42,7 +43,7 @@ genCyclist stats = do
            max10 <- normal . max10s $ stats
            c_b <- normal . coops $ stats
            c_t <- normal . coops $ stats
-           return Cyclist {max10 = max10, s_m = exp 2.478, e_rem = (1/0), c_b = c_b, c_t = c_t, breakaway = False, speed = 0, distance = 0, position = 1, t_lead = 0}
+           return Cyclist {max10 = max10, s_m = exp 2.478, e_rem = (1/0), c_b = c_b, c_t = c_t, breakaway = 0, speed = 0, distance = 0, position = 1, t_lead = 0}
 
 genCyclists :: Int -> Population -> Rand StdGen [Cyclist]
 genCyclists n stats = replicateM n (genCyclist stats)
