@@ -4,11 +4,12 @@ import Cyclist
 import Population
 import Simulation
 
-size = 150 :: Int
+teams = 10 :: Int
+team_size = 15 :: Int
 
 main :: IO ()
 main = do
-     evalRandIO (genCyclists size avg >>= (mainLoop 0))
+     evalRandIO (genCyclists teams team_size avg >>= (mainLoop 0))
      return ()
 
 mainLoop :: Int -> [Cyclist] -> Rand StdGen [Cyclist]

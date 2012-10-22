@@ -5,7 +5,7 @@ import Control.Monad.Random
 import Cyclist
 import Pack
 
-end = 4000 :: Double
+end = 160000 :: Double -- 160 km
 
 -- Don't quite get how to do the update here (unclear paper)
 determineCoop :: Cyclist -> Cyclist
