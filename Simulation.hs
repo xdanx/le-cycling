@@ -11,12 +11,11 @@ end = 4000 :: Double
 determineCoop :: Cyclist -> Cyclist
 determineCoop c = c
 
--- Have to keep the time a cyclist is staying at 
--- the head of the pack, problem : this has to be passed 
--- at each turn, so either redesign so main loop to use [Pack]
--- or keep that info in the Cyclist.
+-- Have to augment t_lead.
 defLeader :: Pack -> Pack
-defLeader p = p 
+defLeader (Pack (l:p))
+  | t_lead l > 5 = Pack (p ++ [l]) -- OR is a defector
+  | otherwise = Pack (l:p)
 
 -- Update the speed, distance and effort of all riders in the pack.
 update :: Pack -> Pack

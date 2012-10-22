@@ -15,7 +15,8 @@ data Cyclist = Cyclist {max10 :: Double,    -- 10-min Max power (W/kg)
                         breakaway :: Bool,  -- Breakaway state
                         speed :: Double,   
                         distance :: Double,
-                        position :: Int}   
+                        position :: Int,
+                        t_lead :: Int}      -- Time spend at lead position in pack.   
              deriving (Show)
 
 instance Eq Cyclist where
@@ -41,7 +42,7 @@ genCyclist stats = do
            max10 <- normal . max10s $ stats
            c_b <- normal . coops $ stats
            c_t <- normal . coops $ stats
-           return Cyclist {max10 = max10, s_m = exp 2.478, e_rem = (1/0), c_b = c_b, c_t = c_t, breakaway = False, speed = 0, distance = 0, position = 1}
+           return Cyclist {max10 = max10, s_m = exp 2.478, e_rem = (1/0), c_b = c_b, c_t = c_t, breakaway = False, speed = 0, distance = 0, position = 1, t_lead = 0}
 
 genCyclists :: Int -> Population -> Rand StdGen [Cyclist]
 genCyclists n stats = replicateM n (genCyclist stats)
