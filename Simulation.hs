@@ -10,10 +10,11 @@ end = 160000 :: Double -- 160 km
 -- Don't quite get how to do the update here (unclear paper)
 determineCoop :: Cyclist -> Rand StdGen Cyclist
 determineCoop c = do
-              d <- getRandom :: Rand StdGen Double
-              return $ build (d < c_b c)
+              d1 <- getRandom :: Rand StdGen Double
+              d2 <- getRandom :: Rand StdGen Double
+              return $ build (d1 < c_b c) (d2 < c_t c)
                             where
-                                build b = Cyclist {max10 = max10 c, s_m = s_m c, e_rem = e_rem c, c_b = c_b c, c_t = c_t c, breakaway = breakaway c, speed = speed c, distance = distance c, position = position c, t_lead = t_lead c, team = team c, t_coop = t_coop c, b_coop = b}
+                                build b1 b2 = Cyclist {max10 = max10 c, s_m = s_m c, e_rem = e_rem c, c_b = c_b c, c_t = c_t c, breakaway = breakaway c, speed = speed c, distance = distance c, position = position c, t_lead = t_lead c, team = team c, t_coop = b2, b_coop = b1}
 
 -- Have to augment t_lead.
 defLeader :: Pack -> Pack
