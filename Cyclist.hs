@@ -18,7 +18,9 @@ data Cyclist = Cyclist {max10 :: Double,    -- 10-min Max power (W/kg)
                         distance :: Double,
                         position :: Int,
                         t_lead :: Int,      -- Time spend at lead position in pack.   
-                        team :: Int         -- Team number.
+                        team :: Int,         -- Team number.
+                        t_coop :: Bool,
+                        b_coop :: Bool
                        }
              deriving (Show)
 
@@ -45,7 +47,7 @@ genCyclist team_n stats = do
            max10 <- normal . max10s $ stats
            c_b <- normal . coops $ stats
            c_t <- normal . coops $ stats
-           return Cyclist {max10 = max10, s_m = exp 2.478, e_rem = (1/0), c_b = c_b, c_t = c_t, breakaway = 0, speed = 0, distance = 0, position = 1, t_lead = 0, team = team_n}
+           return Cyclist {max10 = max10, s_m = exp 2.478, e_rem = (1/0), c_b = c_b, c_t = c_t, breakaway = 0, speed = 0, distance = 0, position = 1, t_lead = 0, team = team_n, t_coop = True, b_coop = True}
 
 concatMapM :: (Monad m) => (a -> m [b]) -> [a] -> m [b]
 concatMapM f xs   =  liftM concat (mapM f xs)
