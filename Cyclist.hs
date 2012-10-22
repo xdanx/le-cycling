@@ -4,6 +4,7 @@ import Control.Monad
 import Control.Monad.Random
 import System.Random
 
+import Utils
 import Population
 import Stats
 
@@ -46,9 +47,6 @@ genCyclist team_n stats = do
            c_b <- normal . coops $ stats
            c_t <- normal . coops $ stats
            return Cyclist {max10 = max10, s_m = exp 2.478, e_rem = (1/0), c_b = c_b, c_t = c_t, breakaway = 0, speed = 0, distance = 0, position = 1, t_lead = 0, team = team_n}
-
-concatMapM :: (Monad m) => (a -> m [b]) -> [a] -> m [b]
-concatMapM f xs   =  liftM concat (mapM f xs)
 
 genCyclists :: Int -> Int -> Population -> Rand StdGen [Cyclist]
 genCyclists n_teams team_size stats = concatMapM (\t -> (replicateM team_size (genCyclist t stats))) [1..n_teams]
