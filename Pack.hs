@@ -11,9 +11,10 @@ instance Show Pack where
 
 getPacks :: [Cyclist] -> [Pack]
 getPacks cyclists =
-  foldl addToPackList [] (sort (filter (\c -> breakaway c == 0) cyclists)) 
-  ++ concatMap (\t -> foldl addToPackList [] (sort (filter (\c -> breakaway c > 0 && team c == t) cyclists))) [1..10]
+  foldl addToPackList [] (sort pack) 
+  ++ concatMap (foldl addToPackList []) (map sort . groupBy (\x y -> team x == team y) $  break)
   where
+    (break, pack) = partition (\c -> breakaway c > 0) cyclists
     addToPackList :: [Pack] -> Cyclist -> [Pack]
     addToPackList [] c = 
       [Pack [c]]
