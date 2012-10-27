@@ -53,11 +53,11 @@ determineCoop c = do
 -- Have to augment t_lead.
 defLeader :: Pack -> Pack
 defLeader (Pack (l:p))
-  | (t_lead l > 5) || (not (b_coop l) && t_lead l > 1) = Pack (p ++ [l''])
+  | (t_lead l > 5) || (not (b_coop l) && t_lead l > 1) = Pack (l'':p)
   | otherwise = Pack (l':p)
   where 
     l'  = l{t_lead = t_lead l + 1}
-    l'' = l{t_lead = 0}
+    l'' = l{t_lead = 0, distance = distance (last p)}
 
 
 -- Update the speed, distance and effort of all riders in the pack.
