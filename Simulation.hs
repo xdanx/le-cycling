@@ -1,11 +1,26 @@
 module Simulation where
 
 import Control.Monad.Random
+import Data.List
 
 import Cyclist
 import Pack
 
-end = 160000 :: Double -- 160 km
+data Race = Race Int [Cyclist] [Cyclist]
+
+-- end = 160000 :: Double -- 160 km
+
+-- Update position of Racers
+update_position :: Race -> Int -> Race
+update_position (Race len race finish) time = (Race len (sort racers) (finish ++ sfinishers))
+                where 
+                      update = map (\c -> c{distance = (distance c) + (fromIntegral time) * (speed c)}) race
+                      (finishers, racers) = partition (\c -> (fromIntegral len) <= (distance c)) update
+                      sfinishers = sortBy (\x y -> compare (pass x) (pass y)) finishers
+                      pass :: Cyclist -> Double
+                      pass c = ((fromIntegral len) - strt)/(speed c)
+                           where
+                                strt = (distance c) - (fromIntegral time) * (speed c)
 
 -- Don't quite get how to do the update here (unclear paper)
 determineCoop :: Cyclist -> Rand StdGen Cyclist
