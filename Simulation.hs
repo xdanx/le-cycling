@@ -1,7 +1,9 @@
 module Simulation where
 
+import Control.Monad
 import Control.Monad.Random
 import Data.List
+import Data.Maybe
 
 import Cyclist
 import Pack
@@ -21,6 +23,19 @@ update_position (Race len race finish) time = (Race len (sort racers) (finish ++
                       pass c = ((fromIntegral len) - strt)/(speed c)
                            where
                                 strt = (distance c) - (fromIntegral time) * (speed c)
+
+breakway :: Pack -> Rand StdGen (Pack, [Pack])
+breakway (Pack p) = do
+         dec <- replicateM (length p) (getRandom :: Rand StdGen Double)
+         let (break', stay') = partition (\(c, d) -> (c_b c) < d) (zip p dec)
+             groups = nub . map team . map fst $ break'
+             (in_bteam, rest) = partition (flip elem groups . team) . map fst $ stay'
+         g_dec <- replicateM (length in_bteam) (getRandom :: Rand StdGen Double)
+         let (gbreak', gstay') = partition (\(c, d) -> (c_t c) < d) (zip in_bteam g_dec)
+             stay = map fst $ stay' ++ gstay'
+             breaks = map Pack . groupBy (\x y -> team x == team y) . map fst $ break' ++ gbreak'
+         return (Pack stay, breaks)
+                
 
 -- Don't quite get how to do the update here (unclear paper)
 determineCoop :: Cyclist -> Rand StdGen Cyclist
