@@ -35,6 +35,10 @@ breakway (Pack p) = do
              stay = map fst $ stay' ++ gstay'
              breaks = map Pack . groupBy (\x y -> team x == team y) . map fst $ break' ++ gbreak'
          return (Pack stay, breaks)
+
+set_pack_speed :: Pack -> Pack
+set_pack_speed (Pack p) = Pack $ map (\c -> c{speed = speed}) p
+               where speed = ((*0.8) . sum . map s_m $ p) / (fromIntegral . length $ p)
                 
 
 -- Don't quite get how to do the update here (unclear paper)
