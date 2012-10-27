@@ -6,7 +6,6 @@ import System.Environment
 
 import Cyclist
 import Population
-import Race
 import Rendering
 import Simulation
 
@@ -29,9 +28,9 @@ main = do
      destroyWindow window-}
      return ()
 
-loop :: Int -> [Cyclist] -> Rand StdGen [Cyclist]
+{-loop :: Int -> [Cyclist] -> Rand StdGen [Cyclist]
 loop n pop = do
                       npop <- turn (n `mod` 5 == 0) pop
                       if(or $ map (\m -> end > distance m) npop)
                       then loop (n+1) npop
-                      else return npop
+                      else return npop-}

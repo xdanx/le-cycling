@@ -6,7 +6,7 @@ import Graphics.Rendering.OpenGL
 import Graphics.UI.GLUT
 
 import Cyclist
-import Race
+import Simulation
 
 render :: (IORef Race) -> Size -> IO ()
 render r (Size x y) = do
