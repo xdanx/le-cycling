@@ -41,7 +41,6 @@ set_pack_speed (Pack p) = Pack $ map (\c -> c{speed = speed}) p
                where speed = ((*0.8) . sum . map s_m $ p) / (fromIntegral . length $ p)
                 
 
--- Don't quite get how to do the update here (unclear paper)
 determineCoop :: Cyclist -> Rand StdGen Cyclist
 determineCoop c = do
               d1 <- getRandom :: Rand StdGen Double
@@ -50,7 +49,6 @@ determineCoop c = do
                             where
                                 build b1 b2 = Cyclist {max10 = max10 c, s_m = s_m c, e_rem = e_rem c, c_b = c_b c, c_t = c_t c, breakaway = breakaway c, speed = speed c, distance = distance c, position = position c, t_lead = t_lead c, team = team c, t_coop = b2, b_coop = b1}
 
--- Have to augment t_lead.
 defLeader :: Pack -> Pack
 defLeader (Pack (l:p))
   | (t_lead l > 5) || (not (b_coop l) && t_lead l > 1) = Pack (l'':p)
