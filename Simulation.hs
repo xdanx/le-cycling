@@ -24,8 +24,8 @@ update_position (Race len race finish) time = (Race len (sort racers) (finish ++
                            where
                                 strt = (distance c) - (fromIntegral time) * (speed c)
 
-breakway :: Pack -> Rand StdGen (Pack, [Pack])
-breakway (Pack p) = do
+do_breakaway :: Pack -> Rand StdGen (Pack, [Pack])
+do_breakaway (Pack p) = do
          dec <- replicateM (length p) (getRandom :: Rand StdGen Double)
          let (break', stay') = partition (\(c, d) -> (c_b c) < d) (zip p dec)
              groups = nub . map team . map fst $ break'
@@ -33,12 +33,16 @@ breakway (Pack p) = do
          g_dec <- replicateM (length in_bteam) (getRandom :: Rand StdGen Double)
          let (gbreak', gstay') = partition (\(c, d) -> (c_t c) < d) (zip in_bteam g_dec)
              stay = map fst $ stay' ++ gstay'
-             breaks = map Pack . groupBy (\x y -> team x == team y) . map fst $ break' ++ gbreak'
-         return (Pack stay, breaks)
+             breaks = map (set_pack_speed . Pack) . groupBy (\x y -> team x == team y) . map (\(c,_) -> c{breakaway = 3}) $ break' ++ gbreak'
+         return (set_pack_speed . Pack $ stay, breaks)
 
 set_pack_speed :: Pack -> Pack
 set_pack_speed (Pack p) = Pack $ map (\c -> c{speed = speed}) p
-               where speed = ((*0.8) . sum . map s_m $ p) / (fromIntegral . length $ p)
+               where speed = ((*perc) . sum . map s_m $ p) / (fromIntegral . length $ p)
+                     is_break = and . map ((/=0) . breakaway) $ p
+                     perc = if(is_break)
+                                        then 0.9
+                                        else 0.8
                 
 
 -- Don't quite get how to do the update here (unclear paper)
