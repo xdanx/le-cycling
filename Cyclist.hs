@@ -23,7 +23,9 @@ data Cyclist = Cyclist {max10 :: Double,    -- 10-min Max power (W/kg)
                         t_coop :: Bool,
                         b_coop :: Bool
                        }
-             deriving (Show)
+
+instance Show Cyclist where
+         show c = "distance: " ++ (show . distance $ c) ++ "\n"
 
 instance Eq Cyclist where
          a == b = (distance a == distance b)

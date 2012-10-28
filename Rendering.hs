@@ -11,7 +11,7 @@ import Simulation
 render :: (IORef Race) -> Size -> IO ()
 render r (Size x y) = do
        print "Call back motherfuckers...."
-       (Race len racers finish) <- readIORef r
+       (Race trn len racers finish) <- readIORef r
        clear [ColorBuffer]
        let ys = map distance racers
            poss = map ( ((fromRational . toRational) *** (fromRational . toRational)) . (0.5,) . (subtract 1) . (*2) . (/(fromIntegral len))) ys :: [(GLdouble, GLdouble)]

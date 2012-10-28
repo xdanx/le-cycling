@@ -4,16 +4,18 @@ import Control.Monad
 import Control.Monad.Random
 import Data.List
 import Data.Maybe
+import Debug.Trace
 
 import Cyclist
 import Pack
 import Utils
 
-data Race = Race Int [Cyclist] [Cyclist]
+data Race = Race Int Int [Cyclist] [Cyclist]
+     deriving (Show)
 
 -- Update position of Racers
 update_position :: Race -> Race
-update_position (Race len race finish) = (Race len (sort racers) (finish ++ sfinishers))
+update_position (Race trn len race finish) = (Race trn len (sort racers) (finish ++ sfinishers))
                 where 
                       time = 60
                       update = map (\c -> c{distance = (distance c) + (fromIntegral time) * (speed c)}) race
@@ -25,7 +27,7 @@ update_position (Race len race finish) = (Race len (sort racers) (finish ++ sfin
                                 strt = (distance c) - (fromIntegral time) * (speed c)
 
 update_time :: Race -> Race
-update_time (Race len r w) = flip (Race len) w . map (update) $ r
+update_time (Race trn len r w) = flip (Race trn len) w . map (update) $ r
             where
                 update :: Cyclist -> Cyclist
                 update c = if(breakaway c > 0)
@@ -73,15 +75,19 @@ defLeader (Pack (l:p))
 update p = p-}
 
 -- Don't know when/how I should handle breakaways.
-turn :: Bool -> Race -> Rand StdGen Race
-turn b (Race len r win) = do
+turn :: Race -> Rand StdGen Race
+turn (Race trn len r win) = do
+     let b = (trn `mod` 5 == 0)
      c_r <- if b then sequence (map determineCoop r) else return r
-     let (Race _ t_r _) = update_time (Race len c_r win)
+     let (Race _ _ t_r _) = update_time (Race trn len c_r win)
          packs = getPacks  t_r
          l_p = map (\p -> if(isBreak $ p) then p else defLeader p) packs
      cyclist <- concatMapM do_breakaway packs
-     return . update_position $ (Race len (unpack cyclist) win)
+     
+     return . debug . update_position $ (Race (trn + 1) len (unpack cyclist) win)
 
+debug :: (Show a) => a -> a
+debug x = trace (show x) x
 
 {-turn reCoop cs = cs' >>= (return . unpack . (map $ update . defLeader) . getPacks)
   where cs' = if reCoop then sequence (map determineCoop cs) else return cs-}

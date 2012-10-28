@@ -11,9 +11,27 @@ import Simulation
 
 teams = 10 :: Int
 team_size = 15 :: Int
+race_length = 1000 :: Int
 
 main :: IO ()
 main = do
+     c <- genCyclistsIO teams team_size avg
+     (Race race_time _ _ leader_board) <- evalRandIO (loop $ Race 0 race_length c [])
+     print leader_board
+     return ()
+
+loop :: Race -> Rand StdGen Race
+loop r@(Race _ _ [] _) = return r
+loop r = turn r >>= loop
+
+{-loop :: Int -> [Cyclist] -> Rand StdGen [Cyclist]
+loop n pop = do
+                      npop <- turn (n `mod` 5 == 0) pop
+                      if(or $ map (\m -> end > distance m) npop)
+                      then loop (n+1) npop
+                      else return npop-}
+
+
      {-     progname <- getProgName
      args <- initialize progname []
      window <- createWindow progname
@@ -26,11 +44,3 @@ main = do
      sequence . repeat $ (render cyclists s  >> getLine)
      --     evalRandIO (genCyclists teams team_size avg >>= (loop 0))
      destroyWindow window-}
-     return ()
-
-{-loop :: Int -> [Cyclist] -> Rand StdGen [Cyclist]
-loop n pop = do
-                      npop <- turn (n `mod` 5 == 0) pop
-                      if(or $ map (\m -> end > distance m) npop)
-                      then loop (n+1) npop
-                      else return npop-}
