@@ -1,3 +1,4 @@
+{-# LANGUAGE DoAndIfThenElse #-}
 import Control.Monad.Random
 
 import Cyclist
@@ -16,5 +17,5 @@ mainLoop :: Int -> [Cyclist] -> Rand StdGen [Cyclist]
 mainLoop n pop = do
                       npop <- turn (n `mod` 5 == 0) pop
                       if(or $ map (\m -> end > distance m) npop)
-                      then mainLoop (n+1) npop
-                      else return npop
+                      	then mainLoop (n+1) npop
+                      	else return npop

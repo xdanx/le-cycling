@@ -11,15 +11,15 @@ instance Show Pack where
 
 getPacks :: [Cyclist] -> [Pack]
 getPacks cyclists =
-  foldl addToPackList [] (sort cyclists) 
-  where 
+  foldl addToPackList [] (sort cyclists)
+  where
     addToPackList :: [Pack] -> Cyclist -> [Pack]
-    addToPackList [] c = 
+    addToPackList [] c =
       [Pack [c]]
-    addToPackList ((Pack (h:cs)):ps) c 
+    addToPackList ((Pack (h:cs)):ps) c
       | (distance c) - (distance h) < 3 = ((Pack (c:h:cs)):ps)
       | otherwise = (Pack [c]):(Pack (h:cs)):ps
 
 unpack :: [Pack] -> [Cyclist]
 unpack [] = []
-unpack ((Pack p):ps) = p ++ (unpack ps) 
+unpack ((Pack p):ps) = p ++ (unpack ps)

@@ -8,17 +8,17 @@ import Utils
 import Population
 import Stats
 
-data Cyclist = Cyclist {max10 :: Double,    -- 10-min Max power (W/kg) 
+data Cyclist = Cyclist {max10 :: Double,    -- 10-min Max power (W/kg)
                         s_m :: Double,      -- Speed at max10 power output (m/s)
                         e_rem :: Double,    -- Time until exhaustion (by Tlim)
                         c_b :: Double,      -- Cooperation prob
                         c_t :: Double,      -- Team cooperation prob
                         breakaway :: Int,   -- Breakaway state (0 : not breakaway, n > 0 breakaway
                                             -- for n minutes or until they catch another pack )
-                        speed :: Double,   
+                        speed :: Double,
                         distance :: Double,
                         position :: Int,
-                        t_lead :: Int,      -- Time spend at lead position in pack.   
+                        t_lead :: Int,      -- Time spend at lead position in pack.
                         team :: Int,         -- Team number.
                         t_coop :: Bool,
                         b_coop :: Bool
@@ -54,4 +54,4 @@ genCyclists :: Int -> Int -> Population -> Rand StdGen [Cyclist]
 genCyclists n_teams team_size stats = concatMapM (\t -> (replicateM team_size (genCyclist t stats))) [1..n_teams]
 
 genCyclistsIO :: Int -> Int -> Population -> IO [Cyclist]
-genCyclistsIO n_teams team_size stats = evalRandIO $ genCyclists n_teams team_size stats 
+genCyclistsIO n_teams team_size stats = evalRandIO $ genCyclists n_teams team_size stats
