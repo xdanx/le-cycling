@@ -82,12 +82,15 @@ turn (Race trn len r win) = do
      let (Race _ _ t_r _) = update_time (Race trn len c_r win)
          packs = getPacks  t_r
          l_p = map (\p -> if(isBreak $ p) then p else defLeader p) packs
-     cyclist <- concatMapM do_breakaway packs
-     
-     return . debug . update_position $ (Race (trn + 1) len (unpack cyclist) win)
+     trace "before: \n" (return ())
+     debug (Race trn len (unpack l_p) win)
+     cyclist <- concatMapM do_breakaway l_p
+     trace "after: \n" (return ())
+     debug (Race trn len (unpack cyclist) win)
+     debug . update_position $ (Race (trn + 1) len (unpack cyclist) win)
 
-debug :: (Show a) => a -> a
-debug x = trace (show x) x
+debug :: (Monad m) => Race -> m Race
+debug r@(Race _ _ c win) = return $ trace (show (length c + length win) ++ "\n") r
 
 {-turn reCoop cs = cs' >>= (return . unpack . (map $ update . defLeader) . getPacks)
   where cs' = if reCoop then sequence (map determineCoop cs) else return cs-}

@@ -27,7 +27,7 @@ data Cyclist = Cyclist {id :: Int,
                        --deriving(Show)
 
 instance Show Cyclist where
-         show c = "distance: " ++ (show . distance $ c)
+         show c = "distance: " ++ (show . distance $ c) ++ ", id: " ++ (show . Cyclist.id $ c)
 
 instance Eq Cyclist where
          a == b = (distance a == distance b)
