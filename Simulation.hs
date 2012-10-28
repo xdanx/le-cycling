@@ -70,10 +70,6 @@ defLeader (Pack (l:p))
     l'  = l{t_lead = t_lead l + 1}
     l'' = l{t_lead = 0, distance = (distance (last (l:p))) - 1}
 
--- Update the speed, distance and effort of all riders in the pack.
-{-update :: Pack -> Pack
-update p = p-}
-
 -- Don't know when/how I should handle breakaways.
 turn :: Race -> Rand StdGen Race
 turn (Race trn len r win) = do
@@ -84,12 +80,3 @@ turn (Race trn len r win) = do
          l_p = map (\p -> if(isBreak $ p) then p else defLeader p) packs
      cyclist <- concatMapM do_breakaway l_p
      return . update_position $ (Race (trn + 1) len (unpack cyclist) win)
-
-{-debug :: (Monad m) => Race -> m Race
-debug r@(Race _ _ c win) = return $ trace (show (length c + length win) ++ "\n") r
-
-debug' :: (Show a) => String -> a -> a
-debug' s x = trace ("debug': " ++ s ++ show x ) x-}
-
-{-turn reCoop cs = cs' >>= (return . unpack . (map $ update . defLeader) . getPacks)
-  where cs' = if reCoop then sequence (map determineCoop cs) else return cs-}

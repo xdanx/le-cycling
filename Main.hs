@@ -20,6 +20,7 @@ main = do
      (Race race_time _ _ leader_board) <- evalRandIO (loop $ Race 0 race_length c [])
      print leader_board
      return ()
+     
 
 loop :: Race -> Rand StdGen Race
 loop r@(Race _ _ [] _) = return r
@@ -33,7 +34,7 @@ loop n pop = do
                       	else return npop
 
 
-     {-     progname <- getProgName
+      progname <- getProgName
      args <- initialize progname []
      window <- createWindow progname
      s <- get initialWindowSize
