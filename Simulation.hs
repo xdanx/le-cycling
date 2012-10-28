@@ -1,32 +1,100 @@
 module Simulation where
 
+import Control.Monad
 import Control.Monad.Random
+import Data.List
+import Data.Maybe
+import Debug.Trace
 
 import Cyclist
 import Pack
+import Utils
 
-end = 160000 :: Double -- 160 km
+data Race = Race Int Int [Cyclist] [Cyclist]
+     deriving (Show)
 
--- Don't quite get how to do the update here (unclear paper)
+-- Update position of Racers
+update_position :: Race -> Race
+update_position (Race trn len race finish) = (Race trn len (sort racers) (finish ++ sfinishers))
+                where 
+                      time = 60
+                      update = map (\c -> c{distance = (distance c) + (fromIntegral time) * (speed c)}) race
+                      (finishers, racers) = partition (\c -> (fromIntegral len) <= (distance c)) update
+                      sfinishers = sortBy (\x y -> compare (pass x) (pass y)) finishers
+                      pass :: Cyclist -> Double
+                      pass c = ((fromIntegral len) - strt)/(speed c)
+                           where
+                                strt = (distance c) - (fromIntegral time) * (speed c)
+
+update_time :: Race -> Race
+update_time (Race trn len r w) = flip (Race trn len) w . map (update) $ r
+            where
+                update :: Cyclist -> Cyclist
+                update c = if(breakaway c > 0)
+                                        then c{breakaway = (breakaway c) - 1}
+                                        else c
+
+do_breakaway :: Pack -> Rand StdGen [Pack]
+do_breakaway (Pack p) = do
+         dec <- replicateM (length p) (getRandom :: Rand StdGen Double)
+         let (break', stay') = partition (\(c, d) -> (c_b c) < d) (zip p dec)
+             groups = nub . map team . map fst $ break'
+             (in_bteam, rest) = partition (flip elem groups . team) . map fst $ stay'
+         g_dec <- replicateM (length in_bteam) (getRandom :: Rand StdGen Double)
+         let (gbreak', gstay') = partition (\(c, d) -> (c_t c) < d) (zip in_bteam g_dec)
+             stay = debug' "stay: " . map fst $ stay' ++ gstay'
+             breaks = debug' "breaks: ". map (set_pack_speed . Pack) . groupBy (\x y -> team x == team y) . map (\(c,_) -> c{breakaway = 3}) $ break' ++ gbreak'
+         return ((set_pack_speed . Pack $ stay):breaks)
+
+set_pack_speed :: Pack -> Pack
+set_pack_speed pack@(Pack p) = Pack $ map (\c -> c{speed = speed}) p
+               where speed = ((*perc) . sum . map s_m $ p) / (fromIntegral . length $ p)
+                     perc = if(isBreak pack)
+                                        then 0.9
+                                        else 0.8
+                
+isBreak :: Pack -> Bool
+isBreak (Pack p) =  and . map ((/=0) . breakaway) $ p
+
 determineCoop :: Cyclist -> Rand StdGen Cyclist
 determineCoop c = do
               d1 <- getRandom :: Rand StdGen Double
               d2 <- getRandom :: Rand StdGen Double
-              return $ build (d1 < c_b c) (d2 < c_t c)
-                            where
-                                build b1 b2 = Cyclist {max10 = max10 c, s_m = s_m c, e_rem = e_rem c, c_b = c_b c, c_t = c_t c, breakaway = breakaway c, speed = speed c, distance = distance c, position = position c, t_lead = t_lead c, team = team c, t_coop = b2, b_coop = b1}
+              return $ c{b_coop = (d1 < c_b c), t_coop = (d2 < c_t c)}
 
--- Have to augment t_lead.
 defLeader :: Pack -> Pack
 defLeader (Pack (l:p))
-  | t_lead l > 5 = Pack (p ++ [l]) -- OR is a defector
-  | otherwise = Pack (l:p)
+  | (t_lead l > 5) || (not (b_coop l) && t_lead l > 1) = Pack (l'':p)
+  | otherwise = Pack (l':p)
+  where 
+    l'  = l{t_lead = t_lead l + 1}
+    l'' = l{t_lead = 0, distance = (distance (last (l:p))) - 1}
 
 -- Update the speed, distance and effort of all riders in the pack.
-update :: Pack -> Pack
-update p = p
+{-update :: Pack -> Pack
+update p = p-}
 
 -- Don't know when/how I should handle breakaways.
-turn :: Bool -> [Cyclist] -> Rand StdGen [Cyclist]
-turn reCoop cs = cs' >>= (return . unpack . (map $ update . defLeader) . getPacks)
-  where cs' = if reCoop then sequence (map determineCoop cs) else return cs
+turn :: Race -> Rand StdGen Race
+turn (Race trn len r win) = do
+     let b = (trn `mod` 5 == 0)
+     c_r <- if b then sequence (map determineCoop r) else return r
+     let (Race _ _ t_r _) = update_time (Race trn len c_r win)
+         packs = getPacks  t_r
+         l_p = map (\p -> if(isBreak $ p) then p else defLeader p) packs
+     l_p' <- trace "before: \n" (return l_p)
+     (Race _ _ l_p'' _) <- debug (Race trn len (unpack l_p') win)
+     cyclist <- concatMapM do_breakaway l_p'
+     cyclist' <- trace "after: \n" (return cyclist)
+     (Race _ _ cyclist'' _) <- debug (Race trn len (unpack cyclist') win)
+     return . update_position $ (Race (trn + 1) len cyclist'' win)
+
+debug :: (Monad m) => Race -> m Race
+debug r@(Race _ _ c win) = return $ trace (show (length c + length win) ++ "\n") r
+
+debug' :: (Show a) => String -> a -> a
+debug' s x = trace ("debug': " ++ s ++ show x ) x
+
+{-turn reCoop cs = cs' >>= (return . unpack . (map $ update . defLeader) . getPacks)
+  where cs' = if reCoop then sequence (map determineCoop cs) else return cs-}
+
