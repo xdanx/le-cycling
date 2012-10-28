@@ -5,9 +5,10 @@ import Cyclist
 import Data.List
 
 data Pack = Pack [Cyclist]
+     deriving(Show)
 
-instance Show Pack where
-         show (Pack l) = show $ map (distance) l
+{-instance Show Pack where
+         show (Pack l) = show $ map (distance) l1-}
 
 getPacks :: [Cyclist] -> [Pack]
 getPacks cyclists =

@@ -11,13 +11,14 @@ import Simulation
 
 teams = 2 :: Int
 team_size = 3 :: Int
-race_length = 100000 :: Int
+race_length = 10000 :: Int
 
 main :: IO ()
 main = do
      c <- genCyclistsIO teams team_size avg
+     mapM_ (print . (Cyclist.id)) c
      (Race race_time _ _ leader_board) <- evalRandIO (loop $ Race 0 race_length c [])
-     print leader_board
+     --     print leader_board
      return ()
 
 loop :: Race -> Rand StdGen Race
