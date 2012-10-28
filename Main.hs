@@ -9,9 +9,9 @@ import Population
 import Rendering
 import Simulation
 
-teams = 10 :: Int
-team_size = 15 :: Int
-race_length = 1000 :: Int
+teams = 15 :: Int
+team_size = 10 :: Int
+race_length = 5000 :: Int
 
 main :: IO ()
 main = do
