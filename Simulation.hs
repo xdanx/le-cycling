@@ -42,8 +42,8 @@ do_breakaway (Pack p) = do
              (in_bteam, rest) = partition (flip elem groups . team) . map fst $ stay'
          g_dec <- replicateM (length in_bteam) (getRandom :: Rand StdGen Double)
          let (gbreak', gstay') = partition (\(c, d) -> (c_t c) < d) (zip in_bteam g_dec)
-             stay = debug' "stay: " . map fst $ stay' ++ gstay'
-             breaks = debug' "breaks: ". map (set_pack_speed . Pack) . groupBy (\x y -> team x == team y) . map (\(c,_) -> c{breakaway = 3}) $ break' ++ gbreak'
+             stay =  (map fst gstay') ++ rest
+             breaks = map (set_pack_speed . Pack) . groupBy (\x y -> team x == team y) . map (\(c,_) -> c{breakaway = 3}) $ break' ++ gbreak'
          return ((set_pack_speed . Pack $ stay):breaks)
 
 set_pack_speed :: Pack -> Pack
@@ -82,19 +82,14 @@ turn (Race trn len r win) = do
      let (Race _ _ t_r _) = update_time (Race trn len c_r win)
          packs = getPacks  t_r
          l_p = map (\p -> if(isBreak $ p) then p else defLeader p) packs
-     l_p' <- trace "before: \n" (return l_p)
-     (Race _ _ l_p'' _) <- debug (Race trn len (unpack l_p') win)
-     cyclist <- concatMapM do_breakaway l_p'
-     cyclist' <- trace "after: \n" (return cyclist)
-     (Race _ _ cyclist'' _) <- debug (Race trn len (unpack cyclist') win)
-     return . update_position $ (Race (trn + 1) len cyclist'' win)
+     cyclist <- concatMapM do_breakaway l_p
+     return . update_position $ (Race (trn + 1) len (unpack cyclist) win)
 
-debug :: (Monad m) => Race -> m Race
+{-debug :: (Monad m) => Race -> m Race
 debug r@(Race _ _ c win) = return $ trace (show (length c + length win) ++ "\n") r
 
 debug' :: (Show a) => String -> a -> a
-debug' s x = trace ("debug': " ++ s ++ show x ) x
+debug' s x = trace ("debug': " ++ s ++ show x ) x-}
 
 {-turn reCoop cs = cs' >>= (return . unpack . (map $ update . defLeader) . getPacks)
   where cs' = if reCoop then sequence (map determineCoop cs) else return cs-}
-
