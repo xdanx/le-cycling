@@ -8,7 +8,8 @@ import Utils
 import Population
 import Stats
 
-data Cyclist = Cyclist {max10 :: Double,    -- 10-min Max power (W/kg) 
+data Cyclist = Cyclist {id :: Int,
+                        max10 :: Double,    -- 10-min Max power (W/kg) 
                         s_m :: Double,      -- Speed at max10 power output (m/s)
                         e_rem :: Double,    -- Time until exhaustion (by Tlim)
                         c_b :: Double,      -- Cooperation prob
@@ -45,15 +46,15 @@ instance Ord Cyclist where
              | a < b = a
              | otherwise = b
 
-genCyclist :: Int -> Population -> Rand StdGen Cyclist
-genCyclist team_n stats = do
+genCyclist :: Int -> Population -> Int -> Rand StdGen Cyclist
+genCyclist team_n stats i = do
            max10 <- normal . max10s $ stats
            c_b <- normal . coops $ stats
            c_t <- normal . coops $ stats
-           return Cyclist {max10 = max10, s_m = exp 2.478, e_rem = (1/0), c_b = c_b, c_t = c_t, breakaway = 0, speed = 0, distance = 0, position = 1, t_lead = 0, team = team_n, t_coop = True, b_coop = True}
+           return Cyclist {Cyclist.id = i, max10 = max10, s_m = exp 2.478, e_rem = (1/0), c_b = c_b, c_t = c_t, breakaway = 0, speed = 0, distance = 0, position = 1, t_lead = 0, team = team_n, t_coop = True, b_coop = True}
 
 genCyclists :: Int -> Int -> Population -> Rand StdGen [Cyclist]
-genCyclists n_teams team_size stats = concatMapM (\t -> (replicateM team_size (genCyclist t stats))) [1..n_teams]
+genCyclists n_teams team_size stats = concatMapM (\t -> (mapM (\i -> (genCyclist t stats (t*team_size+i))) [1..team_size])) [1..n_teams]
 
 genCyclistsIO :: Int -> Int -> Population -> IO [Cyclist]
 genCyclistsIO n_teams team_size stats = evalRandIO $ genCyclists n_teams team_size stats 
