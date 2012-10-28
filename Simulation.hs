@@ -12,9 +12,10 @@ import Utils
 data Race = Race Int [Cyclist] [Cyclist]
 
 -- Update position of Racers
-update_position :: Race -> Int -> Race
-update_position (Race len race finish) time = (Race len (sort racers) (finish ++ sfinishers))
+update_position :: Race -> Race
+update_position (Race len race finish) = (Race len (sort racers) (finish ++ sfinishers))
                 where 
+                      time = 60
                       update = map (\c -> c{distance = (distance c) + (fromIntegral time) * (speed c)}) race
                       (finishers, racers) = partition (\c -> (fromIntegral len) <= (distance c)) update
                       sfinishers = sortBy (\x y -> compare (pass x) (pass y)) finishers
@@ -73,12 +74,13 @@ update p = p-}
 
 -- Don't know when/how I should handle breakaways.
 turn :: Bool -> Race -> Rand StdGen Race
-turn b r = do
-     let t_r = update_time r
-         (Race len p_r win) = update_position t_r 60
-         packs = getPacks  p_r
+turn b (Race len r win) = do
+     c_r <- if b then sequence (map determineCoop r) else return r
+     let (Race _ t_r _) = update_time (Race len c_r win)
+         packs = getPacks  t_r
+         l_p = map (\p -> if(isBreak $ p) then p else defLeader p) packs
      cyclist <- concatMapM do_breakaway packs
-     return r
+     return . update_position $ (Race len (unpack cyclist) win)
 
 
 {-turn reCoop cs = cs' >>= (return . unpack . (map $ update . defLeader) . getPacks)
