@@ -7,10 +7,9 @@ import Data.Maybe
 
 import Cyclist
 import Pack
+import Utils
 
 data Race = Race Int [Cyclist] [Cyclist]
-
--- end = 160000 :: Double -- 160 km
 
 -- Update position of Racers
 update_position :: Race -> Int -> Race
@@ -24,7 +23,15 @@ update_position (Race len race finish) time = (Race len (sort racers) (finish ++
                            where
                                 strt = (distance c) - (fromIntegral time) * (speed c)
 
-do_breakaway :: Pack -> Rand StdGen (Pack, [Pack])
+update_time :: Race -> Race
+update_time (Race len r w) = flip (Race len) w . map (update) $ r
+            where
+                update :: Cyclist -> Cyclist
+                update c = if(breakaway c > 0)
+                                        then c{breakaway = (breakaway c) - 1}
+                                        else c
+
+do_breakaway :: Pack -> Rand StdGen [Pack]
 do_breakaway (Pack p) = do
          dec <- replicateM (length p) (getRandom :: Rand StdGen Double)
          let (break', stay') = partition (\(c, d) -> (c_b c) < d) (zip p dec)
@@ -34,24 +41,23 @@ do_breakaway (Pack p) = do
          let (gbreak', gstay') = partition (\(c, d) -> (c_t c) < d) (zip in_bteam g_dec)
              stay = map fst $ stay' ++ gstay'
              breaks = map (set_pack_speed . Pack) . groupBy (\x y -> team x == team y) . map (\(c,_) -> c{breakaway = 3}) $ break' ++ gbreak'
-         return (set_pack_speed . Pack $ stay, breaks)
+         return ((set_pack_speed . Pack $ stay):breaks)
 
 set_pack_speed :: Pack -> Pack
-set_pack_speed (Pack p) = Pack $ map (\c -> c{speed = speed}) p
+set_pack_speed pack@(Pack p) = Pack $ map (\c -> c{speed = speed}) p
                where speed = ((*perc) . sum . map s_m $ p) / (fromIntegral . length $ p)
-                     is_break = and . map ((/=0) . breakaway) $ p
-                     perc = if(is_break)
+                     perc = if(isBreak pack)
                                         then 0.9
                                         else 0.8
                 
+isBreak :: Pack -> Bool
+isBreak (Pack p) =  and . map ((/=0) . breakaway) $ p
 
 determineCoop :: Cyclist -> Rand StdGen Cyclist
 determineCoop c = do
               d1 <- getRandom :: Rand StdGen Double
               d2 <- getRandom :: Rand StdGen Double
-              return $ build (d1 < c_b c) (d2 < c_t c)
-                            where
-                                build b1 b2 = Cyclist {max10 = max10 c, s_m = s_m c, e_rem = e_rem c, c_b = c_b c, c_t = c_t c, breakaway = breakaway c, speed = speed c, distance = distance c, position = position c, t_lead = t_lead c, team = team c, t_coop = b2, b_coop = b1}
+              return $ c{b_coop = (d1 < c_b c), t_coop = (d2 < c_t c)}
 
 defLeader :: Pack -> Pack
 defLeader (Pack (l:p))
@@ -61,12 +67,20 @@ defLeader (Pack (l:p))
     l'  = l{t_lead = t_lead l + 1}
     l'' = l{t_lead = 0, distance = distance (last p)}
 
-
 -- Update the speed, distance and effort of all riders in the pack.
-update :: Pack -> Pack
-update p = p
+{-update :: Pack -> Pack
+update p = p-}
 
 -- Don't know when/how I should handle breakaways.
-turn :: Bool -> [Cyclist] -> Rand StdGen [Cyclist]
-turn reCoop cs = cs' >>= (return . unpack . (map $ update . defLeader) . getPacks)
-  where cs' = if reCoop then sequence (map determineCoop cs) else return cs
+turn :: Bool -> Race -> Rand StdGen Race
+turn b r = do
+     let t_r = update_time r
+         (Race len p_r win) = update_position t_r 60
+         packs = getPacks  p_r
+     cyclist <- concatMapM do_breakaway packs
+     return r
+
+
+{-turn reCoop cs = cs' >>= (return . unpack . (map $ update . defLeader) . getPacks)
+  where cs' = if reCoop then sequence (map determineCoop cs) else return cs-}
+
