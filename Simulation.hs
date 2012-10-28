@@ -68,7 +68,7 @@ defLeader (Pack (l:p))
   | otherwise = Pack (l':p)
   where 
     l'  = l{t_lead = t_lead l + 1}
-    l'' = l{t_lead = 0, distance = (distance (last p)) - 1}
+    l'' = l{t_lead = 0, distance = (distance (last (l:p))) - 1}
 
 -- Update the speed, distance and effort of all riders in the pack.
 {-update :: Pack -> Pack
