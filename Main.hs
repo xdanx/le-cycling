@@ -14,12 +14,13 @@ race_length = 3000000 :: Int
 main :: IO ()
 main = do
      c <- genCyclistsIO teams team_size avg
-     (Race race_time _ _ leader_board) <- evalRandIO (loop $ Race 0 race_length c [])
+     g <- getStdGen
+     (Race race_time _ _ leader_board) <- evalRandT (loop $ Race 0 race_length c []) g
      print leader_board
      return ()
      
 
-loop :: Race -> Rand StdGen Race
+loop :: Race -> RandT StdGen IO Race
 loop r@(Race _ _ [] _) = return r
 loop r = turn r >>= loop
 
