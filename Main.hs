@@ -1,8 +1,5 @@
 {-# LANGUAGE DoAndIfThenElse #-}
 import Control.Monad.Random
-import Data.IORef
-import Graphics.Rendering.OpenGL
-import Graphics.UI.GLUT
 import System.Environment
 
 import Cyclist
