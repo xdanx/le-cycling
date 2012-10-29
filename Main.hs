@@ -1,6 +1,8 @@
 {-# LANGUAGE DoAndIfThenElse #-}
 import Control.Monad.Random
+import Control.Monad.Trans.Class
 import System.Environment
+import System.Mem
 
 import Cyclist
 import Population
@@ -8,8 +10,8 @@ import Rendering
 import Simulation
 
 teams = 10 :: Int
-team_size = 15 :: Int
-race_length = 3000000 :: Int
+team_size = 10 :: Int
+race_length = 160000 :: Int
 
 main :: IO ()
 main = do
@@ -22,7 +24,7 @@ main = do
 
 loop :: Race -> RandT StdGen IO Race
 loop r@(Race _ _ [] _) = return r
-loop r = turn r >>= loop
+loop r = turn r >>= (\r -> (lift $ render r) >> lift performGC >> loop r)
 
 {-loop :: Int -> [Cyclist] -> Rand StdGen [Cyclist]
 loop n pop = do

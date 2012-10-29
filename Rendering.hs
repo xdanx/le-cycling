@@ -3,6 +3,9 @@ module Rendering where
 import Cyclist
 import Simulation
 
+render :: Race -> IO ()
+render = const (return ())
+
 {-
 import Control.Arrow
 import Data.IORef

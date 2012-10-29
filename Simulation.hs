@@ -1,6 +1,7 @@
 module Simulation where
 
 import Control.Monad
+import Control.Monad.Trans.Class
 import Control.Monad.Random
 import Data.List
 import Data.Maybe
