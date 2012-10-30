@@ -18,7 +18,7 @@ getPacks cyclists len =
   ++ concatMap (foldl addToPackList []) (map sort . groupBy (\x y -> team x == team y) $  breakers),
    sprinters)
   where
-    (sprinters, cyclists') = break (\c -> distance c > (fromIntegral (len - 5))) cyclists
+    (cyclists', sprinters) = break (\c -> distance c >= (fromIntegral (len - 5000))) (sort cyclists)
     (breakers, packs) = partition (\c -> breakaway c > 0) cyclists'
     addToPackList :: [Pack] -> Cyclist -> [Pack]
     addToPackList [] c =

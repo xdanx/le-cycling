@@ -25,7 +25,7 @@ main = do
 
 loop :: Race -> RandT StdGen IO Race
 loop r@(Race _ _ [] [] _) = return r
-loop r@(Race trn _ _ _ _) = turn r >>= (\n -> (lift $ render n) >> lift performGC >> (lift $ threadDelay 1000000) >> (lift $ putStrLn ("turn: " ++ show (trn + 1))) >> loop n)
+loop r@(Race trn _ _ _ _) = turn r >>= (\n -> (lift $ render n) >> lift performGC >> {-- (lift $ threadDelay 1000000) >> --} (lift $ putStrLn ("turn: " ++ show (trn + 1))) >> loop n)
 
 {-loop :: Int -> [Cyclist] -> Rand StdGen [Cyclist]
 loop n pop = do

@@ -6,6 +6,7 @@ import Control.Monad.Random
 import Data.List
 import Data.Maybe
 import Debug.Trace
+import Control.Exception (assert)
 
 import Cyclist
 import Pack
@@ -16,14 +17,14 @@ data Race = Race !Int !Int ![Cyclist] ![Cyclist] ![Cyclist]
 
 -- Update position of Racers
 update_position :: Race -> Race
-update_position (Race trn len race sprint finish) = (Race trn len (sort racers) sprint' (finish ++ sfinishers))
+update_position (Race trn len race sprint finish) = (Race trn len (sort racers) sprint'' (finish ++ sfinishers))
                 where 
                       up_pos = (\c -> c{distance = (distance c) + (fromIntegral time) * (speed c)})
                       time = 60
                       update = map up_pos race
-                      (sprint', racers) = partition (\c -> (fromIntegral (len - 5)) <= (distance c)) update
-                      updateS = map up_pos (sprint ++ sprint')
-                      (finishers, sprint'') = partition (\c -> (fromIntegral len) <= (distance c)) updateS
+                      (sprint', racers) = partition (\c -> (fromIntegral (len - 5000)) <= (distance c)) update
+                      updateSprint = map up_pos sprint
+                      (finishers, sprint'') = partition (\c -> (fromIntegral len) <= (distance c)) (updateSprint ++ sprint')
                       sfinishers = sortBy (\x y -> compare (pass x) (pass y)) finishers
                       pass :: Cyclist -> Double
                       pass c = ((fromIntegral len) - strt)/(speed c)
@@ -81,10 +82,10 @@ defLeader (Pack (l:p))
 turn :: Race -> RandT StdGen IO Race
 turn (Race trn len r s win) = do
      let b = (trn `mod` 5 == 0)
-     c_r <- if b then sequence (map determineCoop r) else return r
-     let (Race _ _ t_r _ _) = update_time (Race trn len c_r s win)
-         (packs, s') = getPacks t_r len
-         l_p = map (\p -> if(isBreak $ p) then p else defLeader p) packs
-         sprinters = map update_sprint_speed (s ++ s')
+     c_r <- if b then sequence (map determineCoop r) else return r     
+     let   (Race _ _ t_r _ _) = update_time (Race trn len c_r s win)
+           (packs, s') = getPacks t_r len
+           l_p = map (\p -> if(isBreak $ p) then p else defLeader p) packs
+           sprinters = map update_sprint_speed (s ++ s')
      cyclist <- concatMapM do_breakaway l_p
      return . update_position $ (Race (trn + 1) len (unpack cyclist) sprinters win)
