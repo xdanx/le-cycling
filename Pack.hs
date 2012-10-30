@@ -4,8 +4,6 @@ import Control.Monad.Random
 import Cyclist
 import Data.List
 
-import Race
-
 data Pack = Pack [Cyclist]
      deriving(Show)
 
@@ -14,8 +12,8 @@ data Pack = Pack [Cyclist]
 {-instance Show Pack where
          show (Pack l) = show $ map (distance) l1-}
 
-getPacks :: Race -> ([Pack], [Cyclist])
-getPacks (Race _ len cyclists _) =
+getPacks :: [Cyclist] -> Int -> ([Pack], [Cyclist])
+getPacks cyclists len =
   (foldl addToPackList [] (sort packs) 
   ++ concatMap (foldl addToPackList []) (map sort . groupBy (\x y -> team x == team y) $  breakers),
    sprinters)

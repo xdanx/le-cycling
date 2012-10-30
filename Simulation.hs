@@ -10,7 +10,9 @@ import Debug.Trace
 import Cyclist
 import Pack
 import Utils
-import Race
+
+data Race = Race !Int !Int ![Cyclist] ![Cyclist]
+     deriving (Show)
 
 -- Update position of Racers
 update_position :: Race -> Race
@@ -75,7 +77,7 @@ turn (Race trn len r win) = do
      let b = (trn `mod` 5 == 0)
      c_r <- if b then sequence (map determineCoop r) else return r
      let (Race _ _ t_r _) = update_time (Race trn len c_r win)
-         packs = getPacks  t_r
+         (packs, sprinters) = getPacks t_r len
          l_p = map (\p -> if(isBreak $ p) then p else defLeader p) packs
      cyclist <- concatMapM do_breakaway l_p
      return . update_position $ (Race (trn + 1) len (unpack cyclist) win)
