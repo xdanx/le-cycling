@@ -22,5 +22,7 @@ render r (Size x y) = do
        renderPrimitive Points $ mapM_ (vertex . uncurry Vertex2) poss
        flush
        return ()-}
+
+
        
 
