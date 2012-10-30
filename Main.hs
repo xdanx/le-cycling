@@ -1,4 +1,5 @@
 {-# LANGUAGE DoAndIfThenElse #-}
+import Control.Concurrent 
 import Control.Monad.Random
 import Control.Monad.Trans.Class
 import System.Environment
@@ -24,7 +25,7 @@ main = do
 
 loop :: Race -> RandT StdGen IO Race
 loop r@(Race _ _ [] _) = return r
-loop r = turn r >>= (\r -> (lift $ render r) >> lift performGC >> loop r)
+loop r@(Race trn _ _ _) = turn r >>= (\n -> (lift $ render n) >> lift performGC >> (lift $ threadDelay 1000000) >> (lift $ putStrLn ("turn: " ++ show (trn + 1))) >> loop n)
 
 {-loop :: Int -> [Cyclist] -> Rand StdGen [Cyclist]
 loop n pop = do
