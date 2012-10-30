@@ -14,11 +14,11 @@ data Pack = Pack [Cyclist]
 {-instance Show Pack where
          show (Pack l) = show $ map (distance) l1-}
 
-getPacks :: Race -> [Pack]
+getPacks :: Race -> ([Pack], [Cyclist])
 getPacks (Race _ len cyclists _) =
-  map (\a -> Pack [a]) sprinters
-  ++ foldl addToPackList [] (sort packs) 
-  ++ concatMap (foldl addToPackList []) (map sort . groupBy (\x y -> team x == team y) $  breakers)
+  (foldl addToPackList [] (sort packs) 
+  ++ concatMap (foldl addToPackList []) (map sort . groupBy (\x y -> team x == team y) $  breakers),
+   sprinters)
   where
     (sprinters, cyclists') = break (\c -> distance c > (fromIntegral (len - 5))) cyclists
     (breakers, packs) = partition (\c -> breakaway c > 0) cyclists'
