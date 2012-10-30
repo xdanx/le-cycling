@@ -4,7 +4,7 @@ import Control.Monad.Random
 import Cyclist
 import Data.List
 
-data Pack = Pack [Cyclist]
+data Pack = Pack [Cyclist] 
      deriving(Show)
 
 -- new Pack : data Pack = Pack Int Cyclist [Cyclist]
