@@ -4,18 +4,22 @@ import Control.Monad.Random
 import Cyclist
 import Data.List
 
+import Race
+
 data Pack = Pack [Cyclist]
      deriving(Show)
 
 {-instance Show Pack where
          show (Pack l) = show $ map (distance) l1-}
 
-getPacks :: [Cyclist] -> [Pack]
-getPacks cyclists =
-  foldl addToPackList [] (sort pack) 
-  ++ concatMap (foldl addToPackList []) (map sort . groupBy (\x y -> team x == team y) $  break)
+getPacks :: Race -> [Pack]
+getPacks (Race _ len cyclists _) =
+  map (\a -> Pack [a]) sprinters
+  ++ foldl addToPackList [] (sort packs) 
+  ++ concatMap (foldl addToPackList []) (map sort . groupBy (\x y -> team x == team y) $  breakers)
   where
-    (break, pack) = partition (\c -> breakaway c > 0) cyclists
+    (sprinters, cyclists') = break (\c -> distance c > (fromIntegral (len - 5))) cyclists
+    (breakers, packs) = partition (\c -> breakaway c > 0) cyclists'
     addToPackList :: [Pack] -> Cyclist -> [Pack]
     addToPackList [] c =
       [Pack [c]]

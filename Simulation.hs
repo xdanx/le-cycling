@@ -10,8 +10,6 @@ import Cyclist
 import Pack
 import Utils
 
-data Race = Race Int Int [Cyclist] [Cyclist]
-     deriving (Show)
 
 -- Update position of Racers
 update_position :: Race -> Race
