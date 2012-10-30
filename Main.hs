@@ -18,7 +18,7 @@ main :: IO ()
 main = do
      c <- genCyclistsIO teams team_size avg
      g <- getStdGen
-     (Race race_time _ _ leader_board) <- evalRandT (loop $ Race 0 race_length c [] []) g
+     (Race race_time _ _ _ leader_board) <- evalRandT (loop $ Race 0 race_length c [] []) g
      print leader_board
      return ()
      
