@@ -9,6 +9,8 @@ import Race
 data Pack = Pack [Cyclist]
      deriving(Show)
 
+-- new Pack : data Pack = Pack Int Cyclist [Cyclist]
+
 {-instance Show Pack where
          show (Pack l) = show $ map (distance) l1-}
 

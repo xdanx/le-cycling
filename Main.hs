@@ -1,9 +1,9 @@
 {-# LANGUAGE DoAndIfThenElse #-}
+import Control.Concurrent 
 import Control.Monad.Random
-import Data.IORef
-import Graphics.Rendering.OpenGL
-import Graphics.UI.GLUT
+import Control.Monad.Trans.Class
 import System.Environment
+import System.Mem
 
 import Cyclist
 import Population
@@ -11,20 +11,21 @@ import Rendering
 import Simulation
 
 teams = 10 :: Int
-team_size = 15 :: Int
-race_length = 3000000 :: Int
+team_size = 10 :: Int
+race_length = 160000 :: Int
 
 main :: IO ()
 main = do
      c <- genCyclistsIO teams team_size avg
-     (Race race_time _ _ leader_board) <- evalRandIO (loop $ Race 0 race_length c [])
+     g <- getStdGen
+     (Race race_time _ _ leader_board) <- evalRandT (loop $ Race 0 race_length c []) g
      print leader_board
      return ()
      
 
-loop :: Race -> Rand StdGen Race
+loop :: Race -> RandT StdGen IO Race
 loop r@(Race _ _ [] _) = return r
-loop r = turn r >>= loop
+loop r@(Race trn _ _ _) = turn r >>= (\n -> (lift $ render n) >> lift performGC >> (lift $ threadDelay 1000000) >> (lift $ putStrLn ("turn: " ++ show (trn + 1))) >> loop n)
 
 {-loop :: Int -> [Cyclist] -> Rand StdGen [Cyclist]
 loop n pop = do

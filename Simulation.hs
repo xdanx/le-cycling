@@ -1,6 +1,7 @@
 module Simulation where
 
 import Control.Monad
+import Control.Monad.Trans.Class
 import Control.Monad.Random
 import Data.List
 import Data.Maybe
@@ -9,7 +10,7 @@ import Debug.Trace
 import Cyclist
 import Pack
 import Utils
-
+import Race
 
 -- Update position of Racers
 update_position :: Race -> Race
@@ -32,13 +33,13 @@ update_time (Race trn len r w) = flip (Race trn len) w . map (update) $ r
                                         then c{breakaway = (breakaway c) - 1}
                                         else c
 
-do_breakaway :: Pack -> Rand StdGen [Pack]
+do_breakaway :: Pack -> RandT StdGen IO [Pack]
 do_breakaway (Pack p) = do
-         dec <- replicateM (length p) (getRandom :: Rand StdGen Double)
+         dec <- replicateM (length p) (getRandom :: RandT StdGen IO Double)
          let (break', stay') = partition (\(c, d) -> (c_b c) < d) (zip p dec)
              groups = nub . map team . map fst $ break'
              (in_bteam, rest) = partition (flip elem groups . team) . map fst $ stay'
-         g_dec <- replicateM (length in_bteam) (getRandom :: Rand StdGen Double)
+         g_dec <- replicateM (length in_bteam) (getRandom :: RandT StdGen IO Double)
          let (gbreak', gstay') = partition (\(c, d) -> (c_t c) < d) (zip in_bteam g_dec)
              stay =  (map fst gstay') ++ rest
              breaks = map (set_pack_speed . Pack) . groupBy (\x y -> team x == team y) . map (\(c,_) -> c{breakaway = 3}) $ break' ++ gbreak'
@@ -54,10 +55,10 @@ set_pack_speed pack@(Pack p) = Pack $ map (\c -> c{speed = speed}) p
 isBreak :: Pack -> Bool
 isBreak (Pack p) =  and . map ((/=0) . breakaway) $ p
 
-determineCoop :: Cyclist -> Rand StdGen Cyclist
+determineCoop :: Cyclist -> RandT StdGen IO Cyclist
 determineCoop c = do
-              d1 <- getRandom :: Rand StdGen Double
-              d2 <- getRandom :: Rand StdGen Double
+              d1 <- getRandom :: RandT StdGen IO Double
+              d2 <- getRandom :: RandT StdGen IO Double
               return $ c{b_coop = (d1 < c_b c), t_coop = (d2 < c_t c)}
 
 defLeader :: Pack -> Pack
@@ -69,7 +70,7 @@ defLeader (Pack (l:p))
     l'' = l{t_lead = 0, distance = (distance (last (l:p))) - 1}
 
 -- Don't know when/how I should handle breakaways.
-turn :: Race -> Rand StdGen Race
+turn :: Race -> RandT StdGen IO Race
 turn (Race trn len r win) = do
      let b = (trn `mod` 5 == 0)
      c_r <- if b then sequence (map determineCoop r) else return r

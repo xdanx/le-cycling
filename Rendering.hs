@@ -1,12 +1,16 @@
 module Rendering where
 
+import Cyclist
+import Simulation
+
+render :: Race -> IO ()
+render = const (return ())
+
+{-
 import Control.Arrow
 import Data.IORef
 import Graphics.Rendering.OpenGL
 import Graphics.UI.GLUT
-
-import Cyclist
-import Simulation
 
 render :: (IORef Race) -> Size -> IO ()
 render r (Size x y) = do
@@ -17,6 +21,6 @@ render r (Size x y) = do
            poss = map ( ((fromRational . toRational) *** (fromRational . toRational)) . (0.5,) . (subtract 1) . (*2) . (/(fromIntegral len))) ys :: [(GLdouble, GLdouble)]
        renderPrimitive Points $ mapM_ (vertex . uncurry Vertex2) poss
        flush
-       return ()
+       return ()-}
        
 
