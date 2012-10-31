@@ -11,16 +11,19 @@ import Cyclist
 import Pack
 import Utils
 
-data Race = Race !Int !Int ![Cyclist] ![Cyclist]
+data Race = Race !Int !Int ![Cyclist] ![Cyclist] ![Cyclist]
      deriving (Show)
 
 -- Update position of Racers
 update_position :: Race -> Race
-update_position (Race trn len race finish) = (Race trn len (sort racers) (finish ++ sfinishers))
+update_position (Race trn len race sprint finish) = (Race trn len (sort racers) sprint' (finish ++ sfinishers))
                 where 
+                      up_pos = (\c -> c{distance = (distance c) + (fromIntegral time) * (speed c)})
                       time = 60
-                      update = map (\c -> c{distance = (distance c) + (fromIntegral time) * (speed c)}) race
-                      (finishers, racers) = partition (\c -> (fromIntegral len) <= (distance c)) update
+                      update = map up_pos race
+                      (sprint', racers) = partition (\c -> (fromIntegral (len - 5)) <= (distance c)) update
+                      updateS = map up_pos (sprint ++ sprint')
+                      (finishers, sprint'') = partition (\c -> (fromIntegral len) <= (distance c)) updateS
                       sfinishers = sortBy (\x y -> compare (pass x) (pass y)) finishers
                       pass :: Cyclist -> Double
                       pass c = ((fromIntegral len) - strt)/(speed c)
@@ -28,10 +31,10 @@ update_position (Race trn len race finish) = (Race trn len (sort racers) (finish
                                 strt = (distance c) - (fromIntegral time) * (speed c)
 
 update_time :: Race -> Race
-update_time (Race trn len r w) = flip (Race trn len) w . map (update) $ r
-            where
-                update :: Cyclist -> Cyclist
-                update c = if(breakaway c > 0)
+update_time (Race trn len r s w) = (Race trn len (map update r) s w)
+                where
+                     update :: Cyclist -> Cyclist
+                     update c = if(breakaway c > 0)
                                         then c{breakaway = (breakaway c) - 1}
                                         else c
 
@@ -54,6 +57,9 @@ set_pack_speed pack@(Pack p) = Pack $ map (\c -> c{speed = speed}) p
                                         then 0.9
                                         else 0.8
                 
+update_sprint_speed :: Cyclist -> Cyclist
+update_sprint_speed c = c{speed = s_m c}
+                       
 isBreak :: Pack -> Bool
 isBreak (Pack p) =  and . map ((/=0) . breakaway) $ p
 
@@ -73,11 +79,12 @@ defLeader (Pack (l:p))
 
 -- Don't know when/how I should handle breakaways.
 turn :: Race -> RandT StdGen IO Race
-turn (Race trn len r win) = do
+turn (Race trn len r s win) = do
      let b = (trn `mod` 5 == 0)
      c_r <- if b then sequence (map determineCoop r) else return r
-     let (Race _ _ t_r _) = update_time (Race trn len c_r win)
-         (packs, sprinters) = getPacks t_r len
+     let (Race _ _ t_r _ _) = update_time (Race trn len c_r s win)
+         (packs, s') = getPacks t_r len
          l_p = map (\p -> if(isBreak $ p) then p else defLeader p) packs
+         sprinters = map update_sprint_speed (s ++ s')
      cyclist <- concatMapM do_breakaway l_p
-     return . update_position $ (Race (trn + 1) len (unpack cyclist) win)
+     return . update_position $ (Race (trn + 1) len (unpack cyclist) sprinters win)
