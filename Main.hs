@@ -45,6 +45,7 @@ loop_wrapper ref = do
              
 
 loop :: Race -> RandT StdGen IO Race
+<<<<<<< HEAD
 loop r = do
      n@(Race trn _ _ _ _) <- turn r
      lift performGC
