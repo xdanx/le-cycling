@@ -1,9 +1,11 @@
 module Rendering where
 
+import Data.IORef
+
 import Cyclist
 import Simulation
 
-render :: Race -> IO ()
+render :: IORef Race -> IO ()
 render = const (return ())
 
 {-import Control.Arrow

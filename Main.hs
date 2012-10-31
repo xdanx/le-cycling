@@ -5,6 +5,7 @@ import Data.IORef
 import Graphics.Rendering.OpenGL
 import Graphics.UI.GLUT
 import System.Environment
+import System.Exit
 import System.Mem
 
 import Cyclist
@@ -15,6 +16,7 @@ import Simulation
 teams = 10 :: Int
 team_size = 10 :: Int
 race_length = 160000 :: Int
+time = 1000
 
 main :: IO ()
 main = do
@@ -22,19 +24,34 @@ main = do
      args <- initialize progname []
      window <- createWindow progname
      clear [ColorBuffer]
-          
-
-{-
      c <- genCyclistsIO teams team_size avg
-     g <- getStdGen
-     (Race race_time _ _ _ leader_board) <- evalRandT (loop $ Race 0 race_length c [] []) g
-     print leader_board
-     return ()
-  -}   
+     r <- newIORef (Race 0 race_length c [] [])
+     render r
+     displayCallback $= (render r)
+     addTimerCallback time (loop_wrapper r)
+     mainLoop
+
+loop_wrapper :: IORef Race -> IO ()
+loop_wrapper ref = do
+             r <- readIORef ref
+             g <- getStdGen
+             nr <- evalRandT (loop r) g 
+             case nr of
+                  (Race _ _ [] [] win) -> print win >> exitSuccess
+                  otherwise -> do
+                                                writeIORef ref nr
+                                                render ref
+                                                addTimerCallback time (loop_wrapper ref)
+             
 
 loop :: Race -> RandT StdGen IO Race
-loop r@(Race _ _ [] [] _) = return r
-loop r@(Race trn _ _ _ _) = turn r >>= (\n -> (lift $ render n) >> lift performGC >> (lift $ putStrLn ("turn: " ++ show (trn + 1))) >> loop n)
+loop r = do
+     n@(Race trn _ _ _ _) <- turn r
+     lift performGC
+     lift $ putStrLn ("turn: " ++ show trn)
+     return n
+
+--     turn r >>= (\n -> (lift $ render n) >> lift performGC >> (lift $ putStrLn ("turn: " ++ show (trn + 1))) >> loop n)
 
 {-loop :: Int -> [Cyclist] -> Rand StdGen [Cyclist]
 loop n pop = do
