@@ -16,7 +16,7 @@ import Simulation
 teams = 10 :: Int
 team_size = 10 :: Int
 race_length = 160000 :: Int
-time = 10
+time = 100
 
 main :: IO ()
 main = do
@@ -28,20 +28,23 @@ main = do
      r <- newIORef (Race 0 race_length c [] [])
      render r
      displayCallback $= (render r)
+     actionOnWindowClose $= ContinueExectuion
      addTimerCallback time (loop_wrapper r)
      mainLoop
+     (Race _ _ _ _ leader_board) <- readIORef r
+     print leader_board
+     exit
 
 loop_wrapper :: IORef Race -> IO ()
 loop_wrapper ref = do
              r <- readIORef ref
              g <- getStdGen
              nr <- evalRandT (loop r) g 
+             writeIORef ref nr  
+             render ref
              case nr of
-                  (Race _ _ [] [] win) -> print win >> exitSuccess
-                  otherwise -> do
-                                                writeIORef ref nr
-                                                render ref
-                                                addTimerCallback time (loop_wrapper ref)
+                  (Race _ _ [] [] win) -> leaveMainLoop
+                  otherwise -> addTimerCallback time (loop_wrapper ref)
              
 
 loop :: Race -> RandT StdGen IO Race
