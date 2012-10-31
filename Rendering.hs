@@ -9,9 +9,6 @@ import Graphics.UI.GLUT
 import Cyclist
 import Simulation
 
-{-render :: IORef Race -> IO ()
-render = const (return ())-}
-
 render :: (IORef Race) -> IO ()
 render r = do
        (Race trn len racers sprint finish) <- readIORef r
