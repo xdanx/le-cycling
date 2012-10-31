@@ -16,7 +16,7 @@ import Simulation
 teams = 10 :: Int
 team_size = 10 :: Int
 race_length = 160000 :: Int
-time = 1000
+time = 10
 
 main :: IO ()
 main = do
@@ -45,32 +45,8 @@ loop_wrapper ref = do
              
 
 loop :: Race -> RandT StdGen IO Race
-<<<<<<< HEAD
 loop r = do
      n@(Race trn _ _ _ _) <- turn r
      lift performGC
-     lift $ putStrLn ("turn: " ++ show trn)
+     --     lift $ putStrLn ("turn: " ++ show trn)
      return n
-
---     turn r >>= (\n -> (lift $ render n) >> lift performGC >> (lift $ putStrLn ("turn: " ++ show (trn + 1))) >> loop n)
-
-{-loop :: Int -> [Cyclist] -> Rand StdGen [Cyclist]
-loop n pop = do
-                      npop <- turn (n `mod` 5 == 0) pop
-                      if(or $ map (\m -> end > distance m) npop)
-                      	then mainLoop (n+1) npop
-                      	else return npop
-
-
-      progname <- getProgName
-     args <- initialize progname []
-     window <- createWindow progname
-     s <- get initialWindowSize
-     clear [ColorBuffer]
-     c <- genCyclistsIO 5 10 avg
-     cyclists <- newIORef . flip (Race 500) [] . map (\(x, d) -> x{distance = d}) . zip c $ [1,10..]
-     displayCallback $= (get initialWindowSize >>= render cyclists)
-     reshapeCallback $= Just (render cyclists)
-     sequence . repeat $ (render cyclists s  >> getLine)
-     --     evalRandIO (genCyclists teams team_size avg >>= (loop 0))
-     destroyWindow window-}
