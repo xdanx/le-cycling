@@ -61,6 +61,18 @@ set_pack_speed pack@(Pack p) = Pack $ map (\c -> c{speed = speed}) p
 update_sprint_speed :: Cyclist -> Cyclist
 update_sprint_speed c = c{speed = s_m c}
                        
+tlim :: Cyclist -> Double
+tlim c = exp (-6.35 * ((ptot c)/(max10 c)) + 2.478)
+     where ptot :: Cyclist -> Double
+                 ptot c = pair c + proll c
+                 pair :: Cyclist -> Double
+                 pair c = (speed c)^3
+                 proll :: Cyclist -> Double
+                 proll c = 9.8*(cweight + bweight) * (speed c)
+                 cweight = 60
+                bweight = 5
+                
+
 isBreak :: Pack -> Bool
 isBreak (Pack p) =  and . map ((/=0) . breakaway) $ p
 
@@ -84,8 +96,7 @@ turn (Race trn len r s win) = do
      let b = (trn `mod` 5 == 0)
      c_r <- if b then sequence (map determineCoop r) else return r     
      let   (Race _ _ t_r _ _) = update_time (Race trn len c_r s win)
-           (packs, s') = getPacks t_r len
+           packs = getPacks t_r len
            l_p = map (\p -> if(isBreak $ p) then p else defLeader p) packs
-           sprinters = map update_sprint_speed (s ++ s')
      cyclist <- concatMapM do_breakaway l_p
-     return . update_position $ (Race (trn + 1) len (unpack cyclist) sprinters win)
+     return . update_position $ (Race (trn + 1) len (unpack cyclist) s win)
