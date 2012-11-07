@@ -15,7 +15,7 @@ import Simulation
 
 teams = 10 :: Int
 team_size = 10 :: Int
-race_length = 160000 :: Int
+race_length = 10000 :: Int
 time = 100
 
 main :: IO ()

@@ -24,7 +24,7 @@ update_position (Race trn len race sprint finish) = (Race trn len (sort racers) 
                       update = map up_pos race
                       (sprint', racers) = partition (\c -> (fromIntegral (len - 5000)) <= (distance c)) update
                       updateSprint = map up_pos sprint
-                      (finishers, sprint'') = partition (\c -> (fromIntegral len) <= (distance c)) (updateSprint ++ sprint')
+                      (finishers, sprint'') = partition (\c -> (fromIntegral len) <= (distance c)) (updateSprint ++ (map update_sprint_speed sprint'))
                       sfinishers = sortBy (\x y -> compare (pass x) (pass y)) finishers
                       pass :: Cyclist -> Double
                       pass c = ((fromIntegral len) - strt)/(speed c)
@@ -59,18 +59,20 @@ set_pack_speed pack@(Pack p) = Pack $ map (\c -> c{speed = speed}) p
                                         else 0.8
                 
 update_sprint_speed :: Cyclist -> Cyclist
-update_sprint_speed c = c{speed = s_m c}
-                       
+update_sprint_speed c
+              | t > 30 = c{speed = 0.9*(s_m c)}
+              | t < 1 = c{speed = 0.5 * (s_m c)}
+              | otherwise = c{speed = 0.7*(s_m c)}
+                    where t = 60 * tlim c
+
 tlim :: Cyclist -> Double
 tlim c = exp (-6.35 * ((ptot c)/(max10 c)) + 2.478)
-     where ptot :: Cyclist -> Double
-                 ptot c = pair c + proll c
-                 pair :: Cyclist -> Double
-                 pair c = (speed c)^3
-                 proll :: Cyclist -> Double
-                 proll c = 9.8*(cweight + bweight) * (speed c)
-                 cweight = 60
-                bweight = 5
+     where ptot c = pair c + proll c
+                   where
+                        pair c = (speed c)^3
+                        proll c = 9.8*(cweight + bweight) * (speed c)
+                        cweight = 60
+                        bweight = 5
                 
 
 isBreak :: Pack -> Bool
@@ -96,7 +98,7 @@ turn (Race trn len r s win) = do
      let b = (trn `mod` 5 == 0)
      c_r <- if b then sequence (map determineCoop r) else return r     
      let   (Race _ _ t_r _ _) = update_time (Race trn len c_r s win)
-           packs = getPacks t_r len
+           packs = getPacks t_r
            l_p = map (\p -> if(isBreak $ p) then p else defLeader p) packs
      cyclist <- concatMapM do_breakaway l_p
      return . update_position $ (Race (trn + 1) len (unpack cyclist) s win)
