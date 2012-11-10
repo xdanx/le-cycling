@@ -39,13 +39,12 @@ loop_wrapper :: IORef Race -> IO ()
 loop_wrapper ref = do
              r <- readIORef ref
              g <- getStdGen
-             nr <- evalRandT (loop r) g 
-             writeIORef ref nr  
+             nr <- evalRandT (loop r) g
+             writeIORef ref nr
              render ref
              case nr of
                   (Race _ _ [] [] win) -> leaveMainLoop
                   otherwise -> addTimerCallback time (loop_wrapper ref)
-             
 
 loop :: Race -> RandT StdGen IO Race
 loop r = do

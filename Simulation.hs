@@ -18,7 +18,7 @@ data Race = Race !Int !Int ![Cyclist] ![Cyclist] ![(Cyclist, Double)]
 -- Update position of Racers
 update_position :: Race -> Race
 update_position (Race trn len race sprint finish) = (Race trn len (sort racers) sprint'' (finish ++ sfinishers'))
-                where 
+                where
                       up_pos = (\c -> c{distance = (distance c) + (fromIntegral time) * (speed c)})
                       time = 60
                       update = map up_pos race
@@ -58,7 +58,7 @@ set_pack_speed pack@(Pack p) = Pack $ map (\c -> c{speed = speed}) p
                      perc = if(isBreak pack)
                                         then 0.9
                                         else 0.8
-                
+
 update_sprint_speed :: Cyclist -> Cyclist
 update_sprint_speed c
               | t > 30 = c{speed = 0.9*(s_m c)}
@@ -74,7 +74,6 @@ tlim c = exp (-6.35 * ((ptot c)/(max10 c)) + 2.478)
                         proll c = 9.8*(cweight + bweight) * (speed c)
                         cweight = 60
                         bweight = 5
-                
 
 isBreak :: Pack -> Bool
 isBreak (Pack p) =  and . map ((/=0) . breakaway) $ p
@@ -89,7 +88,7 @@ defLeader :: Pack -> Pack
 defLeader (Pack (l:p))
   | (t_lead l > 5) || (not (b_coop l) && t_lead l > 1) = Pack (l'':p)
   | otherwise = Pack (l':p)
-  where 
+  where
     l'  = l{t_lead = t_lead l + 1}
     l'' = l{t_lead = 0, distance = (distance (last (l:p))) - 1}
 
@@ -97,7 +96,7 @@ defLeader (Pack (l:p))
 turn :: Race -> RandT StdGen IO Race
 turn (Race trn len r s win) = do
      let b = (trn `mod` 5 == 0)
-     c_r <- if b then sequence (map determineCoop r) else return r     
+     c_r <- if b then sequence (map determineCoop r) else return r
      let   (Race _ _ t_r _ _) = update_time (Race trn len c_r s win)
            packs = getPacks t_r
            l_p = map (\p -> if(isBreak $ p) then p else defLeader p) packs

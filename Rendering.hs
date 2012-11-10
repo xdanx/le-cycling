@@ -1,5 +1,6 @@
-module Rendering where
+{-# LANGUAGE TupleSections #-}
 
+module Rendering where
 
 import Control.Arrow
 import Data.IORef
