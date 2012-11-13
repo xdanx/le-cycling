@@ -1,7 +1,6 @@
 {-# LANGUAGE TupleSections #-}
 module Rendering where
 
-
 import Control.Arrow
 import Data.IORef
 import Data.Tuple
