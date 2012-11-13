@@ -14,19 +14,21 @@ import Population
 import Rendering
 import Simulation
 
-teams = 1 :: Int
+{- teams = 1 :: Int
 team_size = 2 :: Int
-race_length = 10000 :: Int
+race_length = 10000 :: Int-}
 time = 100
 
 main :: IO ()
 main = do
      progname <- getProgName
-     args <- initialize progname []
+     args <- getArgs
+     initialize progname []
      window <- createWindow progname
      clear [ColorBuffer]
-     c <- genCyclistsIO teams team_size avg
-     r <- newIORef (Race 0 race_length c [] [])
+     {-c <- genCyclistsIO teams team_size avg
+     r <- newIORef (Race 0 race_length c [] [])-}
+     r <- (genRace (head args) >>= newIORef)
      render r
      displayCallback $= (render r)
      actionOnWindowClose $= ContinueExectuion

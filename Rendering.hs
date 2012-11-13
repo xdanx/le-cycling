@@ -1,3 +1,4 @@
+{-# LANGUAGE TupleSections #-}
 module Rendering where
 
 
