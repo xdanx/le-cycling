@@ -29,6 +29,8 @@ main = do
      {-c <- genCyclistsIO teams team_size avg
      r <- newIORef (Race 0 race_length c [] [])-}
      r <- (genRace (head args) >>= newIORef)
+     readIORef r >>= print 
+     exitSuccess
      render r
      displayCallback $= (render r)
      actionOnWindowClose $= ContinueExectuion
