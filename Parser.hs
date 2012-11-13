@@ -2,6 +2,7 @@ module Parser where
 
 import Control.Monad.Random
 import Control.Monad.Trans
+import Data.List
 
 import Cyclist
 import Simulation
@@ -12,7 +13,7 @@ genRace n = do
   g <- getStdGen
   runRandT g parse
 
-parse :: String -> RandT StGen IO Race
+parse :: String -> RandT StdGen IO Race
 parse [] = error "Empty parse file"
 parse f = do
   let h:c = lines f
@@ -21,6 +22,6 @@ parse f = do
   let (s, r) = partition (\c -> len - distance c < 5000) cs 
   return (Race len 0 r s [])
                 
-parseLine :: String -> RandT StdGen IO Race
+parseLine :: String -> RandT StdGen IO Cyclist
 parseLine l = do
 
