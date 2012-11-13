@@ -31,7 +31,7 @@ parse f = do
       len = read h :: Int
   cs <- sequence . map parseLine $ c
   let (s, r) = partition (\c -> fromIntegral len - distance c < 5000) . concat $ cs 
-  return (Race len 0 r s [])
+  return (Race 0 len r s [])
                 
 parseLine :: String -> RandT StdGen (StateT Int IO) [Cyclist]
 parseLine l = do
@@ -47,9 +47,9 @@ parseLine l = do
 
 makeCyclists :: Int -> Int -> Population -> String -> RandT StdGen (StateT Int IO) [Cyclist]
 makeCyclists t n pop ln = do
-  let mp = map (\(x,_:y) -> (x,y)) . map (break (==':')) . words $ ln
+  let attr_parse = map (\(x,_:y) -> (x,y)) . map (break (==':')) . words $ ln
       infs = ["max10", "e_rem", "c_b", "c_t", "breakaway", "speed", "distance", "t_lead"]
-      fs@[mmax10, me_rem, mc_b, mc_t, mbreakaway, mspeed, mdistance, mt_lead] =  (map (flip lookup mp) infs)
+      [mmax10, me_rem, mc_b, mc_t, mbreakaway, mspeed, mdistance, mt_lead] =  (map (flip lookup attr_parse) infs)
   replicateM n (do
                    max10 <- getMax10 pop mmax10
                    let e_rem = getE_rem me_rem

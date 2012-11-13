@@ -12,6 +12,7 @@ import Cyclist
 import Pack
 import Utils
 
+-- length turns runners sprinters (finishers, time)
 data Race = Race !Int !Int ![Cyclist] ![Cyclist] ![(Cyclist, Double)]
      deriving (Show)
 

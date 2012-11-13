@@ -14,7 +14,7 @@ import Population
 import Rendering
 import Simulation
 
-{- teams = 1 :: Int
+{-teams = 1 :: Int
 team_size = 2 :: Int
 race_length = 10000 :: Int-}
 time = 100
@@ -29,8 +29,7 @@ main = do
      {-c <- genCyclistsIO teams team_size avg
      r <- newIORef (Race 0 race_length c [] [])-}
      r <- (genRace (head args) >>= newIORef)
-     readIORef r >>= print 
-     exitSuccess
+     readIORef r >>= print
      render r
      displayCallback $= (render r)
      actionOnWindowClose $= ContinueExectuion

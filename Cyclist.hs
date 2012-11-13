@@ -24,10 +24,10 @@ data Cyclist = Cyclist {id :: Int,
                         t_coop :: Bool,
                         b_coop :: Bool
                        }
-                       --deriving(Show)
+                       deriving(Show)
 
-instance Show Cyclist where
-         show c = "distance: " ++ (show . distance $ c) ++ ", id: " ++ (show . Cyclist.id $ c)
+{-instance Show Cyclist where
+         show c = "distance: " ++ (show . distance $ c) ++ ", id: " ++ (show . Cyclist.id $ c)-}
 
 instance Eq Cyclist where
          a == b = (distance a == distance b)
