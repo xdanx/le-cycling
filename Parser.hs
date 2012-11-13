@@ -1,14 +1,26 @@
 module Parser where
 
+import Control.Monad.Random
+import Control.Monad.Trans
+
 import Cyclist
 import Simulation
 
 genRace :: String -> IO Race
-genRace n = readFile n >>= return . parse
+genRace n = do
+  f <- readFile n 
+  g <- getStdGen
+  runRandT g parse
 
-parse :: String -> Race
-parse x = Race 0 0 [] [] []
-
-
-
+parse :: String -> RandT StGen IO Race
+parse [] = error "Empty parse file"
+parse f = do
+  let h:c = lines f
+      len = read h :: Int
+  cs <- sequence . map parseLine $ c
+  let (s, r) = partition (\c -> len - distance c < 5000) cs 
+  return (Race len 0 r s [])
+                
+parseLine :: String -> RandT StdGen IO Race
+parseLine l = do
 
