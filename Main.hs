@@ -14,10 +14,10 @@ import Population
 import Rendering
 import Simulation
 
-teams = 1 :: Int
-team_size = 2 :: Int
-race_length = 10000 :: Int
-time = 100
+teams = 2 :: Int
+team_size = 1 :: Int
+race_length = 160000 :: Int
+time = 1
 
 main :: IO ()
 main = do
