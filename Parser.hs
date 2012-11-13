@@ -7,6 +7,7 @@ import Data.List
 import Data.List.Split
 
 import Cyclist
+import Population
 import Simulation
 
 genRace :: String -> IO Race
@@ -32,4 +33,6 @@ parseLine l = do
     return []  
 
 
-
+defaultPop :: String -> Population
+defaultPop "avg" = avg
+defaultPop _ = undefined
