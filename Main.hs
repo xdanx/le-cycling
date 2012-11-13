@@ -9,13 +9,14 @@ import System.Exit
 import System.Mem
 
 import Cyclist
+import Parser
 import Population
 import Rendering
 import Simulation
 
-teams = 10 :: Int
-team_size = 10 :: Int
-race_length = 160000 :: Int
+teams = 1 :: Int
+team_size = 2 :: Int
+race_length = 10000 :: Int
 time = 100
 
 main :: IO ()
