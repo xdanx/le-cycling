@@ -4,6 +4,7 @@ import Control.Monad.Random
 import Control.Monad.Trans
 
 import Cyclist
+import Population
 import Simulation
 
 genRace :: String -> IO Race
@@ -25,3 +26,7 @@ parse f = do
 
 parseLine :: String -> RandT StdGen IO Race
 parseLine l = do
+
+defaultPop :: String -> Population
+defaultPop "avg" = avg
+--defaultPop _ = undefined
