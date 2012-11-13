@@ -16,7 +16,7 @@ genRace n = do
   (r, _) <- runRandT (parse f) g
   return r
 
-parse :: String -> RandT StdGen IO Race
+parse :: String -> RandT StdGen (StateT IO Race
 parse [] = error "Empty parse file"
 parse f = do
   let h:c = lines f
