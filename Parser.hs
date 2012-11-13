@@ -6,11 +6,15 @@ import Control.Monad.Trans
 import Control.Monad.State
 import Data.List
 import Data.List.Split
+import Data.Maybe
+import Text.Regex
+
 
 import Cyclist
 import Population
 import Simulation
 import Stats
+import Utils
 
 genRace :: String -> IO Race
 genRace n = do
@@ -31,8 +35,11 @@ parse f = do
 parseLine :: String -> RandT StdGen (StateT Int IO) [Cyclist]
 parseLine l = do
     let [str_teams, str_profile, str_attrs] = splitOn "|" l
-    
-    return []  
+        str_teams'  = words str_teams
+        str_teams'' = map (matchRegex (mkRegex "([0-9]+):([0-9]+)")) str_teams'
+    lift . lift . putStrLn $ "Warning Can't parse " ++ show (map snd (filter (isNothing . fst) (zip str_teams'' str_teams')))
+    let teams = (map ((map read) . fromJust) (filter isJust str_teams''))::[[Int]]
+    concatMapM (\[t,n] -> makeCyclists t n (defaultPop str_profile) str_attrs) teams
 
 makeCyclists :: Int -> Int -> Population -> String -> RandT StdGen (StateT Int IO) [Cyclist]
 makeCyclists t n pop ln = do
@@ -77,5 +84,3 @@ getD Nothing = 0
 defaultPop :: String -> Population
 defaultPop "avg" = avg
 defaultPop _ = undefined
-
-{--}
