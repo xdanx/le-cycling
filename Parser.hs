@@ -66,7 +66,7 @@ makeCyclists t n pop ln = do
         
 getMax10 :: Population -> Maybe String -> RandT StdGen (StateT Int IO) Double
 getMax10 _ (Just x) = return . read $ x
-getMax10 pop Nothing = normalT . max10s $ pop
+getMax10 pop Nothing = normal . max10s $ pop
 
 getE_rem :: Maybe String -> Double
 getE_rem (Just x) = read x
@@ -74,7 +74,7 @@ getE_rem Nothing = 1/0
 
 getC :: Population -> Maybe String -> RandT StdGen (StateT Int IO) Double
 getC _ (Just x) = return . read $ x
-getC pop Nothing = normalT . coops $ pop
+getC pop Nothing = normal . coops $ pop
 
 getI :: Maybe String -> Int
 getI (Just x) = read x

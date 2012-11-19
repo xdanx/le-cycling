@@ -23,7 +23,8 @@ main :: IO ()
 main = do
      progname <- getProgName
      args <- getArgs
-     let graphics = not $ elem "-X" args
+     let graphics = elem "-X" args
+         plt = elem "-P" args
      if graphics
         then
        do
@@ -31,7 +32,7 @@ main = do
          window <- createWindow progname
          clear [ColorBuffer]
         else return ()
-     r <- (genRace (head . filter (/="-X") $ args) >>= newIORef)
+     r <- (genRace (head . filter (\a -> a /="-X" && a /= "-P") $ args) >>= newIORef)
      if graphics
        then 
          do
@@ -46,7 +47,9 @@ main = do
             runRandT (looper r) g >>= return . fst
      (Race _ _ _ _ leader_board) <- readIORef r
      print leader_board
-     plot X11 $ Data2D [Style Graphics.SimplePlot.Lines, Title "Classment agains cooperation probability", Graphics.SimplePlot.Color Graphics.SimplePlot.Blue] [] (zip [1..] (map (c_b . fst) leader_board))
+     if plt
+            then plot X11 $ Data2D [Style Graphics.SimplePlot.Lines, Title "Classment agains cooperation probability", Graphics.SimplePlot.Color Graphics.SimplePlot.Blue] [] (zip [1..] (map (c_b . fst) leader_board))
+            else return True
      exit
 
 loop_wrapper :: IORef Race -> IO ()
