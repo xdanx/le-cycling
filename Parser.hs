@@ -7,6 +7,7 @@ import Control.Monad.State
 import Data.List
 import Data.List.Split
 import Data.Maybe
+import Data.String.Utils
 import Text.Regex
 
 
@@ -30,7 +31,7 @@ parse f = do
       len = read h :: Int
   cs <- sequence . map parseLine $ c
   let (s, r) = partition (\c -> fromIntegral len - distance c < 5000) . concat $ cs 
-  return (Race len 0 r s [])
+  return (Race 0 len r s [])
                 
 parseLine :: String -> RandT StdGen (StateT Int IO) [Cyclist]
 parseLine l = do
@@ -46,9 +47,9 @@ parseLine l = do
 
 makeCyclists :: Int -> Int -> Population -> String -> RandT StdGen (StateT Int IO) [Cyclist]
 makeCyclists t n pop ln = do
-  let mp = map (break (==':')) . words $ ln
+  let attr_parse = map (\(x,_:y) -> (x,y)) . map (break (==':')) . words $ ln
       infs = ["max10", "e_rem", "c_b", "c_t", "breakaway", "speed", "distance", "t_lead"]
-      [mmax10, me_rem, mc_b, mc_t, mbreakaway, mspeed, mdistance, mt_lead] =  (map (flip lookup mp) infs)
+      [mmax10, me_rem, mc_b, mc_t, mbreakaway, mspeed, mdistance, mt_lead] =  (map (flip lookup attr_parse) infs)
   replicateM n (do
                    max10 <- getMax10 pop mmax10
                    let e_rem = getE_rem me_rem
@@ -60,9 +61,8 @@ makeCyclists t n pop ln = do
                        t_lead = getI mt_lead
                    uid <- lift get
                    lift . put $ uid + 1
-                   return (Cyclist {Cyclist.id = uid, max10 = max10, s_m = exp 2.478, e_rem = e_rem, c_b = c_b, c_t = c_t, breakaway = breakaway, speed = speed, distance = distance, position = 1, t_lead = t_lead, team = t, t_coop = True, b_coop = True})
+                   return (Cyclist {Cyclist.id = uid, max10 = max10, s_m = exp 2.478, e_rem = e_rem, c_b = c_b, c_t = c_t, breakaway = breakaway, speed = speed, distance = distance, position = 1, t_lead = t_lead, team = t, t_coop = True, b_coop = True}) 
                    )
-  return []
         
 getMax10 :: Population -> Maybe String -> RandT StdGen (StateT Int IO) Double
 getMax10 _ (Just x) = return . read $ x
@@ -85,5 +85,6 @@ getD (Just x) = read x
 getD Nothing = 0
   
 defaultPop :: String -> Population
-defaultPop "avg" = avg
-defaultPop _ = undefined
+defaultPop s 
+  | (strip s) == "avg" = avg
+  | otherwise = undefined
