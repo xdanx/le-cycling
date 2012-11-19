@@ -6,6 +6,7 @@ import Data.IORef
 import Graphics.Rendering.OpenGL
 
 import Graphics.UI.GLUT
+import Graphics.SimplePlot
 import System.Environment
 import System.Exit
 import System.Mem
@@ -45,6 +46,7 @@ main = do
             runRandT (looper r) g >>= return . fst
      (Race _ _ _ _ leader_board) <- readIORef r
      print leader_board
+     plot X11 $ Data2D [Style Graphics.SimplePlot.Lines, Title "Classment agains cooperation probability", Graphics.SimplePlot.Color Graphics.SimplePlot.Blue] [] (zip [1..] (map (c_b . fst) leader_board))
      exit
 
 loop_wrapper :: IORef Race -> IO ()
