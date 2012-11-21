@@ -3,6 +3,7 @@
 import Control.Monad.Random
 import Control.Monad.Trans.Class
 import Data.IORef
+import Data.List
 import Graphics.Rendering.OpenGL
 
 import Graphics.UI.GLUT
@@ -18,13 +19,18 @@ import Rendering
 import Simulation
 
 time = 100
+validOption = ["-X", "-P"]
 
 main :: IO ()
 main = do
      progname <- getProgName
      args <- getArgs
-     let graphics = elem "-X" args
-         plt = elem "-P" args
+     let (opt, rest) = partition ((=='-'). head) args 
+         [graphics, plt] = map (flip elem opt) $ validOption
+         correct = (length rest == 1) && (and . map (flip elem validOption) $ opt)
+     if not correct
+       then usage
+       else return ()
      if graphics
         then
        do
@@ -32,7 +38,7 @@ main = do
          window <- createWindow progname
          clear [ColorBuffer]
         else return ()
-     r <- (genRace (head . filter (\a -> a /="-X" && a /= "-P") $ args) >>= newIORef)
+     r <- (genRace (head rest) >>= newIORef)
      if graphics
        then 
          do
@@ -78,3 +84,10 @@ looper ref = do
     (Race _ _ [] [] win) -> return ()
     otherwise -> looper ref
   
+usage :: IO ()
+usage = do
+  putStrLn "Usage: Cycling [args] [input file]"
+  putStrLn "args:"
+  putStrLn "\t-P: Plot cooperation against position at end of simulation"
+  putStrLn "\t-X: Show real-time graphical representation of race"
+  exitFailure
