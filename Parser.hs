@@ -47,20 +47,20 @@ parseLine l = do
 makeCyclists :: Int -> Int -> Population -> String -> RandT StdGen (StateT Int IO) [Cyclist]
 makeCyclists t n pop ln = do
   let attr_parse = map (\(x,_:y) -> (x,y)) . map (break (==':')) . words $ ln
-      infs = ["max10", "e_rem", "c_b", "c_t", "breakaway", "speed", "distance", "t_lead"]
-      [mmax10, me_rem, mc_b, mc_t, mbreakaway, mspeed, mdistance, mt_lead] =  (map (flip lookup attr_parse) infs)
+      infs = ["max10", "tExh", "genCProb", "teamCProb", "breakaway", "speed", "distance", "tLead"]
+      [mmax10, mtExh, mgenCProb, mteamCProb, mbreakaway, mspeed, mdistance, mtLead] =  (map (flip lookup attr_parse) infs)
   replicateM n (do
                    max10 <- getMax10 pop mmax10
-                   let e_rem = getE_rem me_rem
-                   c_b <- getC pop mc_b
-                   c_t <- getC pop mc_t
+                   let tExh = getE_rem mtExh
+                   genCProb <- getC pop mgenCProb
+                   teamCProb <- getC pop mteamCProb
                    let breakaway = getI mbreakaway
                        speed = getD mspeed
                        distance = getD mdistance
-                       t_lead = getI mt_lead
+                       tLead = getI mtLead
                    uid <- lift get
                    lift . put $ uid + 1
-                   return (Cyclist {Cyclist.id = uid, max10 = max10, s_m = exp 2.478, e_rem = e_rem, c_b = c_b, c_t = c_t, breakaway = breakaway, speed = speed, distance = distance, position = 1, t_lead = t_lead, team = t, t_coop = True, b_coop = True}) 
+                   return (Cyclist {Cyclist.id = uid, max10 = max10, speedM10 = exp 2.478, tExh = tExh, genCProb = genCProb, teamCProb = teamCProb, breakaway = breakaway, speed = speed, distance = distance, position = 1, tLead = tLead, team = t, teamCoop = True, genCoop = True}) 
                    )
         
 getMax10 :: Population -> Maybe String -> RandT StdGen (StateT Int IO) Double

@@ -44,27 +44,27 @@ update_time (Race trn len r s w) = (Race trn len (map update r) s w)
 do_breakaway :: Pack -> RandT StdGen IO [Pack]
 do_breakaway (Pack p) = do
          dec <- replicateM (length p) (getRandom :: RandT StdGen IO Double)
-         let (break', stay') = partition (\(c, d) -> (c_b c) < d) (zip p dec)
+         let (break', stay') = partition (\(c, d) -> (genCProb c) < d) (zip p dec)
              groups = nub . map team . map fst $ break'
              (in_bteam, rest) = partition (flip elem groups . team) . map fst $ stay'
          g_dec <- replicateM (length in_bteam) (getRandom :: RandT StdGen IO Double)
-         let (gbreak', gstay') = partition (\(c, d) -> (c_t c) < d) (zip in_bteam g_dec)
+         let (gbreak', gstay') = partition (\(c, d) -> (teamCProb c) < d) (zip in_bteam g_dec)
              stay =  (map fst gstay') ++ rest
              breaks = map (set_pack_speed . Pack) . groupBy (\x y -> team x == team y) . map (\(c,_) -> c{breakaway = 3}) $ break' ++ gbreak'
          return ((set_pack_speed . Pack $ stay):breaks)
 
 set_pack_speed :: Pack -> Pack
 set_pack_speed pack@(Pack p) = Pack $ map (\c -> c{speed = speed}) p
-               where speed = ((*perc) . sum . map s_m $ p) / (fromIntegral . length $ p)
+               where speed = ((*perc) . sum . map speedM10 $ p) / (fromIntegral . length $ p)
                      perc = if(isBreak pack)
                                         then 0.9
                                         else 0.8
 
 update_sprint_speed :: Cyclist -> Cyclist
 update_sprint_speed c
-              | t > 30 = c{speed = 0.9*(s_m c)}
-              | t < 1 = c{speed = 0.5 * (s_m c)}
-              | otherwise = c{speed = 0.7*(s_m c)}
+              | t > 30 = c{speed = 0.9*(speedM10 c)}
+              | t < 1 = c{speed = 0.5 * (speedM10 c)}
+              | otherwise = c{speed = 0.7*(speedM10 c)}
                     where t = 60 * tlim c
 
 tlim :: Cyclist -> Double
@@ -83,15 +83,15 @@ determineCoop :: Cyclist -> RandT StdGen IO Cyclist
 determineCoop c = do
               d1 <- getRandom :: RandT StdGen IO Double
               d2 <- getRandom :: RandT StdGen IO Double
-              return $ c{b_coop = (d1 < c_b c), t_coop = (d2 < c_t c)}
+              return $ c{genCoop = (d1 < genCProb c), teamCoop = (d2 < teamCProb c)}
 
 defLeader :: Pack -> Pack
 defLeader (Pack (l:p))
-  | (t_lead l > 5) || (not (b_coop l) && t_lead l > 1) = Pack (l'':p)
+  | (tLead l > 5) || (not (genCoop l) && tLead l > 1) = Pack (l'':p)
   | otherwise = Pack (l':p)
   where
-    l'  = l{t_lead = t_lead l + 1}
-    l'' = l{t_lead = 0, distance = (distance (last (l:p))) - 1}
+    l'  = l{tLead = tLead l + 1}
+    l'' = l{tLead = 0, distance = (distance (last (l:p))) - 1}
 
 -- Don't know when/how I should handle breakaways.
 turn :: Race -> RandT StdGen IO Race

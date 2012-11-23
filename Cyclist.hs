@@ -51,11 +51,11 @@ instance Ord Cyclist where
 genCyclist :: Int -> Population -> RandT StdGen (StateT Int IO) Cyclist
 genCyclist team_n stats = do
            max10 <- normal . max10s $ stats
-           c_b <- normal . coops $ stats
-           c_t <- normal . coops $ stats
+           genCProb <- normal . coops $ stats
+           teamCProb <- normal . coops $ stats
            i <- lift get
            lift . put $ (i + 1)
-           return Cyclist {Cyclist.id = i, max10 = max10, s_m = exp 2.478, e_rem = (1/0), c_b = c_b, c_t = c_t, breakaway = 0, speed = 0, distance = 0, position = 1, t_lead = 0, team = team_n, t_coop = True, b_coop = True}
+           return Cyclist {Cyclist.id = i, max10 = max10, speedM10 = exp 2.478, tExh = (1/0), genCProb = genCProb, teamCProb = teamCProb, breakaway = 0, speed = 0, distance = 0, position = 1, tLead = 0, team = team_n, teamCoop = True, genCoop = True}
 
 genCyclists :: Int -> Int -> Population -> RandT StdGen (StateT Int IO) [Cyclist]
 genCyclists n_teams team_size stats = concatMapM (\t -> replicateM team_size (genCyclist t stats)) [0..(n_teams-1)]
