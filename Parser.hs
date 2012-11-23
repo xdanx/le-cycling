@@ -10,7 +10,6 @@ import Data.Maybe
 import Data.String.Utils
 import Text.Regex
 
-
 import Cyclist
 import Population
 import Simulation

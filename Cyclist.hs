@@ -50,9 +50,9 @@ instance Ord Cyclist where
 genCyclist :: Int -> Population -> Int -> Rand StdGen Cyclist
 genCyclist team_n stats i = do
            max10 <- normal . max10s $ stats
-           -- c_b <- normal . coops $ stats
-           -- c_t <- normal . coops $ stats
-           return Cyclist {Cyclist.id = i, max10 = max10, s_m = exp 2.478, e_rem = (1/0), c_b = 0.0, c_t = 0.0, breakaway = 0, speed = 0, distance = 0, position = 1, t_lead = 0, team = team_n, t_coop = True, b_coop = True}
+           c_b <- normal . coops $ stats
+           c_t <- normal . coops $ stats
+           return Cyclist {Cyclist.id = i, max10 = max10, s_m = exp 2.478, e_rem = (1/0), c_b = c_b, c_t = c_t, breakaway = 0, speed = 0, distance = 0, position = 1, t_lead = 0, team = team_n, t_coop = True, b_coop = True}
 
 genCyclists :: Int -> Int -> Population -> Rand StdGen [Cyclist]
 genCyclists n_teams team_size stats = concatMapM (\t -> (mapM (\i -> (genCyclist t stats (t*team_size+i))) [1..team_size])) [0..(n_teams-1)]
