@@ -60,7 +60,7 @@ makeCyclists t n pop ln = do
                        tLead = getI mtLead
                    uid <- lift get
                    lift . put $ uid + 1
-                   return (Cyclist {Cyclist.id = uid, max10 = max10, speedM10 = exp 2.478, tExh = tExh, genCProb = genCProb, teamCProb = teamCProb, breakaway = breakaway, speed = speed, distance = distance, position = 1, tLead = tLead, team = t, teamCoop = True, genCoop = True}) 
+                   return (Cyclist {Cyclist.id = uid, max10 = max10, speedM10 = exp 2.478, tExh = tExh, genCProb = genCProb, teamCProb = teamCProb, breakaway = breakaway, speed = speed, distance = distance, tLead = tLead, team = t, teamCoop = True, genCoop = True}) 
                    )
         
 getMax10 :: Population -> Maybe String -> RandT StdGen (StateT Int IO) Double
