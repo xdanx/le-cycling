@@ -8,21 +8,20 @@ import Utils
 import Population
 import Stats
 
-data Cyclist = Cyclist {id :: Int,
-                        max10 :: Double,    -- 10-min Max power (W/kg)
-                        s_m :: Double,      -- Speed at max10 power output (m/s)
-                        e_rem :: Double,    -- Time until exhaustion (by Tlim)
-                        c_b :: Double,      -- Cooperation prob
-                        c_t :: Double,      -- Team cooperation prob
-                        breakaway :: Int,   -- Breakaway state (0 : not breakaway, n > 0 breakaway
-                                            -- for n minutes or until they catch another pack )
-                        speed :: Double,
-                        distance :: Double,
-                        position :: Int,
-                        t_lead :: Int,      -- Time spend at lead position in pack.
-                        team :: Int,         -- Team number.
-                        t_coop :: Bool,
-                        b_coop :: Bool
+data Cyclist = Cyclist {id :: Int,           -- Unique ID
+                        max10 :: Double,     -- 10-min Max power (W/kg)
+                        speedM10 :: Double,  -- Speed at max10 power output (m/s)
+                        tExh :: Double,      -- Time until exhaustion (by Tlim)
+                        genCProb :: Double,  -- General cooperation prob
+                        teamCProb :: Double, -- Team cooperation prob
+                        genCoop :: Bool,     -- Current general cooperation state
+                        teamCoop :: Bool,    -- Current team cooperation state
+                        breakaway :: Int,    -- Breakaway state (0 : not breakaway, n > 0 breakaway
+                                             -- for n minutes or until they catch another pack )
+                        speed :: Double,     -- Current speed
+                        distance :: Double,  -- Current distance
+                        tLead :: Int,        -- Time spend at lead position in pack.
+                        team :: Int          -- Team number.
                        }
                        deriving(Show)
 
