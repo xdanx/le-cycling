@@ -13,6 +13,7 @@ import Text.Regex
 import Cyclist
 import Population
 import Simulation
+import Pack
 import Stats
 import Utils
 
@@ -30,7 +31,7 @@ parse f = do
       len = read h :: Int
   cs <- sequence . map parseLine $ c
   let (s, r) = partition (\c -> fromIntegral len - distance c < 5000) . concat $ cs 
-  return (Race 0 len r s [])
+  return (Race 0 len (getPacks r) s [])
                 
 parseLine :: String -> RandT StdGen (StateT Int IO) [Cyclist]
 parseLine l = do

@@ -12,19 +12,19 @@ import Cyclist
 import Pack
 import Utils
 
--- length turns runners sprinters (finishers, time)
-data Race = Race !Int !Int ![Cyclist] ![Cyclist] ![(Cyclist, Double)]
+--                length  turns  runners  sprinters   (finishers, finishTime)
+data Race = Race  !Int    !Int   ![Pack]  ![Cyclist]  ![(Cyclist, Double)]
      deriving (Show)
 
 -- Update position of Racers
 update_position :: Race -> Race
-update_position (Race trn len race sprint finish) = (Race trn len (sort racers) sprint'' (finish ++ sfinishers'))
-                where
-                      up_pos = (\c -> c{distance = (distance c) + (fromIntegral time) * (speed c)})
-                      time = 60
-                      update = map up_pos race
+update_position (Race trn len packs sprint finish) = 
+  (Race trn len (sort packs') sprint'' (finish ++ sfinishers'))
+  where
+    updPos = (\c -> c{distance = (distance c) + (fromIntegral 60) * (speed c)})
+             update = map up_pos race
                       (sprint', racers) = partition (\c -> (fromIntegral (len - 5000)) <= (distance c)) update
-                      updateSprint = map up_pos sprint
+                                          updateSprint = map up_pos sprint
                       (finishers, sprint'') = partition (\c -> (fromIntegral len) <= (distance c)) (updateSprint ++ (map update_sprint_speed sprint'))
                       sfinishers = sortBy (\x y -> compare (pass x) (pass y)) finishers
                       sfinishers' = map (\c -> (c, (fromIntegral (trn*60)) + (pass c))) sfinishers
