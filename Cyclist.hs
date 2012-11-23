@@ -55,7 +55,7 @@ genCyclist team_n stats = do
            teamCProb <- normal . coops $ stats
            i <- lift get
            lift . put $ (i + 1)
-           return Cyclist {Cyclist.id = i, max10 = max10, speedM10 = exp 2.478, tExh = (1/0), genCProb = genCProb, teamCProb = teamCProb, breakaway = 0, speed = 0, distance = 0, position = 1, tLead = 0, team = team_n, teamCoop = True, genCoop = True}
+           return Cyclist {Cyclist.id = i, max10 = max10, speedM10 = exp 2.478, tExh = (1/0), genCProb = genCProb, teamCProb = teamCProb, breakaway = 0, speed = 0, distance = 0, tLead = 0, team = team_n, teamCoop = True, genCoop = True}
 
 genCyclists :: Int -> Int -> Population -> RandT StdGen (StateT Int IO) [Cyclist]
 genCyclists n_teams team_size stats = concatMapM (\t -> replicateM team_size (genCyclist t stats)) [0..(n_teams-1)]

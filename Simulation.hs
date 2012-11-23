@@ -17,21 +17,30 @@ data Race = Race  !Int    !Int   ![Pack]  ![Cyclist]  ![(Cyclist, Double)]
      deriving (Show)
 
 -- Update position of Racers
-update_position :: Race -> Race
-update_position (Race trn len packs sprint finish) = 
-  (Race trn len (sort packs') sprint'' (finish ++ sfinishers'))
+updatePosition :: Race -> Race
+updatePosition (Race trn len packs sprint finish) = 
+  (Race trn len packs' sprint'' (finish ++ sfinishers'))
   where
-    updPos = (\c -> c{distance = (distance c) + (fromIntegral 60) * (speed c)})
-             update = map up_pos race
-                      (sprint', racers) = partition (\c -> (fromIntegral (len - 5000)) <= (distance c)) update
-                                          updateSprint = map up_pos sprint
-                      (finishers, sprint'') = partition (\c -> (fromIntegral len) <= (distance c)) (updateSprint ++ (map update_sprint_speed sprint'))
-                      sfinishers = sortBy (\x y -> compare (pass x) (pass y)) finishers
-                      sfinishers' = map (\c -> (c, (fromIntegral (trn*60)) + (pass c))) sfinishers
-                      pass :: Cyclist -> Double
-                      pass c = ((fromIntegral len) - strt)/(speed c)
-                           where
-                                strt = (distance c) - (fromIntegral time) * (speed c)
+    packs' = map (\(Pack tl l cs) -> (Pack tl (updPos l) (fmap updPos cs))) packs
+    
+    (sprint', packs'') = partition (\c -> (fromIntegral (len - 5000)) <= (distance c)) packs'
+    
+    updateSprint = map updPos sprint
+    (finishers, sprint'') = partition (\c -> (fromIntegral len) <= (distance c)) 
+                            (updateSprint ++ (map update_sprint_speed sprint'))
+    
+    sfinishers = sortBy (\x y -> compare (pass x) (pass y)) finishers
+    sfinishers' = map (\c -> (c, (fromIntegral (trn*60)) + (pass c))) sfinishers
+    
+    updPos :: Cyclist -> Cyclist
+    updPos c = c{distance = (distance c) + (fromIntegral 60) * (speed c)}
+    
+    pass :: Cyclist -> Double
+    pass c = ((fromIntegral len) - strt)/(speed c)
+      where
+        strt = (distance c) - (fromIntegral 60) * (speed c)
+
+
 
 update_time :: Race -> Race
 update_time (Race trn len r s w) = (Race trn len (map update r) s w)
@@ -102,4 +111,4 @@ turn (Race trn len r s win) = do
            packs = getPacks t_r
            l_p = map (\p -> if(isBreak $ p) then p else defLeader p) packs
      cyclist <- concatMapM do_breakaway l_p
-     return . update_position $ (Race (trn + 1) len (unpack cyclist) s win)
+     return . updatePosition $ (Race (trn + 1) len cyclist s win)
