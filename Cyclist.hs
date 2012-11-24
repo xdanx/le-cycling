@@ -59,5 +59,7 @@ genCyclist team_n stats = do
 genCyclists :: Int -> Int -> Population -> RandT StdGen (StateT Int IO) [Cyclist]
 genCyclists n_teams team_size stats = concatMapM (\t -> replicateM team_size (genCyclist t stats)) [0..(n_teams-1)]
 
-{-genCyclistsIO :: Int -> Int -> Population -> IO [Cyclist]
-genCyclistsIO n_teams team_size stats = evalRandIO $ genCyclists n_teams team_size stats-}
+genCyclistsIO :: Int -> Int -> Population -> IO [Cyclist]
+genCyclistsIO n_teams team_size stats = do
+              g <- getStdGen
+              flip evalStateT 0 . flip evalRandT g $ genCyclists n_teams team_size stats

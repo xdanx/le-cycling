@@ -21,9 +21,11 @@ data Race = Race  !Int    !Int   ![Pack]  ![Cyclist]  ![(Cyclist, Double)]
 -- Update position of Racers
 updatePosition :: Race -> Race
 updatePosition (Race trn len packs sprint finish) = 
-  (Race trn len packs' sprint'' (finish ++ sfinishers'))
+  
+  
+{-  (Race trn len packs' sprint'' (finish ++ sfinishers'))
   where
-    packs' = (map (\(Pack tl l cs) -> ((updPos l) <| (fmap updPos cs))) packs)::[Seq Cyclist]
+    packs' = (map (\(Pack tl l cs i) -> ((updPos l) <| (fmap updPos cs))) packs)::[Seq Cyclist]
     
     sprintLim = (\c -> (fromIntegral (len - 5000)) <= (distance c))
     
@@ -42,7 +44,7 @@ updatePosition (Race trn len packs sprint finish) =
     pass :: Cyclist -> Double
     pass c = ((fromIntegral len) - strt)/(speed c)
       where
-        strt = (distance c) - (fromIntegral 60) * (speed c)
+        strt = (distance c) - (fromIntegral 60) * (speed c)-}
 
 
 

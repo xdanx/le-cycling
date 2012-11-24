@@ -2,7 +2,7 @@ module Pack where
 
 import Cyclist
 import Data.List as List
-import Data.Sequence
+import Data.Sequence as Sequence
 
 --               tLead leader   pack           uid              pack       uid
 data Pack = Pack !Int  !Cyclist !(Seq Cyclist) !Int | Breakaway ![Cyclist] !Int
@@ -26,7 +26,12 @@ getPacks cyclists =
       | otherwise = (Pack 0 c empty):(Pack tLead leader cs):ps
                     where (Pack tLead leader cs _) = h 0
         
-        
+-- rotate : TESTED
+rotate :: Pack -> Pack
+rotate (Pack t lead pack uid) = Pack 0 nLead nPack uid
+       where seqDist = fmap distance (pack |> lead)
+             (nPack:>nLead) = viewr $ Sequence.zipWith (\c d -> c{distance = d}) (lead <| pack) seqDist
+
 -- Broken (halfway throught conversion), but probably useless.
 -- unpack :: [Pack] -> [Cyclist] 
 -- unpack [] = []
