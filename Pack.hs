@@ -4,8 +4,8 @@ import Cyclist
 import Data.List as List
 import Data.Sequence as Sequence
 
---               tLead leader   pack           uid              pack       uid
-data Pack = Pack !Int  !Cyclist !(Seq Cyclist) !Int | Breakaway ![Cyclist] !Int
+--               tLead leader   pack           uid              pack           uid
+data Pack = Pack !Int  !Cyclist !(Seq Cyclist) !Int | Breakaway !(Seq Cyclist) !Int
             deriving(Show)
 
 {-instance Show Pack where
@@ -31,6 +31,9 @@ rotate :: Pack -> Pack
 rotate (Pack t lead pack uid) = Pack 0 nLead nPack uid
        where seqDist = fmap distance (pack |> lead)
              (nPack:>nLead) = viewr $ Sequence.zipWith (\c d -> c{distance = d}) (lead <| pack) seqDist
+        
+packMap :: (Cyclist -> Cyclist) -> Pack -> Pack
+packMap f (Pack tLead l p i) = (Pack tLead (f l) (fmap f p) i) 
 
 -- Broken (halfway throught conversion), but probably useless.
 -- unpack :: [Pack] -> [Cyclist] 
