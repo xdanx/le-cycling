@@ -22,7 +22,6 @@ data Cyclist = Cyclist {id :: Int,           -- Unique ID
                                              -- for n minutes or until they catch another pack )
                         speed :: Double,     -- Current speed
                         distance :: Double,  -- Current distance
-                        tLead :: Int,        -- Time spend at lead position in pack.
                         team :: Int          -- Team number.
                        }
                        deriving(Show)
@@ -50,12 +49,12 @@ instance Ord Cyclist where
 
 genCyclist :: Int -> Population -> RandT StdGen (StateT Int IO) Cyclist
 genCyclist team_n stats = do
-           max10 <- normal . max10s $ stats
-           genCProb <- normal . coops $ stats
-           teamCProb <- normal . coops $ stats
+           _max10 <- normal . max10s $ stats
+           _genCProb <- normal . coops $ stats
+           _teamCProb <- normal . coops $ stats
            i <- lift get
            lift . put $ (i + 1)
-           return Cyclist {Cyclist.id = i, max10 = max10, speedM10 = exp 2.478, tExh = (1/0), genCProb = genCProb, teamCProb = teamCProb, breakaway = 0, speed = 0, distance = 0, tLead = 0, team = team_n, teamCoop = True, genCoop = True}
+           return Cyclist {Cyclist.id = i, max10 = _max10, speedM10 = exp 2.478, tExh = (1/0), genCProb = _genCProb, teamCProb = _teamCProb, breakaway = 0, speed = 0, distance = 0, team = team_n, teamCoop = True, genCoop = True}
 
 genCyclists :: Int -> Int -> Population -> RandT StdGen (StateT Int IO) [Cyclist]
 genCyclists n_teams team_size stats = concatMapM (\t -> replicateM team_size (genCyclist t stats)) [0..(n_teams-1)]

@@ -3,7 +3,8 @@ module Simulation where
 import Control.Monad
 import Control.Monad.Trans.Class
 import Control.Monad.Random
-import Data.List
+import Data.List as List
+import Data.Sequence as Sequence
 import Data.Maybe
 import Debug.Trace
 import Control.Exception (assert)
@@ -16,20 +17,23 @@ import Utils
 data Race = Race  !Int    !Int   ![Pack]  ![Cyclist]  ![(Cyclist, Double)]
      deriving (Show)
 
+-- !!! NEED TO FINISH UPDATING !!!
 -- Update position of Racers
 updatePosition :: Race -> Race
 updatePosition (Race trn len packs sprint finish) = 
   (Race trn len packs' sprint'' (finish ++ sfinishers'))
   where
-    packs' = map (\(Pack tl l cs) -> (Pack tl (updPos l) (fmap updPos cs))) packs
+    packs' = (map (\(Pack tl l cs) -> ((updPos l) <| (fmap updPos cs))) packs)::[Seq Cyclist]
     
-    (sprint', packs'') = partition (\c -> (fromIntegral (len - 5000)) <= (distance c)) packs'
+    sprintLim = (\c -> (fromIntegral (len - 5000)) <= (distance c))
+    
+    (sprint', packs'') = Sequence.partition sprintLim packs'
     
     updateSprint = map updPos sprint
-    (finishers, sprint'') = partition (\c -> (fromIntegral len) <= (distance c)) 
+    (finishers, sprint'') = List.partition (\c -> (fromIntegral len) <= (distance c)) 
                             (updateSprint ++ (map update_sprint_speed sprint'))
     
-    sfinishers = sortBy (\x y -> compare (pass x) (pass y)) finishers
+    sfinishers = List.sortBy (\x y -> compare (pass x) (pass y)) finishers
     sfinishers' = map (\c -> (c, (fromIntegral (trn*60)) + (pass c))) sfinishers
     
     updPos :: Cyclist -> Cyclist
@@ -50,25 +54,28 @@ update_time (Race trn len r s w) = (Race trn len (map update r) s w)
                                         then c{breakaway = (breakaway c) - 1}
                                         else c
 
+-- !!! Just removed name conflicts !!!
 do_breakaway :: Pack -> RandT StdGen IO [Pack]
-do_breakaway (Pack p) = do
-         dec <- replicateM (length p) (getRandom :: RandT StdGen IO Double)
-         let (break', stay') = partition (\(c, d) -> (genCProb c) < d) (zip p dec)
+do_breakaway (Pack _ _ p) = do
+         dec <- Control.Monad.replicateM (Sequence.length (p + 1)) (getRandom :: RandT StdGen IO Double)
+         let (break', stay') = List.partition (\(c, d) -> (genCProb c) < d) (List.zip p dec)
              groups = nub . map team . map fst $ break'
-             (in_bteam, rest) = partition (flip elem groups . team) . map fst $ stay'
-         g_dec <- replicateM (length in_bteam) (getRandom :: RandT StdGen IO Double)
-         let (gbreak', gstay') = partition (\(c, d) -> (teamCProb c) < d) (zip in_bteam g_dec)
+             (in_bteam, rest) = List.partition (flip elem groups . team) . map fst $ stay'
+         g_dec <- Control.Monad.replicateM (List.length in_bteam) (getRandom :: RandT StdGen IO Double)
+         let (gbreak', gstay') = List.partition (\(c, d) -> (teamCProb c) < d) (List.zip in_bteam g_dec)
              stay =  (map fst gstay') ++ rest
              breaks = map (set_pack_speed . Pack) . groupBy (\x y -> team x == team y) . map (\(c,_) -> c{breakaway = 3}) $ break' ++ gbreak'
          return ((set_pack_speed . Pack $ stay):breaks)
 
 set_pack_speed :: Pack -> Pack
-set_pack_speed pack@(Pack p) = Pack $ map (\c -> c{speed = speed}) p
-               where speed = ((*perc) . sum . map speedM10 $ p) / (fromIntegral . length $ p)
-                     perc = if(isBreak pack)
-                                        then 0.9
-                                        else 0.8
-
+set_pack_speed pack@(Pack tl l p) = 
+  Pack tl l{speed = speed} (fmap (\c -> c{speed = speed}) p)
+  where 
+    speed = ((*perc) . sum . map speedM10 $ (l |> p)) / (fromIntegral . Sequence.length $ (l <| p))
+    perc = if(isBreak pack)
+           then 0.9
+           else 0.8
+                        
 update_sprint_speed :: Cyclist -> Cyclist
 update_sprint_speed c
               | t > 30 = c{speed = 0.9*(speedM10 c)}
@@ -86,7 +93,7 @@ tlim c = exp (-6.35 * ((ptot c)/(max10 c)) + 2.478)
                         bweight = 5
 
 isBreak :: Pack -> Bool
-isBreak (Pack p) =  and . map ((/=0) . breakaway) $ p
+isBreak (Pack _ l p) =  and . map ((/=0) . breakaway) $ (l <| p) 
 
 determineCoop :: Cyclist -> RandT StdGen IO Cyclist
 determineCoop c = do
@@ -95,12 +102,13 @@ determineCoop c = do
               return $ c{genCoop = (d1 < genCProb c), teamCoop = (d2 < teamCProb c)}
 
 defLeader :: Pack -> Pack
-defLeader (Pack (l:p))
-  | (tLead l > 5) || (not (genCoop l) && tLead l > 1) = Pack (l'':p)
-  | otherwise = Pack (l':p)
+defLeader (Pack tLead l p)
+  | (tLead > 5) || (not (genCoop l) && tLead > 1) = Pack (tLead+1) l p
+  | otherwise = Pack 0 l (p |> l)
   where
-    l'  = l{tLead = tLead l + 1}
-    l'' = l{tLead = 0, distance = (distance (last (l:p))) - 1}
+    l' = case (viewl p) of
+      EmptyL -> l
+      c :< cs -> c 
 
 -- Don't know when/how I should handle breakaways.
 turn :: Race -> RandT StdGen IO Race

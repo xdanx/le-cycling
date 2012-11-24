@@ -1,8 +1,7 @@
 module Pack where
 
-import Control.Monad.Random
 import Cyclist
-import Data.List
+import Data.List as List
 import Data.Sequence
 
 data Pack = Pack Int Cyclist (Seq Cyclist)
@@ -13,10 +12,10 @@ data Pack = Pack Int Cyclist (Seq Cyclist)
 
 getPacks :: [Cyclist] -> [Pack]
 getPacks cyclists =
-  foldl addToPackList [] (Data.List.sort packers)
-  ++ concatMap (foldl addToPackList []) (map Data.List.sort . groupBy (\x y -> team x == team y) $  breakers)
+  foldl addToPackList [] (List.sort packers)
+  ++ concatMap (foldl addToPackList []) (map List.sort . groupBy (\x y -> team x == team y) $  breakers)
   where
-    (breakers, packers) = Data.List.partition (\c -> breakaway c > 0) cyclists
+    (breakers, packers) = List.partition (\c -> breakaway c > 0) cyclists
     
     addToPackList :: [Pack] -> Cyclist -> [Pack]
     addToPackList [] c =
