@@ -21,9 +21,9 @@ data Race = Race  !Int    !Int   ![Pack]  ![Cyclist]  ![(Cyclist, Double)]
 -- !!! NEED TO FINISH UPDATING !!!
 -- Update position of Racers
 updatePosition :: Race -> Race
-updatePosition (Race trn len packs sprint finish) = (Race trn len )
-  
-  
+updatePosition (Race trn len packs sprint finish) = undefined
+
+-- updatePosition (Race trn len packs sprint finish) = (Race trn len )  
 {-  (Race trn len packs' sprint'' (finish ++ sfinishers'))
   where
     packs' = (map (\(Pack tl l cs i) -> ((updPos l) <| (fmap updPos cs))) packs)::[Seq Cyclist]
@@ -48,14 +48,15 @@ updatePosition (Race trn len packs sprint finish) = (Race trn len )
         strt = (distance c) - (fromIntegral 60) * (speed c)-}
 
 
-
-update_time :: Race -> Race
-update_time (Race trn len r s w) = (Race trn len (map update r) s w)
+-- !!! How should we generate new unique IDs and do we have to do it here ? !!!
+updateBrkTime :: Race -> Race
+updateBrkTime (Race trn len r s w) = (Race trn len (map update r) s w)
                 where
-                     update :: Cyclist -> Cyclist
-                     update c = if(breakaway c > 0)
-                                        then c{breakaway = (breakaway c) - 1}
-                                        else c
+                     update :: Pack -> Pack
+                     update (Breakaway p t i) = if(t > 0)
+                                        then (Breakaway p (t-1) i)
+                                        else case viewl p of
+                                                  l :< p' -> (Pack 0 l p' i)
 
 -- !!! Just removed name conflicts !!!
 do_breakaway :: Pack -> RandT StdGen IO [Pack]
@@ -67,21 +68,21 @@ do_breakaway (Pack _ _ p _) = do
          g_dec <- Control.Monad.replicateM (List.length in_bteam) (getRandom :: RandT StdGen IO Double)
          let (gbreak', gstay') = List.partition (\(c, d) -> (teamCProb c) < d) (List.zip in_bteam g_dec)
              stay =  (map fst gstay') ++ rest
-             breaks = map (set_pack_speed . Pack) . groupBy (\x y -> team x == team y) . map (\(c,_) -> c{breakaway = 3}) $ break' ++ gbreak'
-         return ((set_pack_speed . Pack $ stay):breaks)
+             breaks = map (setPackSpeed . Pack) . groupBy (\x y -> team x == team y) . map (\(c,_) -> c{breakaway = 3}) $ break' ++ gbreak'
+         return ((setPackSpeed . Pack $ stay):breaks)
 
-set_pack_speed :: Pack -> Pack
-set_pack_speed pack = 
+setPackSpeed :: Pack -> Pack
+setPackSpeed pack = 
   packMap (\c -> c{speed = nSpeed}) pack
   where 
     nSpeed = ((*perc) . (Fold.foldl (+) 0) $ (fmap speedM10 cs)) / (fromIntegral . Sequence.length $ cs)
     (cs, perc) = case pack of
-      Pack _ l p _  -> ((l <| p), 0.8)
-      Breakaway p _ -> (p,        0.9)
+      Pack _ l p _    -> ((l <| p), 0.8)
+      Breakaway p _ _ -> (p,        0.9)
 
                         
-update_sprint_speed :: Cyclist -> Cyclist
-update_sprint_speed c
+updateSprintSpeed :: Cyclist -> Cyclist
+updateSprintSpeed c
               | t > 30 = c{speed = 0.9*(speedM10 c)}
               | t < 1 = c{speed = 0.5 * (speedM10 c)}
               | otherwise = c{speed = 0.7*(speedM10 c)}
@@ -117,13 +118,14 @@ defLeader (Pack tLead l p id)
       c :< cs -> c 
 defLeader breakP = breakP
 
--- Don't know when/how I should handle breakaways.
+
 turn :: Race -> RandT StdGen IO Race
 turn (Race trn len r s win) = do
-     let b = (trn `mod` 5 == 0)
-     c_r <- if b then sequence (map determineCoop r) else return r
-     let   (Race _ _ t_r _ _) = update_time (Race trn len c_r s win)
-           packs = getPacks t_r
-           l_p = map (\p -> if(isBreak $ p) then p else defLeader p) packs
-     cyclist <- concatMapM do_breakaway l_p
-     return . updatePosition $ (Race (trn + 1) len cyclist s win)
+     let reCompute = (trn `mod` 5 == 0)
+     r' <- if reCompute
+            then sequence (map (packMap determineCoop) r) 
+            else return r
+     let   (Race _ _ r'' _ _) = updateBrkTime (Race trn len r' s win)
+           r''' = map defLeader r''
+     cyclists <- concatMapM do_breakaway r'''
+     return . updatePosition $ (Race (trn + 1) len cyclists s win)
