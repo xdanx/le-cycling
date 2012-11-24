@@ -21,7 +21,7 @@ data Race = Race  !Int    !Int   ![Pack]  ![Cyclist]  ![(Cyclist, Double)]
 -- !!! NEED TO FINISH UPDATING !!!
 -- Update position of Racers
 updatePosition :: Race -> Race
-updatePosition (Race trn len packs sprint finish) = 
+updatePosition (Race trn len packs sprint finish) = undefined
   
   
 {-  (Race trn len packs' sprint'' (finish ++ sfinishers'))
@@ -48,14 +48,15 @@ updatePosition (Race trn len packs sprint finish) =
         strt = (distance c) - (fromIntegral 60) * (speed c)-}
 
 
-
-update_time :: Race -> Race
-update_time (Race trn len r s w) = (Race trn len (map update r) s w)
+-- !!! How should we generate new unique IDs and do we have to do it here ? !!!
+updateBrkTime :: Race -> Race
+updateBrkTime (Race trn len r s w) = (Race trn len (map update r) s w)
                 where
-                     update :: Cyclist -> Cyclist
-                     update c = if(breakaway c > 0)
-                                        then c{breakaway = (breakaway c) - 1}
-                                        else c
+                     update :: Pack -> Pack
+                     update (Breakaway p t i) = if(t > 0)
+                                        then (Breakaway p (t-1) i)
+                                        else case viewl p of
+                                                  l :< p' -> (Pack 0 l p' i)
 
 -- !!! Just removed name conflicts !!!
 do_breakaway :: Pack -> RandT StdGen IO [Pack]
@@ -76,8 +77,8 @@ set_pack_speed pack =
   where 
     nSpeed = ((*perc) . (Fold.foldl (+) 0) $ (fmap speedM10 cs)) / (fromIntegral . Sequence.length $ cs)
     (cs, perc) = case pack of
-      Pack _ l p _  -> ((l <| p), 0.8)
-      Breakaway p _ -> (p,        0.9)
+      Pack _ l p _    -> ((l <| p), 0.8)
+      Breakaway p _ _ -> (p,        0.9)
 
                         
 update_sprint_speed :: Cyclist -> Cyclist
@@ -122,7 +123,7 @@ turn :: Race -> RandT StdGen IO Race
 turn (Race trn len r s win) = do
      let b = (trn `mod` 5 == 0)
      c_r <- if b then sequence (map determineCoop r) else return r
-     let   (Race _ _ t_r _ _) = update_time (Race trn len c_r s win)
+     let   (Race _ _ t_r _ _) = updateBrkTime (Race trn len c_r s win)
            packs = getPacks t_r
            l_p = map (\p -> if(isBreak $ p) then p else defLeader p) packs
      cyclist <- concatMapM do_breakaway l_p
