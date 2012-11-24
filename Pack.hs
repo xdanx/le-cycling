@@ -4,8 +4,8 @@ import Cyclist
 import Data.List as List
 import Data.Sequence
 
---               tLead leader   pack           uid              pack       uid
-data Pack = Pack !Int  !Cyclist !(Seq Cyclist) !Int | Breakaway ![Cyclist] !Int
+--               tLead leader   pack           uid              pack           uid
+data Pack = Pack !Int  !Cyclist !(Seq Cyclist) !Int | Breakaway !(Seq Cyclist) !Int
             deriving(Show)
 
 {-instance Show Pack where
@@ -27,6 +27,9 @@ getPacks cyclists =
                     where (Pack tLead leader cs _) = h 0
         
         
+packMap :: (Cyclist -> Cyclist) -> Pack -> Pack
+packMap f (Pack tLead l p i) = (Pack tLead (f l) (fmap f p) i) 
+
 -- Broken (halfway throught conversion), but probably useless.
 -- unpack :: [Pack] -> [Cyclist] 
 -- unpack [] = []

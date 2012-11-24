@@ -5,6 +5,7 @@ import Control.Monad.Trans.Class
 import Control.Monad.Random
 import Data.List as List
 import Data.Sequence as Sequence
+import Data.Foldable as Fold
 import Data.Maybe
 import Debug.Trace
 import Control.Exception (assert)
@@ -56,11 +57,11 @@ update_time (Race trn len r s w) = (Race trn len (map update r) s w)
 
 -- !!! Just removed name conflicts !!!
 do_breakaway :: Pack -> RandT StdGen IO [Pack]
-do_breakaway (Pack _ _ p) = do
+do_breakaway (Pack _ _ p _) = do
          dec <- Control.Monad.replicateM (Sequence.length (p + 1)) (getRandom :: RandT StdGen IO Double)
          let (break', stay') = List.partition (\(c, d) -> (genCProb c) < d) (List.zip p dec)
              groups = nub . map team . map fst $ break'
-             (in_bteam, rest) = List.partition (flip elem groups . team) . map fst $ stay'
+             (in_bteam, rest) = List.partition (flip List.elem groups . team) . map fst $ stay'
          g_dec <- Control.Monad.replicateM (List.length in_bteam) (getRandom :: RandT StdGen IO Double)
          let (gbreak', gstay') = List.partition (\(c, d) -> (teamCProb c) < d) (List.zip in_bteam g_dec)
              stay =  (map fst gstay') ++ rest
@@ -68,13 +69,14 @@ do_breakaway (Pack _ _ p) = do
          return ((set_pack_speed . Pack $ stay):breaks)
 
 set_pack_speed :: Pack -> Pack
-set_pack_speed pack@(Pack tl l p) = 
-  Pack tl l{speed = speed} (fmap (\c -> c{speed = speed}) p)
+set_pack_speed pack = 
+  packMap (\c -> c{speed = nSpeed}) pack
   where 
-    speed = ((*perc) . sum . map speedM10 $ (l |> p)) / (fromIntegral . Sequence.length $ (l <| p))
-    perc = if(isBreak pack)
-           then 0.9
-           else 0.8
+    nSpeed = ((*perc) . (Fold.foldl (+) 0) $ (fmap speedM10 cs)) / (fromIntegral . Sequence.length $ cs)
+    (cs, perc) = case pack of
+      Pack _ l p _  -> ((l <| p), 0.8)
+      Breakaway p _ -> (p,        0.9)
+
                         
 update_sprint_speed :: Cyclist -> Cyclist
 update_sprint_speed c
@@ -92,8 +94,10 @@ tlim c = exp (-6.35 * ((ptot c)/(max10 c)) + 2.478)
                         cweight = 60
                         bweight = 5
 
+
 isBreak :: Pack -> Bool
-isBreak (Pack _ l p) =  and . map ((/=0) . breakaway) $ (l <| p) 
+isBreak (Pack {})      = False
+isBreak (Breakaway {}) = True
 
 determineCoop :: Cyclist -> RandT StdGen IO Cyclist
 determineCoop c = do
@@ -102,13 +106,14 @@ determineCoop c = do
               return $ c{genCoop = (d1 < genCProb c), teamCoop = (d2 < teamCProb c)}
 
 defLeader :: Pack -> Pack
-defLeader (Pack tLead l p)
-  | (tLead > 5) || (not (genCoop l) && tLead > 1) = Pack (tLead+1) l p
-  | otherwise = Pack 0 l (p |> l)
+defLeader (Pack tLead l p id)
+  | (tLead > 5) || (not (genCoop l) && tLead > 1) = Pack (tLead+1) l p id
+  | otherwise = Pack 0 l' (p |> l) id
   where
     l' = case (viewl p) of
       EmptyL -> l
       c :< cs -> c 
+defLeader breakP = breakP
 
 -- Don't know when/how I should handle breakaways.
 turn :: Race -> RandT StdGen IO Race
