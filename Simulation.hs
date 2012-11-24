@@ -21,7 +21,7 @@ data Race = Race  !Int    !Int   ![Pack]  ![Cyclist]  ![(Cyclist, Double)]
 -- !!! NEED TO FINISH UPDATING !!!
 -- Update position of Racers
 updatePosition :: Race -> Race
-updatePosition (Race trn len packs sprint finish) = 
+updatePosition (Race trn len packs sprint finish) = (Race trn len )
   
   
 {-  (Race trn len packs' sprint'' (finish ++ sfinishers'))
