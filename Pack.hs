@@ -4,7 +4,8 @@ import Cyclist
 import Data.List as List
 import Data.Sequence
 
-data Pack = Pack Int Cyclist (Seq Cyclist)
+--               tLead leader  pack          uid             pack      uid
+data Pack = Pack Int   Cyclist (Seq Cyclist) Int | Breakaway [Cyclist] Int
             deriving(Show)
 
 {-instance Show Pack where
@@ -12,17 +13,18 @@ data Pack = Pack Int Cyclist (Seq Cyclist)
 
 getPacks :: [Cyclist] -> [Pack]
 getPacks cyclists =
-  foldl addToPackList [] (List.sort packers)
-  ++ concatMap (foldl addToPackList []) (map List.sort . groupBy (\x y -> team x == team y) $  breakers)
+  List.zipWith ($) (foldl addToPackList [] (List.sort packers)
+  ++ concatMap (foldl addToPackList []) (map List.sort . groupBy (\x y -> team x == team y) $  breakers)) [1..]
   where
     (breakers, packers) = List.partition (\c -> breakaway c > 0) cyclists
     
-    addToPackList :: [Pack] -> Cyclist -> [Pack]
+    addToPackList :: [Int -> Pack] -> Cyclist -> [Int -> Pack]
     addToPackList [] c =
-      [Pack 0 c empty]
-    addToPackList ((Pack tLead leader cs):ps) c
-      | (distance c) - (distance leader) < 3 = (Pack tLead c (leader <| cs)):ps
+      [Pack 0 c empty ]
+    addToPackList (h:ps) c
+      | ((distance c) - (distance leader) < 3) = (Pack tLead c (leader <| cs)):ps
       | otherwise = (Pack 0 c empty):(Pack tLead leader cs):ps
+                    where (Pack tLead leader cs _) = h 0
         
         
 -- Broken (halfway throught conversion), but probably useless.
