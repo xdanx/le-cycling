@@ -68,11 +68,11 @@ do_breakaway (Pack _ _ p _) = do
          g_dec <- Control.Monad.replicateM (List.length in_bteam) (getRandom :: RandT StdGen IO Double)
          let (gbreak', gstay') = List.partition (\(c, d) -> (teamCProb c) < d) (List.zip in_bteam g_dec)
              stay =  (map fst gstay') ++ rest
-             breaks = map (set_pack_speed . Pack) . groupBy (\x y -> team x == team y) . map (\(c,_) -> c{breakaway = 3}) $ break' ++ gbreak'
-         return ((set_pack_speed . Pack $ stay):breaks)
+             breaks = map (setPackSpeed . Pack) . groupBy (\x y -> team x == team y) . map (\(c,_) -> c{breakaway = 3}) $ break' ++ gbreak'
+         return ((setPackSpeed . Pack $ stay):breaks)
 
-set_pack_speed :: Pack -> Pack
-set_pack_speed pack = 
+setPackSpeed :: Pack -> Pack
+setPackSpeed pack = 
   packMap (\c -> c{speed = nSpeed}) pack
   where 
     nSpeed = ((*perc) . (Fold.foldl (+) 0) $ (fmap speedM10 cs)) / (fromIntegral . Sequence.length $ cs)
@@ -81,8 +81,8 @@ set_pack_speed pack =
       Breakaway p _ _ -> (p,        0.9)
 
                         
-update_sprint_speed :: Cyclist -> Cyclist
-update_sprint_speed c
+updateSprintSpeed :: Cyclist -> Cyclist
+updateSprintSpeed c
               | t > 30 = c{speed = 0.9*(speedM10 c)}
               | t < 1 = c{speed = 0.5 * (speedM10 c)}
               | otherwise = c{speed = 0.7*(speedM10 c)}
