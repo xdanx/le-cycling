@@ -118,13 +118,14 @@ defLeader (Pack tLead l p id)
       c :< cs -> c 
 defLeader breakP = breakP
 
--- Don't know when/how I should handle breakaways.
+
 turn :: Race -> RandT StdGen IO Race
 turn (Race trn len r s win) = do
-     let b = (trn `mod` 5 == 0)
-     c_r <- if b then sequence (map determineCoop r) else return r
-     let   (Race _ _ t_r _ _) = updateBrkTime (Race trn len c_r s win)
-           packs = getPacks t_r
-           l_p = map (\p -> if(isBreak $ p) then p else defLeader p) packs
-     cyclist <- concatMapM do_breakaway l_p
-     return . updatePosition $ (Race (trn + 1) len cyclist s win)
+     let reCompute = (trn `mod` 5 == 0)
+     r' <- if reCompute
+            then sequence (map (packMap determineCoop) r) 
+            else return r
+     let   (Race _ _ r'' _ _) = updateBrkTime (Race trn len r' s win)
+           r''' = map defLeader r''
+     cyclists <- concatMapM do_breakaway r'''
+     return . updatePosition $ (Race (trn + 1) len cyclists s win)
