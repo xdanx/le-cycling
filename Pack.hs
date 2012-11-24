@@ -4,8 +4,8 @@ import Cyclist
 import Data.List as List
 import Data.Sequence
 
---               tLead leader  pack          uid             pack      uid
-data Pack = Pack Int   Cyclist (Seq Cyclist) Int | Breakaway [Cyclist] Int
+--               tLead leader   pack           uid              pack       uid
+data Pack = Pack !Int  !Cyclist !(Seq Cyclist) !Int | Breakaway ![Cyclist] !Int
             deriving(Show)
 
 {-instance Show Pack where
