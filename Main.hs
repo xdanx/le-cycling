@@ -54,7 +54,7 @@ main = do
      (Race _ _ _ _ leader_board) <- readIORef r
      print leader_board
      if plt
-            then plot X11 $ Data2D [Style Graphics.SimplePlot.Lines, Title "Classment agains cooperation probability", Graphics.SimplePlot.Color Graphics.SimplePlot.Blue] [] (zip [1..] (map (genCProb . fst) leader_board))
+            then plot X11 $ Data2D [Style Graphics.SimplePlot.Lines, Title "Classment agains team cooperation probability", Graphics.SimplePlot.Color Graphics.SimplePlot.Blue] [] (zip [1..] (map (teamCProb . fst) leader_board))
             else return True
      exit
 
