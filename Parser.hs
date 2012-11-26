@@ -39,7 +39,7 @@ parseLine l = do
         str_teams'' = map (matchRegex (mkRegex "([0-9]+):([0-9]+)")) str_teams'
         failed = filter (isNothing . fst) (zip str_teams'' str_teams')
     if not . null $ failed 
-       then lift . lift . putStrLn $ "Warning Can't parse " ++ show (map snd failed)
+       then liftIO . putStrLn $ "Warning Can't parse " ++ show (map snd failed)
        else return ()
     let teams = (map ((map read) . fromJust) (filter isJust str_teams''))::[[Int]]
     concatMapM (\[t,n] -> makeCyclists t n (defaultPop str_profile) str_attrs) teams
