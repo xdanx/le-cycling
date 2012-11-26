@@ -4,7 +4,7 @@ import Control.Monad
 import Control.Monad.Trans.Class
 import Control.Monad.Random
 import Data.List as List
-import Data.Sequence as Sequence
+import Data.Sequence as Sequence hiding (replicateM)
 import Data.Foldable as Fold
 import Data.Maybe
 import Debug.Trace
@@ -61,7 +61,7 @@ updateBrkTime (Race trn len r s w) = (Race trn len (map update r) s w)
 -- !!! Just removed name conflicts !!!
 do_breakaway :: Pack -> RandT StdGen IO [Pack]
 do_breakaway (Pack _ _ p _) = do
-         dec <- Control.Monad.replicateM (Sequence.length (p + 1)) (getRandom :: RandT StdGen IO Double)
+         dec <- replicateM (Sequence.length (p + 1)) (getRandom :: RandT StdGen IO Double)
          let (break', stay') = List.partition (\(c, d) -> (genCProb c) < d) (List.zip p dec)
              groups = nub . map team . map fst $ break'
              (in_bteam, rest) = List.partition (flip List.elem groups . team) . map fst $ stay'
