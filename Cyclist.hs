@@ -4,12 +4,12 @@ import Control.Monad
 import Control.Monad.Random
 import Control.Monad.State
 import Control.Monad.Trans
-import Data.Unique
 import System.Random
 
-import Utils
+import ID
 import Population
 import Stats
+import Utils
 
 data Cyclist = Cyclist {id :: Int,           -- Unique ID
                         max10 :: Double,     -- 10-min Max power (W/kg)
@@ -53,7 +53,7 @@ genCyclist team_n stats = do
            _max10 <- normal . max10s $ stats
            _genCProb <- normal . coops $ stats
            _teamCProb <- normal . coops $ stats
-           i <- liftIO (newUnique >>= return . hashUnique)
+           i <- newID
            return Cyclist {Cyclist.id = i, max10 = _max10, speedM10 = exp 2.478, tExh = (1/0), genCProb = _genCProb, teamCProb = _teamCProb, breakaway = 0, speed = 0, distance = 0, team = team_n, teamCoop = True, genCoop = True}
 
 genCyclists :: Int -> Int -> Population -> RandT StdGen IO [Cyclist]

@@ -8,13 +8,13 @@ import Data.List
 import Data.List.Split
 import Data.Maybe
 import Data.String.Utils
-import Data.Unique
 import Text.Regex
 
 import Cyclist
+import ID
+import Pack
 import Population
 import Simulation
-import Pack
 import Stats
 import Utils
 
@@ -59,7 +59,7 @@ makeCyclists t n pop ln = do
                        speed = getD mspeed
                        distance = getD mdistance
                        tLead = getI mtLead
-                   uid <- liftIO (newUnique >>= return . hashUnique)
+                   uid <- newID
                    return (Cyclist {Cyclist.id = uid, max10 = max10, speedM10 = exp 2.478, tExh = tExh, genCProb = genCProb, teamCProb = teamCProb, breakaway = breakaway, speed = speed, distance = distance, position = 1, tLead = tLead, team = t, teamCoop = True, genCoop = True}) 
                    )
         
