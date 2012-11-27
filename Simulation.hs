@@ -109,7 +109,7 @@ doBreakaway (Pack tLead l p pid) = do
       stayPack = (fmap fst stay') >< rest
       brkPacks = map (setPackSpeed . (\b -> Breakaway b 3 newID)) . groupByTeam . (fmap fst) $ break >< break'
       stayPack' = if seqElem stayPack l 
-                  then [setPackSpeed (Pack tLead l (Sequence.filter ((id l \=) . id) stayPack) pid)] 
+                  then [setPackSpeed (Pack tLead l (Sequence.filter ((Cyclist.id l /=) . Cyclist.id) stayPack) pid)] 
                   else case viewl stayPack of
                     EmptyL -> []
                     l' :< cs -> [setPackSpeed (Pack 0 l' cs pid)]
@@ -180,6 +180,6 @@ turn (Race trn len r s win) = do
             else return r
      let   (Race _ _ r'' _ _) = updateBrkTime (Race trn len r' s win)
            r''' = map defLeader r''
-     cyclists <- concatMapM do_breakaway r'''
+     cyclists <- concatMapM doBreakaway r'''
      updatePosition $ (Race (trn + 1) len cyclists s win)
 
