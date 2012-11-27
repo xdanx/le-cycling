@@ -21,9 +21,9 @@ data Race = Race  !Int    !Int   ![Pack]  ![Cyclist]  ![(Cyclist, Double)]
 
 -- !!! NEED TO FINISH UPDATING !!!
 -- Update position of Racers
-updatePosition :: Race -> Race
-updatePosition (Race trn len packs sprint finish) = undefined
-
+updatePosition :: Race -> RandT StdGen IO Race
+updatePosition (Race trn len packs sprint finish) = do
+               return undefined
 -- updatePosition (Race trn len packs sprint finish) = (Race trn len )  
 {-  (Race trn len packs' sprint'' (finish ++ sfinishers'))
   where
@@ -142,5 +142,6 @@ turn (Race trn len r s win) = do
             else return r
      let   (Race _ _ r'' _ _) = updateBrkTime (Race trn len r' s win)
            r''' = map defLeader r''
-     cyclists <- concatMapM doBreakaway r'''
-     return . updatePosition $ (Race (trn + 1) len cyclists s win)
+     cyclists <- concatMapM do_breakaway r'''
+     updatePosition $ (Race (trn + 1) len cyclists s win)
+
