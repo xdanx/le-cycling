@@ -1,5 +1,6 @@
 module Simulation where
 
+import Control.Arrow
 import Control.Monad
 import Control.Monad.Trans.Class
 import Control.Monad.Random
@@ -11,6 +12,7 @@ import Debug.Trace
 import Control.Exception (assert)
 
 import Cyclist
+import ID
 import Pack
 import Utils
 
@@ -22,31 +24,67 @@ data Race = Race  !Int    !Int   ![Pack]  ![Cyclist]  ![(Cyclist, Double)]
 -- Update position of Racers
 updatePosition :: Race -> RandT StdGen IO Race
 updatePosition (Race trn len packs sprint finish) = do
-               return undefined
--- updatePosition (Race trn len packs sprint finish) = (Race trn len )  
-{-  (Race trn len packs' sprint'' (finish ++ sfinishers'))
-  where
-    packs' = (map (\(Pack tl l cs i) -> ((updPos l) <| (fmap updPos cs))) packs)::[Seq Cyclist]
-    
-    sprintLim = (\c -> (fromIntegral (len - 5000)) <= (distance c))
-    
-    (sprint', packs'') = Sequence.partition sprintLim packs'
-    
-    updateSprint = map updPos sprint
-    (finishers, sprint'') = List.partition (\c -> (fromIntegral len) <= (distance c)) 
-                            (updateSprint ++ (map update_sprint_speed sprint'))
-    
-    sfinishers = List.sortBy (\x y -> compare (pass x) (pass y)) finishers
-    sfinishers' = map (\c -> (c, (fromIntegral (trn*60)) + (pass c))) sfinishers
-    
-    updPos :: Cyclist -> Cyclist
-    updPos c = c{distance = (distance c) + (fromIntegral 60) * (speed c)}
-    
-    pass :: Cyclist -> Double
-    pass c = ((fromIntegral len) - strt)/(speed c)
-      where
-        strt = (distance c) - (fromIntegral 60) * (speed c)-}
+               let movedPacks = map updatePackPosition packs
+                   movedSprinter = map (\c -> c{distance = (distance c) + 60*(speed c)}) sprint
+                   (remainingPacks, toSprinters, packFinishers) = (\(a, b, c) -> (a, List.concat b, List.concat c)) . unzip3 . map (updatePack len) $ movedPacks
+                   (sprintFinishers, remainingSprinters) = List.partition (\c -> (distance c) >= (fromIntegral len)) movedSprinter 
+                   orderedFinishers = orderFinishers trn len $ sprintFinishers ++ packFinishers
+                   newPackFuncs = coalescePacks $ remainingPacks
+               resetID
+               newPacks <- sequence . map (\f -> newID >>= return . f) $ newPackFuncs
+               return (Race trn len newPacks (List.sort $ toSprinters ++ remainingSprinters) (finish ++ orderedFinishers))
 
+
+-- Updates the position of a Pack (Pack or Breakaway): TESTED
+updatePackPosition :: Pack -> Pack
+updatePackPosition (Pack tLead leader pack uid) = let traveled = (speed leader)*60 in Pack tLead leader{distance = (distance leader) + traveled} (fmap (\c -> c{distance = (distance c) + traveled}) pack) uid
+updatePackPosition (Breakaway pack time uid) = (Breakaway (fmap (\c -> c{distance = (distance c) + traveled}) pack) time uid)
+                   where (h:<r) = viewl pack
+                         traveled = 60 * speed h
+
+--Splits pack into Pack, sprinters and finishers : TESTED
+updatePack :: Int -> Pack -> (Pack, [Cyclist], [Cyclist])
+updatePack len (Pack tLead leader pack uid) = if (Fold.foldl (||) False . fmap (\c -> (Cyclist.id c) == (Cyclist.id leader)) $ remainingPack) 
+                 then (Pack tLead leader remainingPack uid, Fold.toList sprinters, Fold.toList finishers)
+                 else (Pack tLead nleader nremainingPack uid, Fold.toList sprinters, Fold.toList finishers)
+           where allCyclists = leader <| pack
+                 (finishers, runners) = Sequence.partition (\c -> (distance c) >= (fromIntegral len)) allCyclists
+                 (sprinters, remainingPack) = Sequence.partition (\c -> (distance c) >= (fromIntegral $ len - 5000)) runners
+                 (nleader:<nremainingPack) = viewl remainingPack
+
+coalescePacks :: [Pack] -> [Int -> Pack]
+coalescePacks [] = []
+coalescePacks packs = map (toFunc) . Prelude.foldl (\(l:ls) x -> if(overlap x l)
+                                                             then (coalesce x l) ++ ls
+                                                             else x:l:ls) [p] $ sp
+                    where (p:sp) = List.sort $ packs
+                          overlap :: Pack -> Pack -> Bool
+                          overlap x y = ((Fold.foldl max 0 (fmap distance . getPack $ y)) + 3) >= (Fold.foldl min 0 (fmap distance . getPack $ x))
+                          coalesce :: Pack -> Pack -> [Pack]
+                          coalesce (Pack tLead1 leader1 pack1 uid1) (Pack tLead2 leader2 pack2 uid2) = [Pack tLead1 leader1 (pack1 >< (leader2 <| pack2)) uid1]
+                          coalesce (Pack tLead1 leader1 pack1 uid1) (Breakaway pack2 time2 uid2) = [Pack tLead1 leader1 (pack1 >< pack2) uid1]
+                          coalesce x@(Breakaway pack2 time2 uid2) y@(Pack tLead1 leader1 pack1 uid1) = coalesce y x
+                          coalesce x@(Breakaway pack1 time1 uid1) y@(Breakaway pack2 time2 uid2) = 
+                                   if(team1 == team2)
+                                            then [Breakaway (pack1 >< pack2) (min time1 time2) uid1]
+                                            else [x, y]
+                                            where 
+                                                  (h1:<_) = viewl pack1
+                                                  (h2:<_) = viewl pack2
+                                                  team1 = team h1
+                                                  team2 = team h2
+                          toFunc :: Pack -> (Int -> Pack)
+                          toFunc (Pack tLead leader pack _) = Pack tLead leader pack
+                          toFunc (Breakaway pack time uid) = Breakaway pack time
+                          
+--Takes the number of minutes already passed, the length of the race and a list of
+-- cyclists and returns a list of pairs of cyclists and their respective finishing times : TESTED
+orderFinishers :: Int -> Int -> [Cyclist] -> [(Cyclist, Double)]
+orderFinishers trn len = List.sortBy (\x y -> compare (snd x) (snd y)) . map (Prelude.id &&& ((+fromIntegral(60*trn)) . pass)) 
+               where pass :: Cyclist -> Double
+                     pass c = ((fromIntegral len) - strt)/(speed c)
+                          where
+                                  strt = (distance c) - (fromIntegral 60) * (speed c)
 
 -- !!! How should we generate new unique IDs and do we have to do it here ? !!!
 updateBrkTime :: Race -> Race

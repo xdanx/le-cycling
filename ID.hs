@@ -1,6 +1,6 @@
 module ID (
    newID,
-   
+   resetID
  ) where
 
 import Control.Concurrent.STM
