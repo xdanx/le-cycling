@@ -71,10 +71,10 @@ doBreakaway (Pack tLead l p pid) = do
       stayPack = (fmap fst stay') >< rest
       brkPacks = map (setPackSpeed . (\b -> Breakaway b 3 newID)) . groupByTeam . (fmap fst) $ break >< break'
       stayPack' = if seqElem stayPack l 
-                  then [Pack tLead l (Sequence.filter ((id l \=) . id) stayPack) pid] 
+                  then [setPackSpeed (Pack tLead l (Sequence.filter ((id l \=) . id) stayPack) pid)] 
                   else case viewl stayPack of
                     EmptyL -> []
-                    l' :< cs -> [Pack 0 l' cs pid]
+                    l' :< cs -> [setPackSpeed (Pack 0 l' cs pid)]
   return stayPack' ++ brkPacks
     where
       groupByTeam :: Seq Cyclist -> [Seq Cyclist]
@@ -85,16 +85,7 @@ doBreakaway (Pack tLead l p pid) = do
             where
               (brkPack, cs'') = Sequence.partition (\c' -> team c == team c') cs'
   
-  {- dec <- replicateM (Sequence.length (p + 1)) (getRandom :: RandT StdGen IO Double)
-         let (break', stay') = List.partition (\(c, d) -> (genCProb c) < d) (List.zip p dec)
-             groups = nub . map team . map fst $ break'
-             (in_bteam, rest) = List.partition (flip List.elem groups . team) . map fst $ stay'
-         g_dec <- Control.Monad.replicateM (List.length in_bteam) (getRandom :: RandT StdGen IO Double)
-         let (gbreak', gstay') = List.partition (\(c, d) -> (teamCProb c) < d) (List.zip in_bteam g_dec)
-             stay =  (map fst gstay') ++ rest
-             breaks = map (setPackSpeed . Pack) . groupBy (\x y -> team x == team y) . map (\(c,_) -> c{breakaway = 3}) $ break' ++ gbreak'
-         return ((setPackSpeed . Pack $ stay):breaks) -}
-
+  
 setPackSpeed :: Pack -> Pack
 setPackSpeed pack = 
   packMap (\c -> c{speed = nSpeed}) pack
