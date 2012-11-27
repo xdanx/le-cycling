@@ -107,13 +107,14 @@ doBreakaway (Pack tLead l p pid) = do
   dec' <- Sequence.replicateM (Sequence.length inBrkTeams) (getRandom :: RandT StdGen IO Double)
   let (break', stay') = Sequence.partition (\(c, d) -> (genCProb c) < d) (Sequence.zip inBrkTeams dec')  
       stayPack = (fmap fst stay') >< rest
-      brkPacks = map (setPackSpeed . (\b -> Breakaway b 3 newID)) . groupByTeam . (fmap fst) $ break >< break'
+  npid <- newID
+  let brkPacks = map (setPackSpeed . (\b -> Breakaway b 3 npid)) . groupByTeam . (fmap fst) $ break >< break'
       stayPack' = if seqElem stayPack l 
                   then [setPackSpeed (Pack tLead l (Sequence.filter ((Cyclist.id l /=) . Cyclist.id) stayPack) pid)] 
                   else case viewl stayPack of
                     EmptyL -> []
                     l' :< cs -> [setPackSpeed (Pack 0 l' cs pid)]
-  return stayPack' ++ brkPacks
+  return $ stayPack' ++ brkPacks
     where
       groupByTeam :: Seq Cyclist -> [Seq Cyclist]
       groupByTeam cs =
@@ -176,7 +177,7 @@ turn :: Race -> RandT StdGen IO Race
 turn (Race trn len r s win) = do
      let reCompute = (trn `mod` 5 == 0)
      r' <- if reCompute
-            then sequence (map (packMap determineCoop) r) 
+            then sequence (map (packMapM determineCoop) r) 
             else return r
      let   (Race _ _ r'' _ _) = updateBrkTime (Race trn len r' s win)
            r''' = map defLeader r''

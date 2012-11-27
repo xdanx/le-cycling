@@ -55,6 +55,12 @@ rotate (Pack t lead pack uid) = Pack 0 nLead nPack uid
 packMap :: (Cyclist -> Cyclist) -> Pack -> Pack
 packMap f (Pack tLead l p i) = (Pack tLead (f l) (fmap f p) i) 
 
+packMapM :: (Monad m) => (Cyclist -> m Cyclist) -> Pack -> m Pack
+packMapM f (Pack tLead leader pack uid) = do
+  leader' <- f leader
+  pack' <- sequence . toList . fmap f $ pack
+  return (Pack tLead leader' (fromList pack') uid)
+
 packHead :: Pack -> Double
 packHead (Pack _ leader _ _) = distance leader
 packHead (Breakaway seq _ _) = Fold.foldl (max) 0 . fmap distance $ seq
