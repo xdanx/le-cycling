@@ -27,7 +27,7 @@ updatePosition :: Race -> RandT StdGen IO Race
 updatePosition (Race trn len packs sprint finish) = do
                let movedPacks = map updatePackPosition packs
                    movedSprinter = map (\c -> c{distance = (distance c) + 60*(speed c)}) sprint
-                   (remainingPacks, toSprinters, packFinishers) = (\(a, b, c) -> (a, List.concat b, List.concat c)) . unzip3 . map (updatePack len) $ movedPacks
+                   (remainingPacks, toSprinters, packFinishers) = (\(a, b, c) -> (mapMaybe Prelude.id a, List.concat b, List.concat c)) . unzip3 . map (updatePack len) $ movedPacks
                    (sprintFinishers, remainingSprinters) = List.partition (\c -> (distance c) >= (fromIntegral len)) movedSprinter 
                    orderedFinishers = orderFinishers trn len $ sprintFinishers ++ packFinishers
                    newPackFuncs = coalescePacks $ remainingPacks
@@ -44,14 +44,19 @@ updatePackPosition (Breakaway pack time uid) = (Breakaway (fmap (\c -> c{distanc
                          traveled = 60 * speed h
 
 --Splits pack into Pack, sprinters and finishers : TESTED
-updatePack :: Int -> Pack -> (Pack, [Cyclist], [Cyclist])
-updatePack len (Pack tLead leader pack uid) = if (Fold.foldl (||) False . fmap (\c -> (Cyclist.id c) == (Cyclist.id leader)) $ remainingPack) 
-                 then (Pack tLead leader remainingPack uid, Fold.toList sprinters, Fold.toList finishers)
-                 else (Pack tLead nleader nremainingPack uid, Fold.toList sprinters, Fold.toList finishers)
-           where allCyclists = leader <| pack
-                 (finishers, runners) = Sequence.partition (\c -> (distance c) >= (fromIntegral len)) allCyclists
+updatePack :: Int -> Pack -> (Maybe Pack, [Cyclist], [Cyclist])
+updatePack len (Pack tLead leader pack uid) = if(t /= EmptyL)
+           then (Nothing, Fold.toList sprinters, Fold.toList finishers)
+           else if (Fold.foldl (||) False . fmap (\c -> (Cyclist.id c) == (Cyclist.id leader)) $ remainingPack) 
+                   then ((Just $ Pack tLead leader remainingPack uid), Fold.toList sprinters, Fold.toList finishers)
+                   else ((Just $ Pack tLead nleader nremainingPack uid), Fold.toList sprinters, Fold.toList finishers)
+                         where allCyclists = leader <| pack
+                               (finishers, runners) = Sequence.partition (\c -> (distance c) >= (fromIntegral len)) allCyclists
+                               (sprinters, remainingPack) = Sequence.partition (\c -> (distance c) >= (fromIntegral $ len - 5000)) runners
+                               t@(nleader:<nremainingPack) = viewl remainingPack --duplicate bug!!!
+updatePack len (Breakaway pack time uid) = ((Just $ Breakaway remainingPack time uid), Fold.toList sprinters, Fold.toList finishers)
+           where (finishers, runners) = Sequence.partition (\c -> (distance c) >= (fromIntegral len)) pack
                  (sprinters, remainingPack) = Sequence.partition (\c -> (distance c) >= (fromIntegral $ len - 5000)) runners
-                 (nleader:<nremainingPack) = viewl remainingPack
 
 coalescePacks :: [Pack] -> [Int -> Pack]
 coalescePacks [] = []
@@ -93,7 +98,7 @@ updateBrkTime (Race trn len r s w) = (Race trn len (map update r) s w)
   where
     update :: Pack -> Pack
     update (Breakaway p t i) = if(t > 0)
-                                then (Breakaway p (t-1) i)
+                               then (Breakaway p (t-1) i)
                                else case viewl p of
                                  l :< p' -> (Pack 0 l p' i)
     update p = p
@@ -124,6 +129,7 @@ doBreakaway (Pack tLead l p pid) = do
           c :< cs' -> brkPack : (groupByTeam cs'')
             where
               (brkPack, cs'') = Sequence.partition (\c' -> team c == team c') cs'
+doBreakaway p = do return [p]
   
   
 setPackSpeed :: Pack -> Pack
