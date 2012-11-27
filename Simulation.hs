@@ -93,9 +93,10 @@ updateBrkTime (Race trn len r s w) = (Race trn len (map update r) s w)
   where
     update :: Pack -> Pack
     update (Breakaway p t i) = if(t > 0)
-                               then (Breakaway p (t-1) i)
+                                then (Breakaway p (t-1) i)
                                else case viewl p of
                                  l :< p' -> (Pack 0 l p' i)
+    update p = p
 
 -- !!! Just removed name conflicts !!!
 doBreakaway :: Pack -> RandT StdGen IO [Pack]
