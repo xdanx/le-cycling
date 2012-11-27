@@ -1,5 +1,6 @@
 {-# LANGUAGE DoAndIfThenElse #-}
 {-# LANGUAGE TupleSections #-}
+
 import Control.Monad.Random
 import Control.Monad.Trans.Class
 import Data.IORef
@@ -18,8 +19,8 @@ import Population
 import Rendering
 import Simulation
 
-time = 100
-validOption = ["-X", "-P"]
+time = 100 :: Int
+validOption = ["-X", "-P"] :: [String]
 
 main :: IO ()
 main = do
@@ -35,7 +36,7 @@ main = do
         then
        do
          initialize progname []
-         window <- createWindow progname
+         createWindow progname
          clear [ColorBuffer]
         else return ()
      r <- (genRace (head rest) >>= newIORef)
@@ -54,7 +55,7 @@ main = do
      (Race _ _ _ _ leader_board) <- readIORef r
      print leader_board
      if plt
-            then plot X11 $ Data2D [Style Graphics.SimplePlot.Lines, Title "Classment agains cooperation probability", Graphics.SimplePlot.Color Graphics.SimplePlot.Blue] [] (flip zip [1..] (map (max10 . fst) leader_board))
+            then plot X11 $ Data2D [Style Graphics.SimplePlot.Lines, Title "Classment agains cooperation probability", Graphics.SimplePlot.Color Graphics.SimplePlot.Blue] [] (zip [1..] (map (genCProb . fst) leader_board))
             else return True
      exit
 
@@ -66,12 +67,12 @@ loop_wrapper ref = do
              writeIORef ref nr
              render ref
              case nr of
-                  (Race _ _ [] [] win) -> leaveMainLoop
-                  otherwise -> addTimerCallback time (loop_wrapper ref)
+                  (Race _ _ [] [] _) -> leaveMainLoop
+                  (Race _ _ _ _ _) -> addTimerCallback time (loop_wrapper ref)
 
 loop :: Race -> RandT StdGen IO Race
 loop r = do
-     n@(Race trn _ _ _ _) <- turn r
+     n <- turn r
      lift performGC
      return n
 
@@ -81,8 +82,8 @@ looper ref = do
   n <- loop r
   lift . writeIORef ref $ n
   case n of
-    (Race _ _ [] [] win) -> return ()
-    otherwise -> looper ref
+    (Race _ _ [] [] _) -> return ()
+    (Race _ _ _ _ _) -> looper ref
   
 usage :: IO ()
 usage = do
