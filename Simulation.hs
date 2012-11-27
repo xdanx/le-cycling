@@ -4,12 +4,13 @@ import Control.Monad
 import Control.Monad.Trans.Class
 import Control.Monad.Random
 import Data.List as List
-import Data.Sequence as Sequence hiding (replicateM)
+import Data.Sequence as Sequence
 import Data.Foldable as Fold
 import Data.Maybe
 import Debug.Trace
 import Control.Exception (assert)
 
+import ID
 import Cyclist
 import Pack
 import Utils
@@ -51,17 +52,40 @@ updatePosition (Race trn len packs sprint finish) = undefined
 -- !!! How should we generate new unique IDs and do we have to do it here ? !!!
 updateBrkTime :: Race -> Race
 updateBrkTime (Race trn len r s w) = (Race trn len (map update r) s w)
-                where
-                     update :: Pack -> Pack
-                     update (Breakaway p t i) = if(t > 0)
-                                        then (Breakaway p (t-1) i)
-                                        else case viewl p of
-                                                  l :< p' -> (Pack 0 l p' i)
+  where
+    update :: Pack -> Pack
+    update (Breakaway p t i) = if(t > 0)
+                               then (Breakaway p (t-1) i)
+                               else case viewl p of
+                                 l :< p' -> (Pack 0 l p' i)
 
 -- !!! Just removed name conflicts !!!
-do_breakaway :: Pack -> RandT StdGen IO [Pack]
-do_breakaway (Pack _ _ p _) = do
-         dec <- replicateM (Sequence.length (p + 1)) (getRandom :: RandT StdGen IO Double)
+doBreakaway :: Pack -> RandT StdGen IO [Pack]
+doBreakaway (Pack tLead l p pid) = do
+  dec <- Sequence.replicateM ((Sequence.length p) + 1) (getRandom :: RandT StdGen IO Double)
+  let (break, stay) = Sequence.partition (\(c, d) -> (genCProb c) < d) (Sequence.zip (l <| p) dec)  
+      brkTeams = fmap team . fmap fst $ break
+      (inBrkTeams, rest) = (Sequence.partition ((seqElem brkTeams) . team)) . (fmap fst) $ stay
+  dec' <- Sequence.replicateM (Sequence.length inBrkTeams) (getRandom :: RandT StdGen IO Double)
+  let (break', stay') = Sequence.partition (\(c, d) -> (genCProb c) < d) (Sequence.zip inBrkTeams dec')  
+      stayPack = (fmap fst stay') >< rest
+      brkPacks = map (setPackSpeed . (\b -> Breakaway b 3 newID)) . groupByTeam . (fmap fst) $ break >< break'
+      stayPack' = if seqElem stayPack l 
+                  then [Pack tLead l (Sequence.filter ((id l \=) . id) stayPack) pid] 
+                  else case viewl stayPack of
+                    EmptyL -> []
+                    l' :< cs -> [Pack 0 l' cs pid]
+  return stayPack' ++ brkPacks
+    where
+      groupByTeam :: Seq Cyclist -> [Seq Cyclist]
+      groupByTeam cs =
+        case viewl cs of 
+          EmptyL -> []
+          c :< cs' -> brkPack : (groupByTeam cs'')
+            where
+              (brkPack, cs'') = Sequence.partition (\c' -> team c == team c') cs'
+  
+  {- dec <- replicateM (Sequence.length (p + 1)) (getRandom :: RandT StdGen IO Double)
          let (break', stay') = List.partition (\(c, d) -> (genCProb c) < d) (List.zip p dec)
              groups = nub . map team . map fst $ break'
              (in_bteam, rest) = List.partition (flip List.elem groups . team) . map fst $ stay'
@@ -69,7 +93,7 @@ do_breakaway (Pack _ _ p _) = do
          let (gbreak', gstay') = List.partition (\(c, d) -> (teamCProb c) < d) (List.zip in_bteam g_dec)
              stay =  (map fst gstay') ++ rest
              breaks = map (setPackSpeed . Pack) . groupBy (\x y -> team x == team y) . map (\(c,_) -> c{breakaway = 3}) $ break' ++ gbreak'
-         return ((setPackSpeed . Pack $ stay):breaks)
+         return ((setPackSpeed . Pack $ stay):breaks) -}
 
 setPackSpeed :: Pack -> Pack
 setPackSpeed pack = 
@@ -127,5 +151,5 @@ turn (Race trn len r s win) = do
             else return r
      let   (Race _ _ r'' _ _) = updateBrkTime (Race trn len r' s win)
            r''' = map defLeader r''
-     cyclists <- concatMapM do_breakaway r'''
+     cyclists <- concatMapM doBreakaway r'''
      return . updatePosition $ (Race (trn + 1) len cyclists s win)
