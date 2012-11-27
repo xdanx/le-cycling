@@ -53,13 +53,17 @@ rotate (Pack t lead pack uid) = Pack 0 nLead nPack uid
              (nPack:>nLead) = viewr $ Sequence.zipWith (\c d -> c{distance = d}) (lead <| pack) seqDist
         
 packMap :: (Cyclist -> Cyclist) -> Pack -> Pack
-packMap f (Pack tLead l p i) = (Pack tLead (f l) (fmap f p) i) 
+packMap f (Pack tLead l p i) = (Pack tLead (f l) (fmap f p) i)
+packMap f (Breakaway p t i) = (Breakaway (fmap f p) t i)
 
 packMapM :: (Monad m) => (Cyclist -> m Cyclist) -> Pack -> m Pack
 packMapM f (Pack tLead leader pack uid) = do
   leader' <- f leader
   pack' <- sequence . toList . fmap f $ pack
   return (Pack tLead leader' (fromList pack') uid)
+packMapM f (Breakaway pack t i) = do
+  pack' <- sequence . toList . fmap f $ pack
+  return (Breakaway (fromList pack') t i)
 
 packHead :: Pack -> Double
 packHead (Pack _ leader _ _) = distance leader
