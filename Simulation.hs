@@ -175,13 +175,9 @@ determineCoop c = do
               return $ c{genCoop = (d1 < genCProb c), teamCoop = (d2 < teamCProb c)}
 
 defLeader :: Pack -> Pack
-defLeader (Pack tLead l p id)
-  | (tLead > 5) || (not (genCoop l) && tLead > 1) = Pack (tLead+1) l p id
-  | otherwise = Pack 0 l' (p |> l) id
-  where
-    l' = case (viewl p) of
-      EmptyL -> l
-      c :< cs -> c 
+defLeader pack@(Pack tLead l p id)
+  | (tLead > 5) || (not (genCoop l) && tLead > 1) = rotate pack 
+  | otherwise = Pack (tLead+1) l p id
 defLeader breakP = breakP
 
 
