@@ -2,6 +2,7 @@ module Simulation where
 
 import Control.Arrow
 import Control.Monad
+import Control.Monad.Trans
 import Control.Monad.Trans.Class
 import Control.Monad.Random
 import Data.List as List
@@ -40,21 +41,23 @@ updatePosition (Race trn len packs sprint finish) = do
 updatePackPosition :: Pack -> Pack
 updatePackPosition (Pack tLead leader pack uid) = let traveled = (speed leader)*60 in Pack tLead leader{distance = (distance leader) + traveled} (fmap (\c -> c{distance = (distance c) + traveled}) pack) uid
 updatePackPosition (Breakaway pack time uid) = (Breakaway (fmap (\c -> c{distance = (distance c) + traveled}) pack) time uid)
-                   where (h:<r) = viewl pack
+                   where (h:<_) = viewl pack
                          traveled = 60 * speed h
 
 --Splits pack into Pack, sprinters and finishers : TESTED
 updatePack :: Int -> Pack -> (Maybe Pack, [Cyclist], [Cyclist])
 updatePack len (Pack tLead leader pack uid) = if(t /= EmptyL)
            then (Nothing, Fold.toList sprinters, Fold.toList finishers)
-           else if (Fold.foldl (||) False . fmap (\c -> (Cyclist.id c) == (Cyclist.id leader)) $ remainingPack) 
+           else if (Fold.or . fmap (\c -> (Cyclist.id c) == (Cyclist.id leader)) $ remainingPack) 
                    then ((Just $ Pack tLead leader remainingPack uid), Fold.toList sprinters, Fold.toList finishers)
                    else ((Just $ Pack tLead nleader nremainingPack uid), Fold.toList sprinters, Fold.toList finishers)
                          where allCyclists = leader <| pack
                                (finishers, runners) = Sequence.partition (\c -> (distance c) >= (fromIntegral len)) allCyclists
                                (sprinters, remainingPack) = Sequence.partition (\c -> (distance c) >= (fromIntegral $ len - 5000)) runners
                                t@(nleader:<nremainingPack) = viewl remainingPack --duplicate bug!!!
-updatePack len (Breakaway pack time uid) = ((Just $ Breakaway remainingPack time uid), Fold.toList sprinters, Fold.toList finishers)
+updatePack len (Breakaway pack time uid) = if(remainingPack == empty) 
+           then (Nothing, Fold.toList sprinters, Fold.toList finishers)
+           else ((Just $ Breakaway remainingPack time uid), Fold.toList sprinters, Fold.toList finishers)
            where (finishers, runners) = Sequence.partition (\c -> (distance c) >= (fromIntegral len)) pack
                  (sprinters, remainingPack) = Sequence.partition (\c -> (distance c) >= (fromIntegral $ len - 5000)) runners
 
@@ -67,9 +70,9 @@ coalescePacks packs = map (toFunc) . Prelude.foldl (\(l:ls) x -> if(overlap x l)
                           overlap :: Pack -> Pack -> Bool
                           overlap x y = ((Fold.foldl max 0 (fmap distance . getPack $ y)) + 3) >= (Fold.foldl min 0 (fmap distance . getPack $ x))
                           coalesce :: Pack -> Pack -> [Pack]
-                          coalesce (Pack tLead1 leader1 pack1 uid1) (Pack tLead2 leader2 pack2 uid2) = [Pack tLead1 leader1 (pack1 >< (leader2 <| pack2)) uid1]
-                          coalesce (Pack tLead1 leader1 pack1 uid1) (Breakaway pack2 time2 uid2) = [Pack tLead1 leader1 (pack1 >< pack2) uid1]
-                          coalesce x@(Breakaway pack2 time2 uid2) y@(Pack tLead1 leader1 pack1 uid1) = coalesce y x
+                          coalesce (Pack tLead1 leader1 pack1 uid1) (Pack _ leader2 pack2 _) = [Pack tLead1 leader1 (pack1 >< (leader2 <| pack2)) uid1]
+                          coalesce (Pack tLead1 leader1 pack1 uid1) (Breakaway pack2 _ _) = [Pack tLead1 leader1 (pack1 >< pack2) uid1]
+                          coalesce x@(Breakaway _ _ _) y@(Pack _ _ _ _) = coalesce y x
                           coalesce x@(Breakaway pack1 time1 uid1) y@(Breakaway pack2 time2 uid2) = 
                                    if(team1 == team2)
                                             then [Breakaway (pack1 >< pack2) (min time1 time2) uid1]
@@ -113,9 +116,10 @@ doBreakaway (Pack tLead l p pid) = do
   dec' <- Sequence.replicateM (Sequence.length inBrkTeams) (getRandom :: RandT StdGen IO Double)
   let (break', stay') = Sequence.partition (\(c, d) -> (genCProb c) < d) (Sequence.zip inBrkTeams dec')  
       stayPack = (fmap fst stay') >< rest
-  npid <- newID
-  let brkPacks = map (setPackSpeed . (\b -> Breakaway b 3 npid)) . groupByTeam . (fmap fst) $ break >< break'
-      stayPack' = if seqElem stayPack l 
+  brkPacks <- if((break >< break') == empty)
+                 then return []
+                 else mapM (\b -> newID >>= return . setPackSpeed . (Breakaway b 3)) . groupByTeam . (fmap fst) $ break >< break'
+  let stayPack' = if seqElem stayPack l 
                   then [setPackSpeed (Pack tLead l (Sequence.filter ((Cyclist.id l /=) . Cyclist.id) stayPack) pid)] 
                   else case viewl stayPack of
                     EmptyL -> []
