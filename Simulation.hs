@@ -129,6 +129,7 @@ doBreakaway (Pack tLead l p pid) = do
           c :< cs' -> brkPack : (groupByTeam cs'')
             where
               (brkPack, cs'') = Sequence.partition (\c' -> team c == team c') cs'
+
 doBreakaway p = do return [p]
   
   
