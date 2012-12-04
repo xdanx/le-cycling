@@ -12,7 +12,8 @@ import Stats
 import Utils
 
 data Cyclist = Cyclist {id :: Int,           -- Unique ID
-                        pmax :: Double,     -- 10-min Max power (W/kg)
+                        pmax :: Double,      -- Max power (W/kg?)
+                        pcp :: Double,       -- Maximum power sustainable to oo
                         speedM10 :: Double,  -- Speed at pmax power output (m/s)
                         tExh :: Double,      -- Time until exhaustion (by Tlim)
                         genCProb :: Double,  -- General cooperation prob
