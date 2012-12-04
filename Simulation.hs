@@ -155,7 +155,7 @@ updateSprintSpeed c
                     where t = 60 * tlim c
 
 tlim :: Cyclist -> Double
-tlim c = exp (-6.35 * ((ptot c)/(max10 c)) + 2.478)
+tlim c = exp (-6.35 * ((ptot c)/(pmax c)) + 2.478)
      where ptot c = pair c + proll c
                    where
                         pair c = (speed c)^3

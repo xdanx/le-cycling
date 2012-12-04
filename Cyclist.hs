@@ -12,8 +12,8 @@ import Stats
 import Utils
 
 data Cyclist = Cyclist {id :: Int,           -- Unique ID
-                        max10 :: Double,     -- 10-min Max power (W/kg)
-                        speedM10 :: Double,  -- Speed at max10 power output (m/s)
+                        pmax :: Double,     -- 10-min Max power (W/kg)
+                        speedM10 :: Double,  -- Speed at pmax power output (m/s)
                         tExh :: Double,      -- Time until exhaustion (by Tlim)
                         genCProb :: Double,  -- General cooperation prob
                         teamCProb :: Double, -- Team cooperation prob
@@ -50,11 +50,11 @@ instance Ord Cyclist where
 
 genCyclist :: Int -> Population -> RandT StdGen IO Cyclist
 genCyclist team_n stats = do
-           _max10 <- normal . max10s $ stats
+           _pmax <- normal . pmaxs $ stats
            _genCProb <- normal . coops $ stats
            _teamCProb <- normal . coops $ stats
            i <- newID
-           return Cyclist {Cyclist.id = i, max10 = _max10, speedM10 = exp 2.478, tExh = (1/0), genCProb = _genCProb, teamCProb = _teamCProb, breakaway = 0, speed = 0, distance = 0, team = team_n, teamCoop = True, genCoop = True}
+           return Cyclist {Cyclist.id = i, pmax = _pmax, speedM10 = exp 2.478, tExh = (1/0), genCProb = _genCProb, teamCProb = _teamCProb, breakaway = 0, speed = 0, distance = 0, team = team_n, teamCoop = True, genCoop = True}
 
 genCyclists :: Int -> Int -> Population -> RandT StdGen IO [Cyclist]
 genCyclists n_teams team_size stats = concatMapM (\t -> replicateM team_size (genCyclist t stats)) [0..(n_teams-1)]
