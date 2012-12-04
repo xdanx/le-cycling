@@ -49,12 +49,13 @@ updatePack :: Int -> Pack -> (Maybe Pack, [Cyclist], [Cyclist])
 updatePack len (Pack tLead leader pack uid) = if(t /= EmptyL)
            then (Nothing, Fold.toList sprinters, Fold.toList finishers)
            else if (Fold.or . fmap (\c -> (Cyclist.id c) == (Cyclist.id leader)) $ remainingPack) 
-                   then ((Just $ Pack tLead leader remainingPack uid), Fold.toList sprinters, Fold.toList finishers)
+                   then ((Just $ Pack tLead leader (Sequence.filter (\c -> Cyclist.id c /= Cyclist.id leader) remainingPack) uid), Fold.toList sprinters, Fold.toList finishers)
                    else ((Just $ Pack tLead nleader nremainingPack uid), Fold.toList sprinters, Fold.toList finishers)
                          where allCyclists = leader <| pack
                                (finishers, runners) = Sequence.partition (\c -> (distance c) >= (fromIntegral len)) allCyclists
                                (sprinters, remainingPack) = Sequence.partition (\c -> (distance c) >= (fromIntegral $ len - 5000)) runners
-                               t@(nleader:<nremainingPack) = viewl remainingPack --duplicate bug!!!
+                               t@(nleader:<nremainingPack) = viewl remainingPack
+
 updatePack len (Breakaway pack time uid) = if(remainingPack == empty) 
            then (Nothing, Fold.toList sprinters, Fold.toList finishers)
            else ((Just $ Breakaway remainingPack time uid), Fold.toList sprinters, Fold.toList finishers)
