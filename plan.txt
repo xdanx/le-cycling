@@ -1,7 +1,0 @@
-Cyclist.hs rename + 
-Main.hs
-Pack.hs
-Parser.hs x
-Population.hs
-Rendering.hs
-Simulation.hs
