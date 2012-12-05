@@ -138,11 +138,21 @@ doBreakaway p = do return [p]
   
   
 setPackSpeed :: Pack -> Pack
-setPackSpeed pack = packMap updateSpeed pack
+setPackSpeed pack = packMap (flip updateSpeed packType) pack
+  where
+    packType = case pack of
+      Pack {}      -> 'p'
+      Breakaway {} -> 'b'
 
-updateSpeed :: Cyclist -> Cyclist
-updateSpeed c = c{speed = 1.76777 * spped * (tanh ((atanh (0.565685*(speed c) / spped)) + 0.538748*spped) )}
-               where spped = sqrt $ pped c
+updateSpeed :: Cyclist -> Char -> Cyclist
+updateSpeed c packType = c{speed = 1.76777 * spped * (tanh ((atanh (0.565685*(speed c) / spped)) + 0.538748*spped) )}
+  where spped = sqrt $ pped c packType
+
+
+pped :: Cyclist -> Char -> Double
+pped c 'p' = 0.8  * (pmax c)
+pped c 'b' = 0.9  * (pmax c)
+pped c 's' = 0.95 * (pmax c)
 
 
 tlim :: Cyclist -> Double
