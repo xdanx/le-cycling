@@ -33,11 +33,8 @@ instance Ord Pack where
 
 getPacks :: [Cyclist] -> [Pack]
 getPacks cyclists =
-  List.zipWith ($) (Prelude.foldl addToPackList [] (List.sort packers)
-  ++ Prelude.concatMap (Prelude.foldl addToPackList []) (map List.sort . groupBy (\x y -> team x == team y) $  breakers)) [1..]
+  List.zipWith ($) (Prelude.foldl addToPackList [] (List.sort cyclists)) [1..]
   where
-    (breakers, packers) = List.partition (\c -> breakaway c > 0) cyclists
-    
     addToPackList :: [Int -> Pack] -> Cyclist -> [Int -> Pack]
     addToPackList [] c =
       [Pack 0 c empty ]
