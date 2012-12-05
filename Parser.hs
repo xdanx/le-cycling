@@ -4,6 +4,7 @@ import Control.Monad
 import Control.Monad.Random
 import Control.Monad.Trans
 import Control.Monad.State
+import Data.Dynamic
 import Data.List
 import Data.List.Split
 import Data.Maybe
@@ -21,8 +22,7 @@ import Utils
 genRace :: String -> IO Race
 genRace n = do
   f <- readFile n 
-  g <- getStdGen
-  evalRandT (parse f) g
+  getStdGen >>= evalRandT (parse f)
 
 parse :: String -> RandT StdGen IO Race
 parse [] = error "Empty parse file"
@@ -30,7 +30,7 @@ parse f = do
   let h:c = lines f
       len = read h :: Int
   cs <- sequence . map parseLine $ c
-  let (s, r) = partition (\c -> fromIntegral len - distance c < 5000) . concat $ cs 
+  let (s, r) = partition (\c -> (fromIntegral len - distance c) < 5000) . concat $ cs 
   return (Race 0 len (getPacks r) s [])
                 
 parseLine :: String -> RandT StdGen IO [Cyclist]
@@ -45,54 +45,18 @@ parseLine l = do
     let teams = (map ((map read) . fromJust) (filter isJust str_teams''))::[[Int]]
     concatMapM (\[t,n] -> makeCyclists t n (defaultPop str_profile) str_attrs) teams
 
+--Parses a cyclist representation and produces n cyclists of this kind. TESTED
 makeCyclists :: Int -> Int -> Population -> String -> RandT StdGen IO [Cyclist]
 makeCyclists t n pop ln = do
   let attr_parse = map (\(x,_:y) -> (x,y)) . map (break (==':')) . words $ ln
       infs = ["pmax", "pcp", "usedEnergy", "energyLim", "genCProb", "teamCProb", "speed", "distance"]
-      [mpmax, mpcp, musedEnergy, uenergyLim, mgenCProb, mteamCProb, mspeed, mdistance] =  (map (flip lookup attr_parse) infs)
+      mParse = map (flip lookup attr_parse) infs
+      transMakers = [setPmax, setPcp, setUsedEnergy, setEnergyLim, setGenCProb, setTeamCProb, setSpeed, setDistance]
+      trans = zipWith (\f m -> fromMaybe id (m >>= return . flip f . read)) transMakers mParse 
+  replicateM n (genCyclist t pop >>= return . (foldl (.) id trans))
   
-      
-{-makeCyclists :: Int -> Int -> Population -> String -> RandT StdGen IO [Cyclist]
-makeCyclists t n pop ln = do
-  let attr_parse = map (\(x,_:y) -> (x,y)) . map (break (==':')) . words $ ln
-      infs = ["pmax", "usedEnergy", "energyLim", "genCProb", "teamCProb", "speed", "distance"]
-      [mpmax, mtExh, mgenCProb, mteamCProb, mspeed, mdistance, mtLead] =  (map (flip lookup attr_parse) infs)
-  replicateM n (do
-                   pmax <- getMax10 pop mpmax
-                   let tExh = getE_rem mtExh
-                   genCProb <- getC pop mgenCProb
-                   teamCProb <- getC pop mteamCProb
-                   _energyLim <- getEnergyLim pop 
-                   let breakaway = getI mbreakaway
-                       speed = getD mspeed
-                       distance = getD mdistance
-                       tLead = getI mtLead
-                   uid <- newID
-                   return (Cyclist {Cyclist.id = uid, pmax = pmax, usedEnergy = 0, energyLim = _energyLim, speedM10 = exp 2.478, tExh = tExh, genCProb = genCProb, teamCProb = teamCProb, speed = speed, distance = distance, team = t, teamCoop = True, genCoop = True}) 
-                   )
-        
-getMax10 :: Population -> Maybe String -> RandT StdGen IO Double
-getMax10 _ (Just x) = return . read $ x
-getMax10 pop Nothing = normal . pmaxs $ pop
 
-getE_rem :: Maybe String -> Double
-getE_rem (Just x) = read x
-getE_rem Nothing = 1/0
-
-getC :: Population -> Maybe String -> RandT StdGen IO Double
-getC _ (Just x) = return . read $ x
-getC pop Nothing = normal . coops $ pop
-
-getI :: Maybe String -> Int
-getI (Just x) = read x
-getI Nothing = 0
-
-getD :: Maybe String -> Double
-getD (Just x) = read x
-getD Nothing = 0
-  
 defaultPop :: String -> Population
 defaultPop s 
   | (strip s) == "avg" = avg
   | otherwise = undefined
--}

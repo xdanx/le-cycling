@@ -26,7 +26,7 @@ updatePosition :: Race -> RandT StdGen IO Race
 updatePosition (Race trn len packs sprint finish) = do
                let movedPacks = map updatePackPosition packs
                    movedSprinter = map (\c -> c{distance = (distance c) + 60*(speed c)}) sprint
-                   (remainingPacks, toSprinters, packFinishers) = (\(a, b, c) -> (mapMaybe Prelude.id a, List.concat b, List.concat c)) . unzip3 . map (updatePack len) $ movedPacks
+                   (remainingPacks, toSprinters, packFinishers) = (\(a, b, c) -> (mapMaybe id a, List.concat b, List.concat c)) . unzip3 . map (updatePack len) $ movedPacks
                    (sprintFinishers, remainingSprinters) = List.partition (\c -> (distance c) >= (fromIntegral len)) movedSprinter 
                    orderedFinishers = orderFinishers trn len $ sprintFinishers ++ packFinishers
                    newPackFuncs = coalescePacks $ remainingPacks
@@ -44,11 +44,11 @@ updatePackPosition (Breakaway pack time uid) = (Breakaway (fmap (\c -> c{distanc
 
 --Splits pack into Pack, sprinters and finishers : TESTED
 updatePack :: Int -> Pack -> (Maybe Pack, [Cyclist], [Cyclist])
-updatePack len (Pack tLead leader pack uid) = if(t /= EmptyL)
+updatePack len (Pack tLead leader pack puid) = if(t /= EmptyL)
            then (Nothing, Fold.toList sprinters, Fold.toList finishers)
-           else if (Fold.or . fmap (\c -> (Cyclist.id c) == (Cyclist.id leader)) $ remainingPack) 
-                   then ((Just $ Pack tLead leader (Sequence.filter (\c -> Cyclist.id c /= Cyclist.id leader) remainingPack) uid), Fold.toList sprinters, Fold.toList finishers)
-                   else ((Just $ Pack tLead nleader nremainingPack uid), Fold.toList sprinters, Fold.toList finishers)
+           else if (Fold.or . fmap (\c -> (uid c) == (uid leader)) $ remainingPack) 
+                   then ((Just $ Pack tLead leader (Sequence.filter (\c -> uid c /= uid leader) remainingPack) puid), Fold.toList sprinters, Fold.toList finishers)
+                   else ((Just $ Pack tLead nleader nremainingPack puid), Fold.toList sprinters, Fold.toList finishers)
                          where allCyclists = leader <| pack
                                (finishers, runners) = Sequence.partition (\c -> (distance c) >= (fromIntegral len)) allCyclists
                                (sprinters, remainingPack) = Sequence.partition (\c -> (distance c) >= (fromIntegral $ len - 5000)) runners
@@ -88,7 +88,7 @@ coalescePacks packs = map (toFunc) . Prelude.foldl (\(l:ls) x -> if(overlap x l)
 --Takes the number of minutes already passed, the length of the race and a list of
 -- cyclists and returns a list of pairs of cyclists and their respective finishing times : TESTED
 orderFinishers :: Int -> Int -> [Cyclist] -> [(Cyclist, Double)]
-orderFinishers trn len = List.sortBy (\x y -> compare (snd x) (snd y)) . map (Prelude.id &&& ((+fromIntegral(60*trn)) . pass)) 
+orderFinishers trn len = List.sortBy (\x y -> compare (snd x) (snd y)) . map (id &&& ((+fromIntegral(60*trn)) . pass)) 
                where pass :: Cyclist -> Double
                      pass c = ((fromIntegral len) - strt)/(speed c)
                           where
@@ -119,7 +119,7 @@ doBreakaway (Pack tLead l p pid) = do
                  then return []
                  else mapM (\b -> newID >>= return . setPackSpeed . (Breakaway b 3)) . groupByTeam . (fmap fst) $ break >< break'
   let stayPack' = if seqElem stayPack l 
-                  then [setPackSpeed (Pack tLead l (Sequence.filter ((Cyclist.id l /=) . Cyclist.id) stayPack) pid)] 
+                  then [setPackSpeed (Pack tLead l (Sequence.filter ((uid l /=) . uid) stayPack) pid)] 
                   else case viewl stayPack of
                     EmptyL -> []
                     l' :< cs -> [setPackSpeed (Pack 0 l' cs pid)]
@@ -137,7 +137,7 @@ doBreakaway p = do return [p]
   
   
 setPackSpeed :: Pack -> Pack
-setPackSpeed pack = packMap (flip updateSpeed packType) pack
+setPackSpeed pack = packMap (flip Simulation.updateSpeed packType) pack
   where
     packType = case pack of
       Pack {}      -> 'p'
