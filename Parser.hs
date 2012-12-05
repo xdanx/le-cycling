@@ -56,8 +56,7 @@ makeCyclists t n pop ln = do
                    genCProb <- getC pop mgenCProb
                    teamCProb <- getC pop mteamCProb
                    _energyLim <- getEnergLim pop
-                   let breakaway = getI mbreakaway
-                       speed = getD mspeed
+                   let speed = getD mspeed
                        distance = getD mdistance
                        tLead = getI mtLead
                    uid <- newID
