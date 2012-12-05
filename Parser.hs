@@ -48,7 +48,14 @@ parseLine l = do
 makeCyclists :: Int -> Int -> Population -> String -> RandT StdGen IO [Cyclist]
 makeCyclists t n pop ln = do
   let attr_parse = map (\(x,_:y) -> (x,y)) . map (break (==':')) . words $ ln
-      infs = ["pmax", "usedEnergy", "energyLim", "tExh", "genCProb", "teamCProb", "speed", "distance", "tLead"]
+      infs = ["pmax", "pcp", "usedEnergy", "energyLim", "genCProb", "teamCProb", "speed", "distance"]
+      [mpmax, mpcp, musedEnergy, uenergyLim, mgenCProb, mteamCProb, mspeed, mdistance] =  (map (flip lookup attr_parse) infs)
+  
+      
+{-makeCyclists :: Int -> Int -> Population -> String -> RandT StdGen IO [Cyclist]
+makeCyclists t n pop ln = do
+  let attr_parse = map (\(x,_:y) -> (x,y)) . map (break (==':')) . words $ ln
+      infs = ["pmax", "usedEnergy", "energyLim", "genCProb", "teamCProb", "speed", "distance"]
       [mpmax, mtExh, mgenCProb, mteamCProb, mspeed, mdistance, mtLead] =  (map (flip lookup attr_parse) infs)
   replicateM n (do
                    pmax <- getMax10 pop mpmax
@@ -88,3 +95,4 @@ defaultPop :: String -> Population
 defaultPop s 
   | (strip s) == "avg" = avg
   | otherwise = undefined
+-}

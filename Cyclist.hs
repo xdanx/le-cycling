@@ -15,8 +15,6 @@ data Cyclist = Cyclist {id :: Int,            -- Unique ID
                         pmax :: Double,       -- Max power (W/kg?)
                         usedEnergy :: Double, -- e_an : used aneorobic energy 
                         energyLim :: Double,  -- E_an : maximum aneorobic energy
-                        speedM10 :: Double,   -- Speed at pmax power output (m/s)
-                        tExh :: Double,       -- Time until exhaustion (by Tlim)
                         genCProb :: Double,   -- General cooperation prob
                         teamCProb :: Double,  -- Team cooperation prob
                         genCoop :: Bool,      -- Current general cooperation state
@@ -26,6 +24,30 @@ data Cyclist = Cyclist {id :: Int,            -- Unique ID
                         team :: Int           -- Team number.
                        }
                        deriving(Show)
+
+updatePmax :: Cyclist -> Double -> Cyclist
+updatePmax c x = c{pmax = x}
+
+updatePcp :: Cyclist -> Double -> Cyclist
+updatePcp c x = c{pcp = x}
+
+updateUsedEnergy :: Cyclist -> Double -> Cyclist
+updateUsedEnergy c x = c{usedEnergy = x}
+
+updateEnergyLim :: Cyclist -> Double -> Cyclist
+updateEnergyLim c x = c{energyLim = x}
+
+updateGenCProb :: Cyclist -> Double -> Cyclist
+updateGenCProb c x = c{genCProb = x}
+
+updateTeamCProb :: Cyclist -> Double -> Cyclist
+updateTeamCProb c x = c{teamCProb = x}
+
+updateSpeed :: Cyclist -> Double -> Cyclist
+updateSpeed c x = c{speed = x}
+
+updateDistance :: Cyclist -> Double -> Cyclist
+updateDistance c x = c{distance = x}
 
 {-instance Show Cyclist where
          show c = "distance: " ++ (show . distance $ c) ++ ", id: " ++ (show . Cyclist.id $ c)-}
