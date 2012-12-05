@@ -30,9 +30,10 @@ updatePosition (Race trn len packs sprint finish) = do
                    (sprintFinishers, remainingSprinters) = List.partition (\c -> (distance c) >= (fromIntegral len)) movedSprinter 
                    orderedFinishers = orderFinishers trn len $ sprintFinishers ++ packFinishers
                    newPackFuncs = coalescePacks $ remainingPacks
+                   finalSprinters = map (updateSpeed . (flip (,) 's')) (List.sort $ toSprinters ++ remainingSprinters)
                resetID
                newPacks <- sequence . map (\f -> newID >>= return . f) $ newPackFuncs
-               return (Race trn len newPacks (List.sort $ toSprinters ++ remainingSprinters) (finish ++ orderedFinishers))
+               return (Race trn len newPacks finalSprinters (finish ++ orderedFinishers))
 
 
 -- Updates the position of a Pack (Pack or Breakaway): TESTED
@@ -137,15 +138,15 @@ doBreakaway p = do return [p]
   
   
 setPackSpeed :: Pack -> Pack
-setPackSpeed pack = packMap (flip updateSpeed packType) pack
+setPackSpeed pack = packMap (updateSpeed . (flip (,) packType)) pack
   where
     packType = case pack of
       Pack {}      -> 'p'
       Breakaway {} -> 'b'
 
-updateSpeed :: Cyclist -> Char -> Cyclist
-updateSpeed c packType = c{speed = 1.76777 * spped * (tanh ((atanh (0.565685*(speed c) / spped)) + 0.538748*spped) )}
-  where spped = sqrt $ pped (c, packType)
+updateSpeed :: (Cyclist, Char) -> Cyclist
+updateSpeed cc@(c, _) = c{speed = 1.76777 * spped * (tanh ((atanh (0.565685*(speed c) / spped)) + 0.538748*spped) )}
+  where spped = sqrt $ pped cc
 
 
 pped :: (Cyclist, Char) -> Double
