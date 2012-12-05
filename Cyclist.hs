@@ -49,6 +49,9 @@ instance Ord Cyclist where
              | a < b = a
              | otherwise = b
 
+maxPower :: Cyclist -> Double
+maxPower c = pmax c * (1 - (usedEnergy c/energyLim c))
+
 genCyclist :: Int -> Population -> RandT StdGen IO Cyclist
 genCyclist team_n stats = do
            _pmax <- normal . pmaxs $ stats
