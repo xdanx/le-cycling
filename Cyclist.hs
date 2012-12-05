@@ -21,8 +21,6 @@ data Cyclist = Cyclist {id :: Int,            -- Unique ID
                         teamCProb :: Double,  -- Team cooperation prob
                         genCoop :: Bool,      -- Current general cooperation state
                         teamCoop :: Bool,     -- Current team cooperation state
-                        breakaway :: Int,     -- Breakaway state (0 : not breakaway, n > 0 breakaway
-                                              -- for n minutes or until they catch another pack )
                         speed :: Double,      -- Current speed
                         distance :: Double,   -- Current distance
                         team :: Int           -- Team number.
@@ -60,7 +58,7 @@ genCyclist team_n stats = do
            _teamCProb <- normal . coops $ stats
            _energyLim <- normal . energylims $ stats
            i <- newID
-           return Cyclist {Cyclist.id = i, pmax = _pmax, usedEnergy = 0, energyLim = _energyLim, speedM10 = exp 2.478, tExh = (1/0), genCProb = _genCProb, teamCProb = _teamCProb, breakaway = 0, speed = 0, distance = 0, team = team_n, teamCoop = True, genCoop = True}
+           return Cyclist {Cyclist.id = i, pmax = _pmax, usedEnergy = 0, energyLim = _energyLim, speedM10 = exp 2.478, tExh = (1/0), genCProb = _genCProb, teamCProb = _teamCProb, speed = 0, distance = 0, team = team_n, teamCoop = True, genCoop = True}
 
 genCyclists :: Int -> Int -> Population -> RandT StdGen IO [Cyclist]
 genCyclists n_teams team_size stats = concatMapM (\t -> replicateM team_size (genCyclist t stats)) [0..(n_teams-1)]
