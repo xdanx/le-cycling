@@ -22,7 +22,6 @@ import Utils
 data Race = Race  !Int    !Int   ![Pack]  ![Cyclist]  ![(Cyclist, Double)]
      deriving (Show)
 
--- !!! NEED TO FINISH UPDATING !!!
 -- Update position of Racers
 updatePosition :: Race -> RandT StdGen IO Race
 updatePosition (Race trn len packs sprint finish) = do
