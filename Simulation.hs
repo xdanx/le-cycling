@@ -14,7 +14,6 @@ import Control.Exception (assert)
 
 import ID
 import Cyclist
-import ID
 import Pack
 import Utils
 
@@ -146,23 +145,17 @@ setPackSpeed pack = packMap (flip updateSpeed packType) pack
 
 updateSpeed :: Cyclist -> Char -> Cyclist
 updateSpeed c packType = c{speed = 1.76777 * spped * (tanh ((atanh (0.565685*(speed c) / spped)) + 0.538748*spped) )}
-  where spped = sqrt $ pped c packType
+  where spped = sqrt $ pped (c, packType)
 
 
-pped :: Cyclist -> Char -> Double
-pped c 'p' = 0.8  * (pmax c)
-pped c 'b' = 0.9  * (pmax c)
-pped c 's' = 0.95 * (pmax c)
+pped :: (Cyclist, Char) -> Double
+pped (c, 'p') = 0.8  * (pmax c)
+pped (c, 'b') = 0.9  * (pmax c)
+pped (c, 's') = 0.95 * (pmax c)
 
 
-tlim :: Cyclist -> Double
-tlim c = exp (-6.35 * ((ptot c)/(pmax c)) + 2.478)
-     where ptot c = pair c + proll c
-                   where
-                        pair c = (speed c)^3
-                        proll c = 9.8*(cweight + bweight) * (speed c)
-                        cweight = 60
-                        bweight = 5
+updateEnergy :: (Cyclist, Char) -> Cyclist
+updateEnergy cc@(c, _) = c{usedEnergy = (usedEnergy c) + (60*((pped cc) - (pcp c)))} 
 
 
 isBreak :: Pack -> Bool
@@ -176,9 +169,9 @@ determineCoop c = do
               return $ c{genCoop = (d1 < genCProb c), teamCoop = (d2 < teamCProb c)}
 
 defLeader :: Pack -> Pack
-defLeader pack@(Pack tLead l p id)
+defLeader pack@(Pack tLead l p i)
   | (tLead > 5) || (not (genCoop l) && tLead > 1) = rotate pack 
-  | otherwise = Pack (tLead+1) l p id
+  | otherwise = Pack (tLead+1) l p i
 defLeader breakP = breakP
 
 

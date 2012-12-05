@@ -13,6 +13,7 @@ import Utils
 
 data Cyclist = Cyclist {id :: Int,            -- Unique ID
                         pmax :: Double,       -- Max power (W/kg?)
+                        pcp :: Double,        -- Maximum aneorbosfewnqgff power
                         usedEnergy :: Double, -- e_an : used aneorobic energy 
                         energyLim :: Double,  -- E_an : maximum aneorobic energy
                         genCProb :: Double,   -- General cooperation prob
@@ -80,7 +81,7 @@ genCyclist team_n stats = do
            _teamCProb <- normal . coops $ stats
            _energyLim <- normal . energylims $ stats
            i <- newID
-           return Cyclist {Cyclist.id = i, pmax = _pmax, usedEnergy = 0, energyLim = _energyLim, speedM10 = exp 2.478, tExh = (1/0), genCProb = _genCProb, teamCProb = _teamCProb, speed = 0, distance = 0, team = team_n, teamCoop = True, genCoop = True}
+           return Cyclist {Cyclist.id = i, pmax = _pmax, pcp = 0.8*_pmax, usedEnergy = 0, energyLim = _energyLim, speedM10 = exp 2.478, tExh = (1/0), genCProb = _genCProb, teamCProb = _teamCProb, speed = 0, distance = 0, team = team_n, teamCoop = True, genCoop = True}
 
 genCyclists :: Int -> Int -> Population -> RandT StdGen IO [Cyclist]
 genCyclists n_teams team_size stats = concatMapM (\t -> replicateM team_size (genCyclist t stats)) [0..(n_teams-1)]
