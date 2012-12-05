@@ -26,13 +26,14 @@ updatePosition :: Race -> RandT StdGen IO Race
 updatePosition (Race trn len packs sprint finish) = do
                let movedPacks = map updatePackPosition packs
                    movedSprinter = map (\c -> c{distance = (distance c) + 60*(speed c)}) sprint
-                   (remainingPacks, toSprinters, packFinishers) = (\(a, b, c) -> (mapMaybe id a, List.concat b, List.concat c)) . unzip3 . map (updatePack len) $ movedPacks
+                   (remainingPacks, toSprinters, packFinishers) = (\(a, b, c) -> (mapMaybe Prelude.id a, List.concat b, List.concat c)) . unzip3 . map (updatePack len) $ movedPacks
                    (sprintFinishers, remainingSprinters) = List.partition (\c -> (distance c) >= (fromIntegral len)) movedSprinter 
                    orderedFinishers = orderFinishers trn len $ sprintFinishers ++ packFinishers
                    newPackFuncs = coalescePacks $ remainingPacks
+                   finalSprinters = map (updateSpeed . (flip (,) 's')) (List.sort $ toSprinters ++ remainingSprinters)
                resetID
                newPacks <- sequence . map (\f -> newID >>= return . f) $ newPackFuncs
-               return (Race trn len newPacks (List.sort $ toSprinters ++ remainingSprinters) (finish ++ orderedFinishers))
+               return (Race trn len newPacks finalSprinters (finish ++ orderedFinishers))
 
 
 -- Updates the position of a Pack (Pack or Breakaway): TESTED
@@ -88,7 +89,7 @@ coalescePacks packs = map (toFunc) . Prelude.foldl (\(l:ls) x -> if(overlap x l)
 --Takes the number of minutes already passed, the length of the race and a list of
 -- cyclists and returns a list of pairs of cyclists and their respective finishing times : TESTED
 orderFinishers :: Int -> Int -> [Cyclist] -> [(Cyclist, Double)]
-orderFinishers trn len = List.sortBy (\x y -> compare (snd x) (snd y)) . map (id &&& ((+fromIntegral(60*trn)) . pass)) 
+orderFinishers trn len = List.sortBy (\x y -> compare (snd x) (snd y)) . map (Prelude.id &&& ((+fromIntegral(60*trn)) . pass)) 
                where pass :: Cyclist -> Double
                      pass c = ((fromIntegral len) - strt)/(speed c)
                           where
@@ -137,15 +138,15 @@ doBreakaway p = do return [p]
   
   
 setPackSpeed :: Pack -> Pack
-setPackSpeed pack = packMap (flip Simulation.updateSpeed packType) pack
+setPackSpeed pack = packMap (updateSpeed . (flip (,) packType)) pack
   where
     packType = case pack of
       Pack {}      -> 'p'
       Breakaway {} -> 'b'
 
-updateSpeed :: Cyclist -> Char -> Cyclist
-updateSpeed c packType = c{speed = 1.76777 * spped * (tanh ((atanh (0.565685*(speed c) / spped)) + 0.538748*spped) )}
-  where spped = sqrt $ pped (c, packType)
+updateSpeed :: (Cyclist, Char) -> Cyclist
+updateSpeed cc@(c, _) = c{speed = 1.76777 * spped * (tanh ((atanh (0.565685*(speed c) / spped)) + 0.538748*spped) )}
+  where spped = sqrt $ pped cc
 
 
 pped :: (Cyclist, Char) -> Double
