@@ -145,10 +145,11 @@ setPackSpeed pack = packMap (updateSpeed . (flip (,) packType)) pack
       Breakaway {} -> 'b'
 
 updateSpeed :: (Cyclist, Char) -> Cyclist
-updateSpeed cc@(c, _) = c{speed = 1.76777 * spped * (tanh ((atanh (0.565685*(speed c) / spped)) + 0.538748*spped) )}
+updateSpeed cc@(c, _) = c{speed = 1.76777 * spped * (tanh ((atanh (0.565685*(speed c) / spped)) + 0.538748*spped))}
   where spped = sqrt $ pped cc
 
 
+-- WRONG - has to be avg for a pack.
 pped :: (Cyclist, Char) -> Double
 pped (c, 'p') = 0.8  * (pmax c)
 pped (c, 'b') = 0.9  * (pmax c)
@@ -185,5 +186,6 @@ turn (Race trn len r s win) = do
      let   (Race _ _ r'' _ _) = updateBrkTime (Race trn len r' s win)
            r''' = map defLeader r''
      cyclists <- concatMapM doBreakaway r'''
+     cyclists' <- packMap ()
      updatePosition $ (Race (trn + 1) len cyclists s win)
 
