@@ -11,20 +11,21 @@ import Population
 import Stats
 import Utils
 
-data Cyclist = Cyclist {id :: Int,           -- Unique ID
-                        pmax :: Double,      -- Max power (W/kg?)
-                        pcp :: Double,       -- Maximum power sustainable to oo
-                        speedM10 :: Double,  -- Speed at pmax power output (m/s)
-                        tExh :: Double,      -- Time until exhaustion (by Tlim)
-                        genCProb :: Double,  -- General cooperation prob
-                        teamCProb :: Double, -- Team cooperation prob
-                        genCoop :: Bool,     -- Current general cooperation state
-                        teamCoop :: Bool,    -- Current team cooperation state
-                        breakaway :: Int,    -- Breakaway state (0 : not breakaway, n > 0 breakaway
-                                             -- for n minutes or until they catch another pack )
-                        speed :: Double,     -- Current speed
-                        distance :: Double,  -- Current distance
-                        team :: Int          -- Team number.
+data Cyclist = Cyclist {id :: Int,            -- Unique ID
+                        pmax :: Double,       -- Max power (W/kg?)
+                        usedEnergy :: Double, -- e_an : used aneorobic energy 
+                        energyLim :: Double,  -- E_an : maximum aneorobic energy
+                        speedM10 :: Double,   -- Speed at pmax power output (m/s)
+                        tExh :: Double,       -- Time until exhaustion (by Tlim)
+                        genCProb :: Double,   -- General cooperation prob
+                        teamCProb :: Double,  -- Team cooperation prob
+                        genCoop :: Bool,      -- Current general cooperation state
+                        teamCoop :: Bool,     -- Current team cooperation state
+                        breakaway :: Int,     -- Breakaway state (0 : not breakaway, n > 0 breakaway
+                                              -- for n minutes or until they catch another pack )
+                        speed :: Double,      -- Current speed
+                        distance :: Double,   -- Current distance
+                        team :: Int           -- Team number.
                        }
                        deriving(Show)
 
@@ -57,8 +58,9 @@ genCyclist team_n stats = do
            _pmax <- normal . pmaxs $ stats
            _genCProb <- normal . coops $ stats
            _teamCProb <- normal . coops $ stats
+           _energyLim <- normal . energylims $ stats
            i <- newID
-           return Cyclist {Cyclist.id = i, pmax = _pmax, speedM10 = exp 2.478, tExh = (1/0), genCProb = _genCProb, teamCProb = _teamCProb, breakaway = 0, speed = 0, distance = 0, team = team_n, teamCoop = True, genCoop = True}
+           return Cyclist {Cyclist.id = i, pmax = _pmax, usedEnergy = 0, energyLim = _energyLim, speedM10 = exp 2.478, tExh = (1/0), genCProb = _genCProb, teamCProb = _teamCProb, breakaway = 0, speed = 0, distance = 0, team = team_n, teamCoop = True, genCoop = True}
 
 genCyclists :: Int -> Int -> Population -> RandT StdGen IO [Cyclist]
 genCyclists n_teams team_size stats = concatMapM (\t -> replicateM team_size (genCyclist t stats)) [0..(n_teams-1)]
