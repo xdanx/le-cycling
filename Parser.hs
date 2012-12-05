@@ -55,7 +55,7 @@ makeCyclists t n pop ln = do
                    let tExh = getE_rem mtExh
                    genCProb <- getC pop mgenCProb
                    teamCProb <- getC pop mteamCProb
-                   _energyLim <- getEnergLim pop 
+                   _energyLim <- getEnergyLim pop 
                    let breakaway = getI mbreakaway
                        speed = getD mspeed
                        distance = getD mdistance
