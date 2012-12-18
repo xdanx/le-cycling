@@ -138,18 +138,18 @@ doBreakaway p = do return [p]
   
   
 setPackSpeed :: Pack -> Pack
-setPackSpeed pack = packMap (updateSpeed . (flip (,) packType)) pack
-  where
-    packType = case pack of
-      Pack {}      -> 'p'
-      Breakaway {} -> 'b'
+setPackSpeed pack@(Pack tLead l p pid) = 
 
-updateSpeed :: (Cyclist, Char) -> Cyclist
-updateSpeed cc@(c, _) = c{speed = 1.76777 * spped * (tanh ((atanh (0.565685*(speed c) / spped)) + 0.538748*spped))}
-  where spped = sqrt $ pped cc
+setPackSpeed pack@(Breakaway p t pid) = pack
+
+avgPPED :: (Seq Cyclist) -> Double
+avgPPED p = (Fold.foldl + 0 (fmap ((*0.8) . pmax) p)) / (Sequence.length p)
+
+setSprinterSpeed :: Cyclist -> Cyclist
+setSprinterSpeed c = c{speed = 1.76777 * spped * (tanh ((atanh (0.565685*(speed c) / spped)) + 0.538748*spped)}
+  where spped = sqrt (0.95 * (pmax c))
 
 
--- WRONG - has to be avg for a pack.
 pped :: (Cyclist, Char) -> Double
 pped (c, 'p') = 0.8  * (pmax c)
 pped (c, 'b') = 0.9  * (pmax c)
@@ -186,6 +186,6 @@ turn (Race trn len r s win) = do
      let   (Race _ _ r'' _ _) = updateBrkTime (Race trn len r' s win)
            r''' = map defLeader r''
      cyclists <- concatMapM doBreakaway r'''
-     cyclists' <- packMap ()
+     
      updatePosition $ (Race (trn + 1) len cyclists s win)
 
