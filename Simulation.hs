@@ -186,6 +186,9 @@ defLeader breakP = breakP
 
 turn :: Race -> RandT StdGen IO Race
 turn (Race trn len r s win) = do
+     map (updateEnergy . (,'s')) s
+     map (updateEnergy . (,'b')) $ filter (isBreak) r
+     map (updateEnergy . (,'p')) $ filter (not . isBreak) r
      let reCompute = (trn `mod` 5 == 0)
      r' <- if reCompute
             then sequence (map (packMapM determineCoop) r) 
@@ -193,6 +196,5 @@ turn (Race trn len r s win) = do
      let   (Race _ _ r'' _ _) = updateBrkTime (Race trn len r' s win)
            r''' = map defLeader r''
      cyclists <- concatMapM doBreakaway r'''
-     
      updatePosition $ (Race (trn + 1) len cyclists s win)
 
