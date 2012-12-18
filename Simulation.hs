@@ -138,7 +138,7 @@ doBreakaway p = do return [p]
   
   
 setPackSpeed :: Pack -> Pack
-setPackSpeed pack@(Pack tLead l p pid) = 
+setPackSpeed pack@(Pack tLead l p pid) = undefined -- deal with later
 
 setPackSpeed pack@(Breakaway p t pid) = pack
 
@@ -146,8 +146,8 @@ avgPPED :: (Seq Cyclist) -> Double
 avgPPED p = (Fold.foldl + 0 (fmap ((*0.8) . pmax) p)) / (Sequence.length p)
 
 setSprinterSpeed :: Cyclist -> Cyclist
-setSprinterSpeed c = c{speed = 1.76777 * spped * (tanh ((atanh (0.565685*(speed c) / spped)) + 0.538748*spped)}
-  where spped = sqrt (0.95 * (pmax c))}
+setSprinterSpeed c = c{speed = 1.76777 * spped * (tanh ((atanh (0.565685*(speed c) / spped)) + 0.538748*spped))}
+  where spped = sqrt (0.95 * (pmax c))
 
 
 pped :: (Cyclist, Char) -> Double
