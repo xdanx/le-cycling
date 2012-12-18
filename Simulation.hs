@@ -147,7 +147,7 @@ avgPPED p = (Fold.foldl + 0 (fmap ((*0.8) . pmax) p)) / (Sequence.length p)
 
 setSprinterSpeed :: Cyclist -> Cyclist
 setSprinterSpeed c = c{speed = 1.76777 * spped * (tanh ((atanh (0.565685*(speed c) / spped)) + 0.538748*spped)}
-  where spped = sqrt (0.95 * (pmax c))
+  where spped = sqrt (0.95 * (pmax c))}
 
 
 pped :: (Cyclist, Char) -> Double
