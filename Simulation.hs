@@ -30,7 +30,7 @@ updatePosition (Race trn len packs sprint finish) = do
                    (sprintFinishers, remainingSprinters) = List.partition (\c -> (distance c) >= (fromIntegral len)) movedSprinter 
                    orderedFinishers = orderFinishers trn len $ sprintFinishers ++ packFinishers
                    newPackFuncs = coalescePacks $ remainingPacks
-                   finalSprinters = map (updateSpeed . (flip (,) 's')) (List.sort $ toSprinters ++ remainingSprinters)
+                   finalSprinters = map setSprinterSpeed (List.sort $ toSprinters ++ remainingSprinters)
                resetID
                newPacks <- sequence . map (\f -> newID >>= return . f) $ newPackFuncs
                return (Race trn len newPacks finalSprinters (finish ++ orderedFinishers))
@@ -143,7 +143,7 @@ setPackSpeed pack@(Pack tLead l p pid) = undefined -- deal with later
 setPackSpeed pack@(Breakaway p t pid) = pack
 
 avgPPED :: (Seq Cyclist) -> Double
-avgPPED p = (Fold.foldl + 0 (fmap ((*0.8) . pmax) p)) / (Sequence.length p)
+avgPPED p = (Fold.foldl (+) 0 (fmap ((*0.8) . pmax) p)) / (fromIntegral $ Sequence.length p)
 
 setSprinterSpeed :: Cyclist -> Cyclist
 setSprinterSpeed c = c{speed = 1.76777 * spped * (tanh ((atanh (0.565685*(speed c) / spped)) + 0.538748*spped))}
