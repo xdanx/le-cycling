@@ -139,11 +139,12 @@ doBreakaway p = do return [p]
   
 setPackSpeed :: Pack -> Pack
 setPackSpeed pack@(Pack tLead l p pid) = undefined -- deal with later
-
-setPackSpeed pack@(Breakaway p t pid) = packMap (\c -> c{speed = newSpeed c}) p
+setPackSpeed pack@(Breakaway p t pid) = packMap (\c -> c{speed = newSpeed}) pack
   where 
-    newSpeed = (\c -> 1.76777 * bpped * (tanh ((atanh (0.565685*(speed c) / bpped)) + 0.538748*bpped)))
+    newSpeed = 1.76777 * bpped * (tanh ((atanh (0.565685*(speed someCyclist) / bpped)) + 0.538748*bpped))
     bpped = sqrt (0.9 * (avgpmax p))
+    someCyclist = case viewl p of
+      (c :< p') -> c
 
 avgpmax :: (Seq Cyclist) -> Double
 avgpmax p = (Fold.foldl (+) 0 (fmap pmax p)) / (fromIntegral $ Sequence.length p)
