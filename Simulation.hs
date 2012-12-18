@@ -1,3 +1,4 @@
+{-# LANGUAGE TupleSections #-}
 module Simulation where
 
 import Control.Arrow
@@ -186,10 +187,11 @@ defLeader breakP = breakP
 
 turn :: Race -> RandT StdGen IO Race
 turn (Race trn len r s win) = do
-     map (updateEnergy . (,'s')) s
-     map (updateEnergy . (,'b')) $ filter (isBreak) r
-     map (updateEnergy . (,'p')) $ filter (not . isBreak) r
-     let reCompute = (trn `mod` 5 == 0)
+     let
+        t1 = map (updateEnergy . (,'s')) s
+        t2 = map (packMap (updateEnergy . (,'b'))) $ List.filter (isBreak) r
+        t3 = map (packMap (updateEnergy . (,'p'))) $ List.filter (not . isBreak) r
+        reCompute = (trn `mod` 5 == 0)
      r' <- if reCompute
             then sequence (map (packMapM determineCoop) r) 
             else return r
