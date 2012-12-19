@@ -1,13 +1,13 @@
-{-# LANGUAGE DoAndIfThenElse TupleSections #-}
+{-# LANGUAGE DoAndIfThenElse, TupleSections #-}
 
+import Control.Monad
 import Control.Monad.Random
 import Control.Monad.Trans.Class
 import Data.IORef
 import Data.List
 import Graphics.Rendering.OpenGL
-
-import Graphics.UI.GLUT
 import Graphics.SimplePlot
+import Graphics.UI.GLUT
 import System.Environment
 import System.Exit
 import System.Mem
@@ -28,16 +28,11 @@ main = do
      let (opt, rest) = partition ((=='-'). head) args 
          [graphics, plt] = map (flip elem opt) $ validOption
          correct = (length rest == 1) && (and . map (flip elem validOption) $ opt)
-     if not correct
-       then usage
-       else return ()
-     if graphics
-        then
-       do
-         initialize progname []
-         createWindow progname
-         clear [ColorBuffer]
-        else return ()
+     unless correct usage
+     when graphics $ do
+                        initialize progname []
+                        createWindow progname
+                        clear [ColorBuffer]
      r <- (genRace (head rest) >>= newIORef)
      if graphics
        then 
@@ -52,20 +47,16 @@ main = do
             loop graphics r
      (Race _ _ _ _ leader_board) <- readIORef r
      print leader_board
-     if plt
-            then plot X11 $ Data2D [Style Graphics.SimplePlot.Lines, Title "Classment agains cooperation probability", Graphics.SimplePlot.Color Graphics.SimplePlot.Blue] [] (zip [1..] (map (genCProb . fst) leader_board))
-            else return True
+     when plt $ (plot X11 $ Data2D [Style Graphics.SimplePlot.Lines, Title "Classment agains cooperation probability", Graphics.SimplePlot.Color Graphics.SimplePlot.Blue] [] (zip [1..] (map (genCProb . fst) leader_board))) >> return ()
      exit
 
 loop :: Bool -> IORef Race -> IO ()
-loop rend ref = do 
+loop rend ref = do
   r <- readIORef ref
   g <- getStdGen
   n <- evalRandT (turn r) g
   writeIORef ref n
-  if rend
-     then render ref
-     else return ()
+  when rend $ render ref
   case n of
     (Race _ _ [] [] _) -> if rend
                              then leaveMainLoop
