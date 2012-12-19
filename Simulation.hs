@@ -27,13 +27,12 @@ updatePosition :: Race -> RandT StdGen IO Race
 updatePosition (Race trn len packs sprint finish) = do
                let movedPacks = map updatePackPosition packs
                    movedSprinter = map (\c -> c{distance = (distance c) + 60*(speed c)}) sprint
-                   (remainingPacks, toSprinters, packFinishers) = (\(a, b, c) -> (mapMaybe Prelude.id a, List.concat b, List.concat c)) . unzip3 . map (updatePack len) $ movedPacks
+                   (remainingPacks, toSprinters, packFinishers) = (\(a, b, c) -> (mapMaybe id a, List.concat b, List.concat c)) . unzip3 . map (updatePack len) $ movedPacks
                    (sprintFinishers, remainingSprinters) = List.partition (\c -> (distance c) >= (fromIntegral len)) movedSprinter 
                    orderedFinishers = orderFinishers trn len $ sprintFinishers ++ packFinishers
                    newPackFuncs = coalescePacks $ remainingPacks
                    finalSprinters = map setSprinterSpeed (List.sort $ toSprinters ++ remainingSprinters)
-               resetID
-               newPacks <- sequence . map (\f -> newID >>= return . f) $ newPackFuncs
+               newPacks <- mapM (\f -> newID >>= return . f) $ newPackFuncs
                return (Race trn len newPacks finalSprinters (finish ++ orderedFinishers))
 
 
@@ -90,7 +89,7 @@ coalescePacks packs = map (toFunc) . Prelude.foldl (\(l:ls) x -> if(overlap x l)
 --Takes the number of minutes already passed, the length of the race and a list of
 -- cyclists and returns a list of pairs of cyclists and their respective finishing times : TESTED
 orderFinishers :: Int -> Int -> [Cyclist] -> [(Cyclist, Double)]
-orderFinishers trn len = List.sortBy (\x y -> compare (snd x) (snd y)) . map (Prelude.id &&& ((+fromIntegral(60*trn)) . pass)) 
+orderFinishers trn len = List.sortBy (\x y -> compare (snd x) (snd y)) . map (id &&& ((+fromIntegral(60*trn)) . pass)) 
                where pass :: Cyclist -> Double
                      pass c = ((fromIntegral len) - strt)/(speed c)
                           where
@@ -191,7 +190,7 @@ turn (Race trn len r s win) = do
         s' = map (updateEnergy . (,'s')) s
         r' = map (\p -> packMap (updateEnergy . (,if(isBreak p) then 'b' else 'p')) p) r
      r'' <- if (trn `mod` 5 == 0)
-               then sequence (map (packMapM determineCoop) r') 
+               then mapM (packMapM determineCoop) r'
                else return r'
      let   (Race _ _ r''' _ _) = updateBrkTime (Race trn len r'' s' win)
            r'''' = map defLeader r'''
