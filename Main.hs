@@ -33,19 +33,17 @@ main = do
                         initialize progname []
                         createWindow progname
                         clear [ColorBuffer]
-     r <- (genRace (head rest) >>= newIORef)
+     ref <- (genRace (head rest) >>= newIORef)
      if graphics
        then 
          do
-           render r
-           displayCallback $= (render r)
+           render ref
+           displayCallback $= render ref
            actionOnWindowClose $= ContinueExectuion
-           addTimerCallback time (loop graphics r)
+           addTimerCallback time $ loop graphics ref
            mainLoop
-       else
-          do
-            loop graphics r
-     (Race _ _ _ _ leader_board) <- readIORef r
+       else loop graphics ref
+     (Race _ _ _ _ leader_board) <- readIORef ref
      print leader_board
      when plt . void . plot X11 . Data2D [Style Graphics.SimplePlot.Lines, Title "Classment agains cooperation probability", Graphics.SimplePlot.Color Graphics.SimplePlot.Blue] [] . zip [1..] . map (genCProb . fst) $ leader_board
      exit
@@ -53,15 +51,12 @@ main = do
 loop :: Bool -> IORef Race -> IO ()
 loop rend ref = do
   r <- readIORef ref
-  g <- getStdGen
-  n <- evalRandT (turn r) g
+  n <- getStdGen >>= evalRandT (turn r)
   writeIORef ref n
   when rend $ render ref
   case n of
     (Race _ _ [] [] _) -> when rend leaveMainLoop
-    (Race _ _ _ _ _) -> if rend
-                             then addTimerCallback time (loop rend ref)
-                             else loop rend ref
+    (Race _ _ _ _ _) -> (if rend then addTimerCallback time else id) $ loop rend ref
   
 usage :: IO ()
 usage = do
