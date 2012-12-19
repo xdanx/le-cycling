@@ -47,7 +47,7 @@ main = do
             loop graphics r
      (Race _ _ _ _ leader_board) <- readIORef r
      print leader_board
-     when plt $ (plot X11 $ Data2D [Style Graphics.SimplePlot.Lines, Title "Classment agains cooperation probability", Graphics.SimplePlot.Color Graphics.SimplePlot.Blue] [] (zip [1..] (map (genCProb . fst) leader_board))) >> return ()
+     when plt . void . plot X11 . Data2D [Style Graphics.SimplePlot.Lines, Title "Classment agains cooperation probability", Graphics.SimplePlot.Color Graphics.SimplePlot.Blue] [] . zip [1..] . map (genCProb . fst) $ leader_board
      exit
 
 loop :: Bool -> IORef Race -> IO ()
