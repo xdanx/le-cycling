@@ -25,7 +25,7 @@ data Race = Race  !Int    !Int   ![Pack]  ![Cyclist]  ![(Cyclist, Double)]
 -- Update position of Racers
 updatePosition :: Race -> RandT StdGen IO Race
 updatePosition (Race trn len packs sprint finish) = do
-               let movedPacks = map updatePackPosition packs
+               let movedPacks = map updatePackPosition . List.filter (not . isEmpty) $ packs
                    movedSprinter = map (\c -> c{distance = (distance c) + 60*(speed c)}) sprint
                    (remainingPacks, toSprinters, packFinishers) = (\(a, b, c) -> (mapMaybe id a, List.concat b, List.concat c)) . unzip3 . map (updatePack len) $ movedPacks
                    (sprintFinishers, remainingSprinters) = List.partition (\c -> (distance c) >= (fromIntegral len)) movedSprinter 
@@ -33,7 +33,7 @@ updatePosition (Race trn len packs sprint finish) = do
                    newPackFuncs = coalescePacks $ remainingPacks
                    finalSprinters = map setSprinterSpeed (List.sort $ toSprinters ++ remainingSprinters)
                newPacks <- mapM (\f -> newID >>= return . f) $ newPackFuncs
-               when (List.or . map isEmpty $ newPacks) . liftIO . print $ "The fuck you playing at fool?"
+               when (List.or . map isEmpty $ newPacks) . liftIO . putStrLn $ "The fuck you playing at fool?"
                return (Race trn len newPacks finalSprinters (finish ++ orderedFinishers))
 
 
@@ -116,7 +116,7 @@ doBreakaway (Pack tLead l p pid) = do
       (inBrkTeams, rest) = (Sequence.partition ((seqElem brkTeams) . team)) . (fmap fst) $ stay
   dec' <- Sequence.replicateM (Sequence.length inBrkTeams) (getRandom :: RandT StdGen IO Double)
   let (break', stay') = Sequence.partition (\(c, d) -> (genCProb c) < d) (Sequence.zip inBrkTeams dec')  
-      stayPack = (fmap fst stay') >< rest >< (fmap fst stay)
+      stayPack = (fmap fst stay') >< rest
   brkPacks <- if((break >< break') == empty)
                  then return []
                  else mapM (\b -> newID >>= return . setPackSpeed . (Breakaway b 3)) . groupByTeam . (fmap fst) $ break >< break'
@@ -196,5 +196,8 @@ turn (Race trn len r s win) = do
      let   (Race _ _ r''' _ _) = updateBrkTime (Race trn len r'' s' win)
            r'''' = map defLeader r'''
      cyclists <- concatMapM doBreakaway r''''
+     let before = List.sum . map numCyclists $ r''''
+         after = List.sum . map numCyclists $ cyclists
+     when (before /= after) . liftIO . putStrLn $ "You being foolish again fool, before: " ++ show before ++ ", after: " ++ show after
      updatePosition $ (Race (trn + 1) len cyclists s' win)
 

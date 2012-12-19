@@ -74,6 +74,10 @@ isEmpty :: Pack -> Bool
 isEmpty (Breakaway cs _ _) = cs == empty
 isEmpty _ = True
 
+numCyclists :: Pack -> Int
+numCyclists (Breakaway cs _ _) = Sequence.length cs
+numCyclists (Pack _ _ cs _) = Sequence.length cs + 1
+
 -- Broken (halfway throught conversion), but probably useless.
 -- unpack :: [Pack] -> [Cyclist] 
 -- unpack [] = []
