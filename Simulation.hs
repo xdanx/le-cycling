@@ -45,7 +45,7 @@ updatePackPosition (Breakaway pack time uid) = (Breakaway (fmap (\c -> c{distanc
 
 --Splits pack into Pack, sprinters and finishers : TESTED
 updatePack :: Int -> Pack -> (Maybe Pack, [Cyclist], [Cyclist])
-updatePack len (Pack tLead leader pack puid) = if(t /= EmptyL)
+updatePack len (Pack tLead leader pack puid) = if(t == EmptyL)
            then (Nothing, Fold.toList sprinters, Fold.toList finishers)
            else if (Fold.or . fmap (\c -> (uid c) == (uid leader)) $ remainingPack) 
                    then ((Just $ Pack tLead leader (Sequence.filter (\c -> uid c /= uid leader) remainingPack) puid), Fold.toList sprinters, Fold.toList finishers)
