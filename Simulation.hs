@@ -198,6 +198,6 @@ turn (Race trn len r s win) = do
      cyclists <- concatMapM doBreakaway r''''
      let before = List.sum . map numCyclists $ r''''
          after = List.sum . map numCyclists $ cyclists
-     when (before /= after) . liftIO . putStrLn $ "You being foolish again fool, before: " ++ show before ++ ", after: " ++ show after
+     when (before /= after) . liftIO . putStrLn $ "You being foolish again fool, before: " ++ show before ++ ", after: " ++ show after ++ (if before < 5 then show r'''' ++ ", " ++ show cyclists else "")
      updatePosition $ (Race (trn + 1) len cyclists s' win)
 
