@@ -70,6 +70,9 @@ getPack :: Pack -> Seq Cyclist
 getPack (Pack _ leader pack _) = leader <| pack
 getPack (Breakaway pack _ _) = pack
 
+isEmpty :: Pack -> Bool
+isEmpty (Breakaway cs _ _) = cs == empty
+isEmpty _ = True
 
 -- Broken (halfway throught conversion), but probably useless.
 -- unpack :: [Pack] -> [Cyclist] 

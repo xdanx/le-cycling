@@ -33,6 +33,7 @@ updatePosition (Race trn len packs sprint finish) = do
                    newPackFuncs = coalescePacks $ remainingPacks
                    finalSprinters = map setSprinterSpeed (List.sort $ toSprinters ++ remainingSprinters)
                newPacks <- mapM (\f -> newID >>= return . f) $ newPackFuncs
+               when (List.or . map isEmpty $ newPacks) . liftIO . print $ "The fuck you playing at fool?"
                return (Race trn len newPacks finalSprinters (finish ++ orderedFinishers))
 
 
@@ -115,7 +116,7 @@ doBreakaway (Pack tLead l p pid) = do
       (inBrkTeams, rest) = (Sequence.partition ((seqElem brkTeams) . team)) . (fmap fst) $ stay
   dec' <- Sequence.replicateM (Sequence.length inBrkTeams) (getRandom :: RandT StdGen IO Double)
   let (break', stay') = Sequence.partition (\(c, d) -> (genCProb c) < d) (Sequence.zip inBrkTeams dec')  
-      stayPack = (fmap fst stay') >< rest
+      stayPack = (fmap fst stay') >< rest >< (fmap fst stay)
   brkPacks <- if((break >< break') == empty)
                  then return []
                  else mapM (\b -> newID >>= return . setPackSpeed . (Breakaway b 3)) . groupByTeam . (fmap fst) $ break >< break'
