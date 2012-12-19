@@ -58,9 +58,7 @@ loop rend ref = do
   writeIORef ref n
   when rend $ render ref
   case n of
-    (Race _ _ [] [] _) -> if rend
-                             then leaveMainLoop
-                             else return ()
+    (Race _ _ [] [] _) -> when rend leaveMainLoop
     (Race _ _ _ _ _) -> if rend
                              then addTimerCallback time (loop rend ref)
                              else loop rend ref

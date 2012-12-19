@@ -1,4 +1,4 @@
-{-# LANGUAGE TupleSections #-}
+{-# LANGUAGE TupleSections, BangPatterns #-}
 module Simulation where
 
 import Control.Arrow
@@ -190,10 +190,9 @@ turn (Race trn len r s win) = do
      let
         s' = map (updateEnergy . (,'s')) s
         r' = map (\p -> packMap (updateEnergy . (,if(isBreak p) then 'b' else 'p')) p) r
-        reCompute = (trn `mod` 5 == 0)
-     r'' <- if reCompute
-            then sequence (map (packMapM determineCoop) r') 
-            else return r'
+     r'' <- if (trn `mod` 5 == 0)
+               then sequence (map (packMapM determineCoop) r') 
+               else return r'
      let   (Race _ _ r''' _ _) = updateBrkTime (Race trn len r'' s' win)
            r'''' = map defLeader r'''
      cyclists <- concatMapM doBreakaway r''''
