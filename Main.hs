@@ -1,5 +1,4 @@
-{-# LANGUAGE DoAndIfThenElse #-}
-{-# LANGUAGE TupleSections #-}
+{-# LANGUAGE DoAndIfThenElse TupleSections #-}
 
 import Control.Monad.Random
 import Control.Monad.Trans.Class
