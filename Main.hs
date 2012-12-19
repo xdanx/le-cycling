@@ -63,23 +63,19 @@ loop_wrapper :: IORef Race -> IO ()
 loop_wrapper ref = do
              r <- readIORef ref
              g <- getStdGen
-             nr <- evalRandT (loop r) g
+             nr <- evalRandT (turn r) g
+             performGC
              writeIORef ref nr
              render ref
              case nr of
                   (Race _ _ [] [] _) -> leaveMainLoop
                   (Race _ _ _ _ _) -> addTimerCallback time (loop_wrapper ref)
 
-loop :: Race -> RandT StdGen IO Race
-loop r = do
-     n <- turn r
-     lift performGC
-     return n
-
 looper :: IORef Race -> RandT StdGen IO ()
 looper ref = do 
   r <- lift . readIORef $ ref
-  n <- loop r
+  n <- turn r
+  lift performGC
   lift . writeIORef ref $ n
   case n of
     (Race _ _ [] [] _) -> return ()
