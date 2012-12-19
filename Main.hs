@@ -46,12 +46,11 @@ main = do
            render r
            displayCallback $= (render r)
            actionOnWindowClose $= ContinueExectuion
-           addTimerCallback time (loop_wrapper r)
+           addTimerCallback time (loop graphics r)
            mainLoop
        else
           do
-            g <- getStdGen
-            runRandT (looper r) g >>= return . fst
+            loop graphics r
      (Race _ _ _ _ leader_board) <- readIORef r
      print leader_board
      if plt
@@ -59,27 +58,22 @@ main = do
             else return True
      exit
 
-loop_wrapper :: IORef Race -> IO ()
-loop_wrapper ref = do
-             r <- readIORef ref
-             g <- getStdGen
-             nr <- evalRandT (turn r) g
-             performGC
-             writeIORef ref nr
-             render ref
-             case nr of
-                  (Race _ _ [] [] _) -> leaveMainLoop
-                  (Race _ _ _ _ _) -> addTimerCallback time (loop_wrapper ref)
-
-looper :: IORef Race -> RandT StdGen IO ()
-looper ref = do 
-  r <- lift . readIORef $ ref
-  n <- turn r
-  lift performGC
-  lift . writeIORef ref $ n
+loop :: Bool -> IORef Race -> IO ()
+loop rend ref = do 
+  r <- readIORef ref
+  g <- getStdGen
+  n <- evalRandT (turn r) g
+  writeIORef ref n
+  if rend
+     then render ref
+     else return ()
   case n of
-    (Race _ _ [] [] _) -> return ()
-    (Race _ _ _ _ _) -> looper ref
+    (Race _ _ [] [] _) -> if rend
+                             then leaveMainLoop
+                             else return ()
+    (Race _ _ _ _ _) -> if rend
+                             then addTimerCallback time (loop rend ref)
+                             else loop rend ref
   
 usage :: IO ()
 usage = do
