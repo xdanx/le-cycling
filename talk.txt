@@ -5,13 +5,17 @@ eta = 1
 
 y = ((eta * l_c) / (gamma * r_w)) * F_ped
   = F_ped / (gamma * r_w)
-  = 
+  = P_ped/ (gamma * r_w * ang_v)
+  = P_ped / (gamma * r_w * x' * 2 * pi/r_w)
+  = P_ped / (gamma * x' * 2 * pi)
 
 
 
 dif:
 
-0.3215625*(dx/dt)^2 + 63*dx^2/d^2t = pped
+0.3215625*(dx/dt)^2 + 63*dx^2/d^2t = y
+0.3215625*(x')^2 + 63*x'' = P_ped/(47.123889804 * x')
+15.1533*x'^3 + 2968.8050577*x'*x'' = P_ped
 
 vars:
 
@@ -21,3 +25,6 @@ c_d = 0.7
 A   = 0.75
 l_c = 0.2
 eta = 1
+r = 0.35
+gamma = 7.5
+gamma * 2 * pi = 15*pi = 47.123889804
