@@ -1,0 +1,23 @@
+P_ped = ang_v * F_ped
+ang_v = x'*2*pi/r
+l_c * F_ped = T_ped
+eta = 1
+
+y = ((eta * l_c) / (gamma * r_w)) * F_ped
+  = F_ped / (gamma * r_w)
+  = 
+
+
+
+dif:
+
+0.3215625*(dx/dt)^2 + 63*dx^2/d^2t = pped
+
+vars:
+
+m   = 63
+row = 1.225
+c_d = 0.7
+A   = 0.75
+l_c = 0.2
+eta = 1

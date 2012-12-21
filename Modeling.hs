@@ -34,4 +34,3 @@ pped (c, 's') = 0.95 * (pmax c)
 
 updateEnergy :: (Cyclist, Char) -> Cyclist
 updateEnergy cc@(c, _) = c{usedEnergy = (usedEnergy c) + (60*((pped cc) - (pcp c)))} 
-
