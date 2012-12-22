@@ -4,14 +4,14 @@ l_c * F_ped = T_ped
 eta = 1
 
 y = ((eta * l_c) / (gamma * r_w)) * F_ped
-  = F_ped / (gamma * r_w)
-  = P_ped/ (gamma * r_w * ang_v)
-  = P_ped / (gamma * r_w * x' * 2 * pi/r_w)
-  = P_ped / (gamma * x' * 2 * pi)
+  = l_c * F_ped / (gamma * r_w)
+  = l_c * P_ped/ (gamma * r_w * ang_v)
+  = l_c * P_ped / (gamma * r_w * x' * 2 * pi/r_w)
+  = l_c * P_ped / (gamma * x' * 2 * pi)
 
 
 
-dif:
+differential equation:
 
 0.3215625*(dx/dt)^2 + 63*dx^2/d^2t = y
 0.3215625*(x')^2 + 63*x'' = P_ped/(47.123889804 * x')
@@ -25,6 +25,12 @@ c_d = 0.7
 A   = 0.75
 l_c = 0.2
 eta = 1
-r = 0.35
+r_w = 0.35
 gamma = 7.5
 gamma * 2 * pi = 15*pi = 47.123889804
+
+differential equation solution:
+
+boundary condition, x(0) = 0
+
+x(t) = ((gothic x)|->(80.8027 log(0.00484112 P^(2/3)+0.0119798 P^(1/3) (gothic x)+0.0296449 (gothic x)^2)-161.605 log(0.0695781 P^(1/3)-0.172177 (gothic x))-279.909 tan^(-1)((2.85740 (gothic x))/P^(1/3)+0.577350))/P^(1/3))^(-1)(c_1+t)

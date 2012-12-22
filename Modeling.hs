@@ -1,4 +1,4 @@
-module Modeling where
+3module Modeling where
 
 import Data.Foldable as Fold
 import Data.Sequence as Sequence
