@@ -137,10 +137,6 @@ doBreakaway (Pack tLead l p pid) = do
 
 doBreakaway p = do return [p]
   
-isBreak :: Pack -> Bool
-isBreak (Pack {})      = False
-isBreak (Breakaway {}) = True
-
 determineCoop :: Cyclist -> RandT StdGen IO Cyclist
 determineCoop c = do
               d1 <- getRandom :: RandT StdGen IO Double

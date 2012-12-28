@@ -14,3 +14,4 @@ seqElem seq e =
     a :< seq' -> if a == e 
                     then True
                     else seqElem seq' e
+
