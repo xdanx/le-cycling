@@ -96,7 +96,6 @@ orderFinishers trn len = List.sortBy (\x y -> compare (snd x) (snd y)) . map (id
                           where
                                   strt = (distance c) - (fromIntegral 60) * (speed c)
 
--- !!! How should we generate new unique IDs and do we have to do it here ? !!!
 updateBrkTime :: Race -> Race
 updateBrkTime (Race trn len r s w) = (Race trn len (map update r) s w)
   where
@@ -107,7 +106,7 @@ updateBrkTime (Race trn len r s w) = (Race trn len (map update r) s w)
                                  l :< p' -> (Pack 0 l p' i)
     update p = p
 
--- !!! Just removed name conflicts !!!
+-- !!! The type of setPackSpeed has changed, it's Pack -> RandT StdGen IO [Pack] now !!!
 doBreakaway :: Pack -> RandT StdGen IO [Pack]
 doBreakaway (Pack tLead l p pid) = do
   dec <- Sequence.replicateM ((Sequence.length p) + 1) (getRandom :: RandT StdGen IO Double)
