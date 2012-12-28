@@ -10,7 +10,6 @@ import Cyclist
 import Pack
 import RungeKutta
 
--- Need some monadic shit for new pack ids
 setPackSpeed :: Pack -> RandT StdGen IO [Pack]
 setPackSpeed (Pack tLead l p uid) = do undefined
   where
