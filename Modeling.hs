@@ -21,5 +21,6 @@ pped (c, 'p') = 0.8  * (pmax c)
 pped (c, 'b') = 0.9  * (pmax c)
 pped (c, 's') = 0.95 * (pmax c)
 
+-- Need to do something different if it's in_pack vs (leader, breakaway or sprint)
 updateEnergy :: (Cyclist, Char) -> Cyclist
 updateEnergy cc@(c, _) = c{usedEnergy = (usedEnergy c) + (60*((pped cc) - (pcp c)))} 
