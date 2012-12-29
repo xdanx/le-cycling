@@ -31,6 +31,16 @@ instance Ord Pack where
 {-instance Show Pack where
          show (Pack l) = show $ map (distance) l1-}
 
+defLeader :: Pack -> Pack
+defLeader pack@(Pack tLead l p i)
+  | (tLead > 5) || (not (genCoop l) && tLead > 1) = rotate pack 
+  | otherwise = Pack (tLead+1) l p i
+defLeader breakP = breakP
+
+
+--Pack Utils:
+
+
 getPacks :: [Cyclist] -> [Pack]
 getPacks cyclists =
   List.zipWith ($) (Prelude.foldl addToPackList [] (List.sort cyclists)) [1..]
@@ -77,13 +87,3 @@ isEmpty _ = True
 numCyclists :: Pack -> Int
 numCyclists (Breakaway cs _ _) = Sequence.length cs
 numCyclists (Pack _ _ cs _) = Sequence.length cs + 1
-
-isBreak :: Pack -> Bool
-isBreak (Pack {})      = False
-isBreak (Breakaway {}) = True
-
-
--- Broken (halfway throught conversion), but probably useless.
--- unpack :: [Pack] -> [Cyclist] 
--- unpack [] = []
--- unpack ((Pack _ leader cs):ps) = (leader:()) ++ (unpack ps)
