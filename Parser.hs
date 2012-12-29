@@ -51,7 +51,7 @@ makeCyclists t n pop ln = do
   let attr_parse = map (\(x,_:y) -> (x,y)) . map (break (==':')) . words $ ln
       infs = ["pmax", "pcp", "usedEnergy", "energyLim", "genCProb", "teamCProb", "speed", "distance"]
       mParse = map (flip lookup attr_parse) infs
-      transMakers = [setPmax, setPcp, setUsedEnergy, setEnergyLim, setGenCProb, setTeamCProb, setSpeed, setDistance]
+      transMakers = [setPmax, setPcp, setUsedEnergy, setEnergyLim, setSpeed, setDistance]
       trans = zipWith (\f m -> fromMaybe id (m >>= return . flip f . read)) transMakers mParse 
   replicateM n (genCyclist t pop >>= return . (foldl (.) id trans))
   

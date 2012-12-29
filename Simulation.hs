@@ -28,15 +28,12 @@ turn (Race trn len r s win) = do
      let
         s' = map updateEnergy s
         r' = map (\p -> packMap updateEnergy p) r
-     r'' <- if (trn `mod` 5 == 0)
-               then mapM (packMapM determineCoop) r'
-               else return r'
-     let   (Race _ _ r''' _ _) = updateBrkTime (Race trn len r'' s' win)
-           r'''' = map defLeader r'''
-     cyclists <- concatMapM doBreakaway r''''
-     let before = List.sum . map numCyclists $ r''''
+        (Race _ _ r'' _ _) = updateBrkTime (Race trn len r' s' win)
+     r''' <- mapM defLeader r''
+     cyclists <- concatMapM doBreakaway r'''
+     let before = List.sum . map numCyclists $ r'''
          after = List.sum . map numCyclists $ cyclists
-     when (before /= after) . liftIO . putStrLn $ "You being foolish again fool, before: " ++ show before ++ ", after: " ++ show after ++ (if before < 5 then show r'''' ++ ", " ++ show cyclists else "")
+     when (before /= after) . liftIO . putStrLn $ "You being foolish again fool, before: " ++ show before ++ ", after: " ++ show after ++ (if before < 5 then show r''' ++ ", " ++ show cyclists else "")
      updatePosition $ (Race (trn + 1) len cyclists s' win)
 
 --Updates the breakaway groups
@@ -118,19 +115,17 @@ coalescePacks packs = Prelude.foldl (\(l:ls) x -> if(overlap x l)
 --fixedish 
 doBreakaway :: Pack -> RandT StdGen IO [Pack]
 doBreakaway (Pack tLead l p pid) = do
-  (break, stay) <- partitionM packCoop dec  
+  (break, stay) <- partitionM packCoop (l <| p) 
   let brkTeams = fmap team break
       (inBrkTeams, rest) = (Sequence.partition ((seqElem brkTeams) . team)) $ stay
   (break', stay') <- partitionM teamCoop inBrkTeams  
   let stayPack = stay' >< rest
-  brkPacks <- if((break >< break') == empty)
-                 then return []
-                 else concatMapM (\b -> newID >>= setPackSpeed . (Breakaway b 3)) . groupByTeam . (fmap fst) $ break >< break'
+  brkPacks <- concatMapM (\b -> newID >>= setPackSpeed . (Breakaway b 3)) . groupByTeam $ break >< break'
   stayPack' <- if seqElem stayPack l 
-                  then fmap (List.concat) . sequence $ [setPackSpeed (Pack tLead l (Sequence.filter ((uid l /=) . uid) stayPack) pid)]
+               then setPackSpeed (Pack tLead l (Sequence.filter ((uid l /=) . uid) stayPack) pid)
                   else case viewl stayPack of
                             EmptyL -> return []
-                            l' :< cs -> fmap (List.concat) . sequence $ [setPackSpeed (Pack 0 l' cs pid)]
+                            l' :< cs -> setPackSpeed (Pack 0 l' cs pid)
   return $ stayPack' ++ brkPacks
     where
       groupByTeam :: Seq Cyclist -> [Seq Cyclist]
@@ -141,7 +136,7 @@ doBreakaway (Pack tLead l p pid) = do
             where
               (brkPack, cs'') = Sequence.partition (\c' -> team c == team c') cs'
 
-doBreakaway p = do return [p]
+doBreakaway p = return [p]
 
 
 --Takes the number of minutes already passed, the length of the race and a list of

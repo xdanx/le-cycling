@@ -19,8 +19,10 @@ data Cyclist = Cyclist {uid :: Int,            -- Unique ID
                         pcp :: Double,        -- Maximum aneorbosfewnqgff power
                         usedEnergy :: Double, -- e_an : used aneorobic energy 
                         energyLim :: Double,  -- E_an : maximum aneorobic energy
-                        packCoop :: RandT StdGen IO Bool,   -- General cooperation prob
-                        teamCoop :: RandT StdGen IO Bool,  -- Team cooperation prob
+                        packCoop :: RandT StdGen IO Bool,   -- General cooperation function
+                        teamCoop :: RandT StdGen IO Bool,  -- Team cooperation function
+                        groupProb :: Double,
+                        teamProb :: Double,
                         speed :: Double,      -- Current speed
                         distance :: Double,   -- Current distance
                         team :: Int           -- Team number.
@@ -41,11 +43,11 @@ setUsedEnergy c x = c{usedEnergy = x}
 setEnergyLim :: Cyclist -> Double -> Cyclist
 setEnergyLim c x = c{energyLim = x}
 
-setGenCProb :: Cyclist -> RandT StdGen IO Bool -> Cyclist
-setGenCProb c x = c{packCoop = x}
+setPackCoop:: Cyclist -> RandT StdGen IO Bool -> Cyclist
+setPackCoop c x = c{packCoop = x}
 
-setTeamCProb :: Cyclist -> RandT StdGen IO Bool -> Cyclist
-setTeamCProb c x = c{teamCoop = x}
+setTeamCoop :: Cyclist -> RandT StdGen IO Bool -> Cyclist
+setTeamCoop c x = c{teamCoop = x}
 
 setSpeed :: Cyclist -> Double -> Cyclist
 setSpeed c x = c{speed = x}
@@ -78,11 +80,11 @@ maxPower c = pmax c * (1 - (usedEnergy c/energyLim c))
 genCyclist :: Int -> Population -> RandT StdGen IO Cyclist
 genCyclist team_n stats = do
            _pmax <- normal . pmaxs $ stats
-           groupProb <- normal . coops $ stats
-           teamProb <- normal . coops $ stats
+           _groupProb <- normal . coops $ stats
+           _teamProb <- normal . coops $ stats
            _energyLim <- normal . energylims $ stats
            i <- newID
-           return Cyclist {uid = i, pmax = _pmax, pcp = 0.8*_pmax, usedEnergy = 0, energyLim = _energyLim, packCoop = standardCoop groupProb, teamCoop = standardCoop teamProb, speed = 0, distance = 0, team = team_n}
+           return Cyclist {uid = i, pmax = _pmax, pcp = 0.8*_pmax, usedEnergy = 0, energyLim = _energyLim, packCoop = standardCoop _groupProb, teamCoop = standardCoop _teamProb, groupProb = _groupProb, teamProb = _teamProb, speed = 0, distance = 0, team = team_n}
 
 genCyclists :: Int -> Int -> Population -> RandT StdGen IO [Cyclist]
 genCyclists n_teams team_size stats = concatMapM (\t -> replicateM team_size (genCyclist t stats)) [0..(n_teams-1)]
