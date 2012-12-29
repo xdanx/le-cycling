@@ -39,7 +39,7 @@ turn (Race trn len r s win) = do
      when (before /= after) . liftIO . putStrLn $ "You being foolish again fool, before: " ++ show before ++ ", after: " ++ show after ++ (if before < 5 then show r'''' ++ ", " ++ show cyclists else "")
      updatePosition $ (Race (trn + 1) len cyclists s' win)
 
--- Determines weather or not a cyclist will be co-operative for the next 5 turns
+-- Determines whether or not a cyclist will be co-operative for the next 5 turns
 determineCoop :: Cyclist -> RandT StdGen IO Cyclist
 determineCoop c = do
               d1 <- getRandom :: RandT StdGen IO Double
