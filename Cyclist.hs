@@ -13,6 +13,7 @@ import ID
 import Population
 import Stats
 import Utils
+import Units
 
 data Cyclist = Cyclist {uid :: Int,            -- Unique ID
                         pmax :: Double,       -- Max power (W/kg?)
@@ -49,10 +50,10 @@ setPackCoop c x = c{packCoop = x}
 setTeamCoop :: Cyclist -> RandT StdGen IO Bool -> Cyclist
 setTeamCoop c x = c{teamCoop = x}
 
-setSpeed :: Cyclist -> Double -> Cyclist
+setSpeed :: Cyclist -> Speed -> Cyclist
 setSpeed c x = c{speed = x}
 
-setDistance :: Cyclist -> Double -> Cyclist
+setDistance :: Cyclist -> Meters -> Cyclist
 setDistance c x = c{distance = x}
 
 

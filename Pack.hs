@@ -6,9 +6,10 @@ import Data.List as List
 import Data.Sequence as Sequence
 
 import Cyclist
+import Units
 
---               tLead leader   pack           uid              pack           time uid
-data Pack = Pack !Int  !Cyclist !(Seq Cyclist) !Int | Breakaway !(Seq Cyclist) !Int !Int
+--               tLead    leader   pack           uid              pack           time     uid
+data Pack = Pack !Seconds !Cyclist !(Seq Cyclist) !Int | Breakaway !(Seq Cyclist) !Seconds !Int
             deriving(Show)
 
 instance Eq Pack where
@@ -77,7 +78,7 @@ packMapM f (Breakaway pack t i) = do
   pack' <- sequence . toList . fmap f $ pack
   return (Breakaway (fromList pack') t i)
 
-packHead :: Pack -> Double
+packHead :: Pack -> Meters
 packHead (Pack _ leader _ _) = distance leader
 packHead (Breakaway seq _ _) = Fold.foldl (max) 0 . fmap distance $ seq
 
