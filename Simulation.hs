@@ -118,12 +118,12 @@ doBreakaway (Pack tLead l p pid) = do
       stayPack = (fmap fst stay') >< rest
   brkPacks <- if((break >< break') == empty)
                  then return []
-                 else mapM (\b -> newID >>= return . setPackSpeed . (Breakaway b 3)) . groupByTeam . (fmap fst) $ break >< break'
-  let stayPack' = if seqElem stayPack l 
-                  then [setPackSpeed (Pack tLead l (Sequence.filter ((uid l /=) . uid) stayPack) pid)] 
+                 else concatMapM (\b -> newID >>= setPackSpeed . (Breakaway b 3)) . groupByTeam . (fmap fst) $ break >< break'
+  stayPack' <- if seqElem stayPack l 
+                  then fmap (List.concat) . sequence $ [setPackSpeed (Pack tLead l (Sequence.filter ((uid l /=) . uid) stayPack) pid)]
                   else case viewl stayPack of
-                    EmptyL -> []
-                    l' :< cs -> [setPackSpeed (Pack 0 l' cs pid)]
+                            EmptyL -> return []
+                            l' :< cs -> fmap (List.concat) . sequence $ [setPackSpeed (Pack 0 l' cs pid)]
   return $ stayPack' ++ brkPacks
     where
       groupByTeam :: Seq Cyclist -> [Seq Cyclist]
@@ -152,8 +152,8 @@ defLeader breakP = breakP
 turn :: Race -> RandT StdGen IO Race
 turn (Race trn len r s win) = do
      let
-        s' = map (updateEnergy . (,'s')) s
-        r' = map (\p -> packMap (updateEnergy . (,if(isBreak p) then 'b' else 'p')) p) r
+        s' = map updateEnergy s
+        r' = map (\p -> packMap updateEnergy p) r
      r'' <- if (trn `mod` 5 == 0)
                then mapM (packMapM determineCoop) r'
                else return r'

@@ -4,13 +4,14 @@ import Data.Foldable as Fold
 import Data.Sequence as Sequence
 import Control.Monad
 import Control.Monad.Random
+import Control.Monad.Trans
 
 
 import Cyclist
 import Pack
 import RungeKutta
 
-setPackSpeed :: Pack -> RandT StdGen IO [Pack]
+setPackSpeed :: (MonadRandom m, MonadIO m) => Pack -> m [Pack]
 setPackSpeed (Pack tLead l p uid) = do undefined
   where
     cyclists = sortBy (\x y -> compare (pmax x) (pmax y)) (l <| p)
