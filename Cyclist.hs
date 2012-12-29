@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveDataTypeable #-}
+{-# LANGUAGE RankNTypes #-}
 module Cyclist where
 
 import Control.Monad
@@ -8,6 +8,7 @@ import Control.Monad.Trans
 import Data.Typeable
 import System.Random
 
+import Coop
 import ID
 import Population
 import Stats
@@ -18,15 +19,15 @@ data Cyclist = Cyclist {uid :: Int,            -- Unique ID
                         pcp :: Double,        -- Maximum aneorbosfewnqgff power
                         usedEnergy :: Double, -- e_an : used aneorobic energy 
                         energyLim :: Double,  -- E_an : maximum aneorobic energy
-                        genCProb :: Double,   -- General cooperation prob
-                        teamCProb :: Double,  -- Team cooperation prob
-                        genCoop :: Bool,      -- Current general cooperation state
-                        teamCoop :: Bool,     -- Current team cooperation state
+                        packCoop :: RandT StdGen IO Bool,   -- General cooperation prob
+                        teamCoop :: RandT StdGen IO Bool,  -- Team cooperation prob
                         speed :: Double,      -- Current speed
                         distance :: Double,   -- Current distance
                         team :: Int           -- Team number.
                        }
-                       deriving(Show, Typeable)
+
+instance Show Cyclist where
+        show c = "Cyclist {uid = " ++ show (uid c) ++ "}"
 
 setPmax :: Cyclist -> Double -> Cyclist
 setPmax c x = c{pmax = x}
@@ -40,11 +41,11 @@ setUsedEnergy c x = c{usedEnergy = x}
 setEnergyLim :: Cyclist -> Double -> Cyclist
 setEnergyLim c x = c{energyLim = x}
 
-setGenCProb :: Cyclist -> Double -> Cyclist
-setGenCProb c x = c{genCProb = x}
+setGenCProb :: Cyclist -> RandT StdGen IO Bool -> Cyclist
+setGenCProb c x = c{packCoop = x}
 
-setTeamCProb :: Cyclist -> Double -> Cyclist
-setTeamCProb c x = c{teamCProb = x}
+setTeamCProb :: Cyclist -> RandT StdGen IO Bool -> Cyclist
+setTeamCProb c x = c{teamCoop = x}
 
 setSpeed :: Cyclist -> Double -> Cyclist
 setSpeed c x = c{speed = x}
@@ -77,11 +78,11 @@ maxPower c = pmax c * (1 - (usedEnergy c/energyLim c))
 genCyclist :: Int -> Population -> RandT StdGen IO Cyclist
 genCyclist team_n stats = do
            _pmax <- normal . pmaxs $ stats
-           _genCProb <- normal . coops $ stats
-           _teamCProb <- normal . coops $ stats
+           groupProb <- normal . coops $ stats
+           teamProb <- normal . coops $ stats
            _energyLim <- normal . energylims $ stats
            i <- newID
-           return Cyclist {uid = i, pmax = _pmax, pcp = 0.8*_pmax, usedEnergy = 0, energyLim = _energyLim, genCProb = _genCProb, teamCProb = _teamCProb, speed = 0, distance = 0, team = team_n, teamCoop = True, genCoop = True}
+           return Cyclist {uid = i, pmax = _pmax, pcp = 0.8*_pmax, usedEnergy = 0, energyLim = _energyLim, packCoop = standardCoop groupProb, teamCoop = standardCoop teamProb, speed = 0, distance = 0, team = team_n}
 
 genCyclists :: Int -> Int -> Population -> RandT StdGen IO [Cyclist]
 genCyclists n_teams team_size stats = concatMapM (\t -> replicateM team_size (genCyclist t stats)) [0..(n_teams-1)]

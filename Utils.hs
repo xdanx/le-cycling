@@ -15,3 +15,12 @@ seqElem seq e =
                     then True
                     else seqElem seq' e
 
+partitionM :: (Monad m) => (a -> m Bool) -> Seq a -> m (Seq a, Seq a)
+partitionM f empty = return (empty, empty)
+partitionM f seq = do
+               let (h:<t) = viewl seq
+               (true, false) <- partitionM f t
+               classification <- f h
+               if classification
+                  then return (h <| true, false)
+                  else return (true, h <| false)

@@ -1,5 +1,6 @@
 module Pack where
 
+import Control.Monad.Random hiding (fromList)
 import Data.Foldable as Fold
 import Data.List as List
 import Data.Sequence as Sequence
@@ -31,11 +32,15 @@ instance Ord Pack where
 {-instance Show Pack where
          show (Pack l) = show $ map (distance) l1-}
 
-defLeader :: Pack -> Pack
-defLeader pack@(Pack tLead l p i)
-  | (tLead > 5) || (not (genCoop l) && tLead > 1) = rotate pack 
-  | otherwise = Pack (tLead+1) l p i
-defLeader breakP = breakP
+defLeader :: Pack -> RandT StdGen IO Pack
+defLeader pack@(Pack tLead l p i) = do
+                                  leaderCoops <- packCoop l
+                                  if tLead > 5
+                                       then return . rotate $ pack
+                                       else if leaderCoops
+                                               then return $ Pack (tLead + 1) l p i
+                                               else return . rotate $ pack
+defLeader breakP = return breakP
 
 
 --Pack Utils:

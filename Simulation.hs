@@ -39,13 +39,6 @@ turn (Race trn len r s win) = do
      when (before /= after) . liftIO . putStrLn $ "You being foolish again fool, before: " ++ show before ++ ", after: " ++ show after ++ (if before < 5 then show r'''' ++ ", " ++ show cyclists else "")
      updatePosition $ (Race (trn + 1) len cyclists s' win)
 
--- Determines whether or not a cyclist will be co-operative for the next 5 turns
-determineCoop :: Cyclist -> RandT StdGen IO Cyclist
-determineCoop c = do
-              d1 <- getRandom :: RandT StdGen IO Double
-              d2 <- getRandom :: RandT StdGen IO Double
-              return $ c{genCoop = (d1 < genCProb c), teamCoop = (d2 < teamCProb c)}
-
 --Updates the breakaway groups
 updateBrkTime :: Race -> Race
 updateBrkTime (Race trn len r s w) = (Race trn len (map update r) s w)
@@ -125,13 +118,11 @@ coalescePacks packs = Prelude.foldl (\(l:ls) x -> if(overlap x l)
 --fixedish 
 doBreakaway :: Pack -> RandT StdGen IO [Pack]
 doBreakaway (Pack tLead l p pid) = do
-  dec <- Sequence.replicateM ((Sequence.length p) + 1) (getRandom :: RandT StdGen IO Double)
-  let (break, stay) = Sequence.partition (\(c, d) -> (genCProb c) < d) (Sequence.zip (l <| p) dec)  
-      brkTeams = fmap team . fmap fst $ break
-      (inBrkTeams, rest) = (Sequence.partition ((seqElem brkTeams) . team)) . (fmap fst) $ stay
-  dec' <- Sequence.replicateM (Sequence.length inBrkTeams) (getRandom :: RandT StdGen IO Double)
-  let (break', stay') = Sequence.partition (\(c, d) -> (genCProb c) < d) (Sequence.zip inBrkTeams dec')  
-      stayPack = (fmap fst stay') >< rest
+  (break, stay) <- partitionM packCoop dec  
+  let brkTeams = fmap team break
+      (inBrkTeams, rest) = (Sequence.partition ((seqElem brkTeams) . team)) $ stay
+  (break', stay') <- partitionM teamCoop inBrkTeams  
+  let stayPack = stay' >< rest
   brkPacks <- if((break >< break') == empty)
                  then return []
                  else concatMapM (\b -> newID >>= setPackSpeed . (Breakaway b 3)) . groupByTeam . (fmap fst) $ break >< break'

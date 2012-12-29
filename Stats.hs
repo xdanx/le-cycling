@@ -3,7 +3,7 @@ module Stats where
 import Control.Monad.Random
 import Control.Monad.Trans
 
-normal :: (MonadRandom r) => (Double, Double) -> r Double
+normal :: (MonadRandom m) => (Double, Double) -> m Double
 normal (mean, distr) = do
        x <- getRandom
        y <- getRandom
