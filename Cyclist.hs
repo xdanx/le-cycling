@@ -13,6 +13,7 @@ import ID
 import Population
 import Stats
 import Utils
+import Units
 
 data Cyclist = Cyclist {uid :: Int,            -- Unique ID
                         pmax :: Double,       -- Max power (W/kg?)
@@ -21,8 +22,8 @@ data Cyclist = Cyclist {uid :: Int,            -- Unique ID
                         energyLim :: Double,  -- E_an : maximum aneorobic energy
                         packCoop :: RandT StdGen IO Bool,   -- General cooperation prob
                         teamCoop :: RandT StdGen IO Bool,  -- Team cooperation prob
-                        speed :: Double,      -- Current speed
-                        distance :: Double,   -- Current distance
+                        speed :: Speed,      -- Current speed
+                        distance :: Meters,   -- Current distance
                         team :: Int           -- Team number.
                        }
 
@@ -47,10 +48,10 @@ setGenCProb c x = c{packCoop = x}
 setTeamCProb :: Cyclist -> RandT StdGen IO Bool -> Cyclist
 setTeamCProb c x = c{teamCoop = x}
 
-setSpeed :: Cyclist -> Double -> Cyclist
+setSpeed :: Cyclist -> Speed -> Cyclist
 setSpeed c x = c{speed = x}
 
-setDistance :: Cyclist -> Double -> Cyclist
+setDistance :: Cyclist -> Meters -> Cyclist
 setDistance c x = c{distance = x}
 
 

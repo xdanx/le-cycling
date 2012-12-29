@@ -17,9 +17,10 @@ import ID
 import Modeling
 import Pack
 import Utils
+import Units
 
---                length  turns  runners  sprinters   (finishers, finishTime)
-data Race = Race  !Int    !Int   ![Pack]  ![Cyclist]  ![(Cyclist, Double)]
+--                length  turns runners  sprinters   (finishers, finishTime)
+data Race = Race  !Meters !Int  ![Pack]  ![Cyclist]  ![(Cyclist, Double)]
      deriving (Show)
 
 
@@ -74,22 +75,22 @@ updatePackPosition (Breakaway pack time uid) = (Breakaway (fmap (\c -> c{distanc
 
 
 --Splits pack into Pack, sprinters and finishers : TESTED
-updatePack :: Int -> Pack -> (Maybe Pack, [Cyclist], [Cyclist])
+updatePack :: Meters -> Pack -> (Maybe Pack, [Cyclist], [Cyclist])
 updatePack len (Pack tLead leader pack puid) = if(remainingPack == empty)
            then (Nothing, Fold.toList sprinters, Fold.toList finishers)
            else if (Fold.or . fmap (\c -> (uid c) == (uid leader)) $ remainingPack) 
                    then ((Just $ Pack tLead leader (Sequence.filter (\c -> uid c /= uid leader) remainingPack) puid), Fold.toList sprinters, Fold.toList finishers)
                    else ((Just $ Pack tLead nleader nremainingPack puid), Fold.toList sprinters, Fold.toList finishers)
                          where allCyclists = leader <| pack
-                               (finishers, runners) = Sequence.partition (\c -> (distance c) >= (fromIntegral len)) allCyclists
-                               (sprinters, remainingPack) = Sequence.partition (\c -> (distance c) >= (fromIntegral $ len - 5000)) runners
+                               (finishers, runners) = Sequence.partition (\c -> (distance c) >= len) allCyclists
+                               (sprinters, remainingPack) = Sequence.partition (\c -> (distance c) >= (len - 5000)) runners
                                t@(nleader:<nremainingPack) = viewl remainingPack
 
 updatePack len (Breakaway pack time uid) = if(remainingPack == empty) 
            then (Nothing, Fold.toList sprinters, Fold.toList finishers)
            else ((Just $ Breakaway remainingPack time uid), Fold.toList sprinters, Fold.toList finishers)
-           where (finishers, runners) = Sequence.partition (\c -> (distance c) >= (fromIntegral len)) pack
-                 (sprinters, remainingPack) = Sequence.partition (\c -> (distance c) >= (fromIntegral $ len - 5000)) runners
+           where (finishers, runners) = Sequence.partition (\c -> (distance c) >= len) pack
+                 (sprinters, remainingPack) = Sequence.partition (\c -> (distance c) >= (len - 5000)) runners
 
 --Coalesce Packs that have collided
 coalescePacks :: [Pack] -> [Pack]
@@ -147,9 +148,9 @@ doBreakaway p = do return [p]
 --Takes the number of minutes already passed, the length of the race and a list of
 -- cyclists and returns a list of pairs of cyclists and their respective finishing times : TESTED
 
-orderFinishers :: Int -> Int -> [Cyclist] -> [(Cyclist, Double)]
-orderFinishers trn len = List.sortBy (\x y -> compare (snd x) (snd y)) . map (id &&& ((+fromIntegral(60*trn)) . pass)) 
+orderFinishers :: Int -> Meters -> [Cyclist] -> [(Cyclist, Double)]
+orderFinishers trn len = List.sortBy (\x y -> compare (snd x) (snd y)) . map (id &&& ((+(60*trn)) . pass)) 
                where pass :: Cyclist -> Double
-                     pass c = ((fromIntegral len) - strt)/(speed c)
+                     pass c = (len - strt)/(speed c)
                           where
                                   strt = (distance c) - (fromIntegral 60) * (speed c)
