@@ -19,8 +19,8 @@ import Pack
 import Utils
 import Units
 
---                length  turns runners  sprinters   (finishers, finishTime)
-data Race = Race  !Meters !Int  ![Pack]  ![Cyclist]  ![(Cyclist, Double)]
+--                turns length  runners  sprinters   (finishers, finishTime)
+data Race = Race  !Int  !Meters ![Pack]  ![Cyclist]  ![(Cyclist, Double)]
      deriving (Show)
 
 
@@ -55,7 +55,7 @@ updatePosition (Race trn len packs sprint finish) = do
                let movedPacks = map updatePackPosition . List.filter (not . isEmpty) $ packs
                    movedSprinter = map (\c -> c{distance = (distance c) + 60*(speed c)}) sprint
                    (remainingPacks, toSprinters, packFinishers) = (\(a, b, c) -> (mapMaybe id a, List.concat b, List.concat c)) . unzip3 . map (updatePack len) $ movedPacks
-                   (sprintFinishers, remainingSprinters) = List.partition (\c -> (distance c) >= (fromIntegral len)) movedSprinter 
+                   (sprintFinishers, remainingSprinters) = List.partition (\c -> (distance c) >= len) movedSprinter 
                    orderedFinishers = orderFinishers trn len $ sprintFinishers ++ packFinishers
                    newPacks = coalescePacks $ remainingPacks
                    finalSprinters = map setSprinterSpeed (List.sort $ toSprinters ++ remainingSprinters)
@@ -144,7 +144,7 @@ doBreakaway p = return [p]
 -- cyclists and returns a list of pairs of cyclists and their respective finishing times : TESTED
 
 orderFinishers :: Int -> Meters -> [Cyclist] -> [(Cyclist, Double)]
-orderFinishers trn len = List.sortBy (\x y -> compare (snd x) (snd y)) . map (id &&& ((+(60*trn)) . pass)) 
+orderFinishers trn len = List.sortBy (\x y -> compare (snd x) (snd y)) . map (id &&& ((+fromIntegral(60*trn)) . pass)) 
                where pass :: Cyclist -> Double
                      pass c = (len - strt)/(speed c)
                           where

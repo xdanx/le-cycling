@@ -18,6 +18,7 @@ import Population
 import Simulation
 import Stats
 import Utils
+import Units
 
 genRace :: String -> IO Race
 genRace n = do
@@ -28,9 +29,9 @@ parse :: String -> RandT StdGen IO Race
 parse [] = error "Empty parse file"
 parse f = do
   let h:c = lines f
-      len = read h :: Int
+      len = read h :: Meters
   cs <- sequence . map parseLine $ c
-  let (s, r) = partition (\c -> (fromIntegral len - distance c) < 5000) . concat $ cs 
+  let (s, r) = partition (\c -> (len - distance c) < 5000) . concat $ cs 
   return (Race 0 len (getPacks r) s [])
                 
 parseLine :: String -> RandT StdGen IO [Cyclist]
