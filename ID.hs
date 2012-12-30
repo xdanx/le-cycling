@@ -1,3 +1,7 @@
+{- ID.hs
+Module to provide unique IDs for the packs.
+-}
+
 module ID (
    newID,
    resetID
@@ -12,6 +16,7 @@ import System.IO.Unsafe (unsafePerformIO)
 counter :: TVar Int
 counter = unsafePerformIO (newTVarIO 0)
 
+-- Return a new unused ID
 newID ::(MonadIO m) => m Int
 newID = liftIO . atomically $ do
   val <- readTVar counter
@@ -19,5 +24,6 @@ newID = liftIO . atomically $ do
   writeTVar counter $! next
   return val
 
+-- Resets the counter, the next call to newID will give 0. 
 resetID :: (MonadIO m) => m ()
 resetID = liftIO . atomically . writeTVar counter $! 0

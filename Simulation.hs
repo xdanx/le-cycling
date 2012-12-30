@@ -23,7 +23,7 @@ import Units
 data Race = Race  !Int  !Meters ![Pack]  ![Cyclist]  ![(Cyclist, Double)]
      deriving (Show)
 
-
+-- 
 turn :: Race -> RandT StdGen IO Race
 turn (Race trn len r s win) = do
      let
