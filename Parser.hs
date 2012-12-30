@@ -1,3 +1,7 @@
+{- Parser.hs
+Parse an input file to generate the race to run.
+-}
+
 module Parser where
 
 import Control.Monad
