@@ -6,4 +6,40 @@
 
 \begin{document}
 \maketitle
+
+
+% Initial equations
+
+Runge-Kutta is a standard numerical method that allows one to estimate a function based on an initial value and its differential. Its a lot like the standard newton method ( basically $f(x + h) \approx f(x) + h*f'(x)$ ) but it uses several points inside a trapezium to trace the function significantly better.
+
+However, you're going to say this is all very nice and it might well be useful for a first order differential equation, but we have a second order non-linear differential equation. Well one might notice that it is infact possible to adapt this method to tracing two (or more) interdependent functions (whos value depends on the value of the other) over the same variable (t) with two initial conditions. So if we can transform our second order differential equation into two first order ones, we can use Runge-Kutta to solve it numerically and then derive any necessary values from the result.
+
+For the following equations we will use the next simbols: \\
+
+\begin{tabular}{|c|l|}
+P is power	&	\_pot is potential energy	\\
+T is torque	&	\_air is air drag			\\
+F is Force 	&  	\_bear is friction in the wheel bearings \\ 
+			& 	\_roll is the rolling friction (with the road) \\
+			& 	\_kin is kinetic energy \\
+			&	\_ped is cyclist's 'input' (e.g. $P_{ped}$ = power inputed into the system) \\
+\end{tabular} 
+
+
+$\eta$ 		represents the frictional losses in the drive chain \\
+$\omega$ 	represents angular velocity.\\
+$\gamma$	is the step-up coefficient the bicycles gearing system.  \\
+
+So by conservation of energy:
+
+$$P_{pot} + P_{air} + P_{bear} + P_{roll} + P_{kin} = \eta * P_{ped}$$
+
+As $Power = Torque * \omega$ , by dividing with $\omega$ we get
+
+$$ T_{pot} + T_{air} + T_{bear} + T_{roll} + T_{kin} = \frac{ \eta * T_{ped} }{ \gamma }  = \frac{\eta * P_{ped}}{(\omega * \gamma)} $$
+
+Now we have %T_{ped} = F_ped*l_c (due to mechanical advantage) and T = F*l_c/r_w for all the other forces (as there is a dual
+mechanical advantage between the crank and the wheel)
+
+
 \end{document}
