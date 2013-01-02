@@ -17,7 +17,7 @@ render r = do
        (Race trn len racers sprint finish) <- readIORef r
        clear [ColorBuffer]
        let ys = map distance ((Prelude.concatMap (toList.getPack) racers) ++ sprint)
-           poss = map ( swap . ((fromRational . toRational) *** (fromRational . toRational)) . (0,) . (subtract 1) . (*2) . (/(fromIntegral len))) ys :: [(GLdouble, GLdouble)]
+           poss = map ( swap . ((fromRational . toRational) *** (fromRational . toRational)) . (0,) . (subtract 1) . (*2) . (/len)) ys :: [(GLdouble, GLdouble)]
        renderPrimitive Points $ mapM_ (vertex . uncurry Vertex2) poss
        flush
        return ()

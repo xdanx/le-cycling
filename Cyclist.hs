@@ -1,4 +1,10 @@
-{-# LANGUAGE DeriveDataTypeable #-}
+{-# LANGUAGE RankNTypes #-}
+
+{- Cyclist.hs
+Defines the Cyclist type which represent a single Cyclist
+and its state in the race.
+-}
+
 module Cyclist where
 
 import Control.Monad
@@ -8,25 +14,29 @@ import Control.Monad.Trans
 import Data.Typeable
 import System.Random
 
+import Coop
 import ID
 import Population
 import Stats
 import Utils
+import Units
 
-data Cyclist = Cyclist {uid :: Int,            -- Unique ID
+data Cyclist = Cyclist {uid :: Int,           -- Unique ID
                         pmax :: Double,       -- Max power (W/kg?)
                         pcp :: Double,        -- Maximum aneorbosfewnqgff power
                         usedEnergy :: Double, -- e_an : used aneorobic energy 
                         energyLim :: Double,  -- E_an : maximum aneorobic energy
-                        genCProb :: Double,   -- General cooperation prob
-                        teamCProb :: Double,  -- Team cooperation prob
-                        genCoop :: Bool,      -- Current general cooperation state
-                        teamCoop :: Bool,     -- Current team cooperation state
-                        speed :: Double,      -- Current speed
-                        distance :: Double,   -- Current distance
+                        packCoop :: RandT StdGen IO Bool, -- General cooperation function
+                        teamCoop :: RandT StdGen IO Bool, -- Team cooperation function
+                        groupProb :: Double,  -- If the default cooperation function is 
+                        teamProb :: Double,   -- used, these stores the probabilities.
+                        speed :: Speed,       -- Current speed
+                        distance :: Meters,   -- Current distance
                         team :: Int           -- Team number.
                        }
-                       deriving(Show, Typeable)
+
+instance Show Cyclist where
+        show c = "Cyclist {uid = " ++ show (uid c) ++ "}"
 
 setPmax :: Cyclist -> Double -> Cyclist
 setPmax c x = c{pmax = x}
@@ -40,19 +50,19 @@ setUsedEnergy c x = c{usedEnergy = x}
 setEnergyLim :: Cyclist -> Double -> Cyclist
 setEnergyLim c x = c{energyLim = x}
 
-setGenCProb :: Cyclist -> Double -> Cyclist
-setGenCProb c x = c{genCProb = x}
+setPackCoop:: Cyclist -> RandT StdGen IO Bool -> Cyclist
+setPackCoop c x = c{packCoop = x}
 
-setTeamCProb :: Cyclist -> Double -> Cyclist
-setTeamCProb c x = c{teamCProb = x}
+setTeamCoop :: Cyclist -> RandT StdGen IO Bool -> Cyclist
+setTeamCoop c x = c{teamCoop = x}
 
-setSpeed :: Cyclist -> Double -> Cyclist
+setSpeed :: Cyclist -> Speed -> Cyclist
 setSpeed c x = c{speed = x}
 
-setDistance :: Cyclist -> Double -> Cyclist
+setDistance :: Cyclist -> Meters -> Cyclist
 setDistance c x = c{distance = x}
 
-
+-- Shouldn't Eq be defined with the ID instead ?
 instance Eq Cyclist where
          a == b = (distance a == distance b)
          a /= b  = (distance a /= distance b)
@@ -71,18 +81,27 @@ instance Ord Cyclist where
              | a < b = a
              | otherwise = b
 
+-- Gives the current maximum power output of a cyclist,
 maxPower :: Cyclist -> Double
 maxPower c = pmax c * (1 - (usedEnergy c/energyLim c))
 
+
+-- Functions to generate the cyclists to start the race.
+
+-- Generate one cyclists with the default coop function, the default distribution,
+-- stats from stats and in team team_n
+-- !! Need updating to take the function in the parameters !!
 genCyclist :: Int -> Population -> RandT StdGen IO Cyclist
 genCyclist team_n stats = do
            _pmax <- normal . pmaxs $ stats
-           _genCProb <- normal . coops $ stats
-           _teamCProb <- normal . coops $ stats
+           _groupProb <- normal . coops $ stats
+           _teamProb <- normal . coops $ stats
            _energyLim <- normal . energylims $ stats
            i <- newID
-           return Cyclist {uid = i, pmax = _pmax, pcp = 0.8*_pmax, usedEnergy = 0, energyLim = _energyLim, genCProb = _genCProb, teamCProb = _teamCProb, speed = 0, distance = 0, team = team_n, teamCoop = True, genCoop = True}
+           return Cyclist {uid = i, pmax = _pmax, pcp = 0.8*_pmax, usedEnergy = 0, energyLim = _energyLim, packCoop = standardCoop _groupProb, teamCoop = standardCoop _teamProb, groupProb = _groupProb, teamProb = _teamProb, speed = 0, distance = 0, team = team_n}
 
+-- Generate team_size cyclists with stats stats for each
+-- team between 0 and n_teams.
 genCyclists :: Int -> Int -> Population -> RandT StdGen IO [Cyclist]
 genCyclists n_teams team_size stats = concatMapM (\t -> replicateM team_size (genCyclist t stats)) [0..(n_teams-1)]
 

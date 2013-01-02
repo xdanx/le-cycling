@@ -1,9 +1,14 @@
+{- Stats.hs
+Defines probability distributions, to use with the default cooperation function.
+-}
+
 module Stats where
 
 import Control.Monad.Random
 import Control.Monad.Trans
 
-normal :: (MonadRandom r) => (Double, Double) -> r Double
+-- Normal distribution
+normal :: (MonadRandom m) => (Double, Double) -> m Double
 normal (mean, distr) = do
        x <- getRandom
        y <- getRandom

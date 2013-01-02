@@ -4,7 +4,7 @@ module RungeKutta(updateCyclistSpeed) where
 
 import GHC.Exts
 
-import Cyclist
+import Cyclist(Cyclist(Cyclist), speed)
 
 rk4 :: Double# -> Double# -> Double#
 rk4 !s !pped = rk4' pped (-60.0##) h 0.0## s y0

@@ -1,5 +1,5 @@
 all:
 	ghc -O2 --make Main.hs -o Cycling
-	rm *.o *.hi
+	find . -regextype sed -regex ".*/*\.\(o\|hi\)" | xargs rm
 clean:
-	rm *.o *.hi
+	find . -regextype sed -regex ".*/*\.\(o\|hi\)" | xargs rm
