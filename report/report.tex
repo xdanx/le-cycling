@@ -4,10 +4,12 @@
 \date{\today}
 \author{Dan Demeter, Robert Kruszewski, Alex Paunoiu, C\'esar Prout\'e, Julian Sutherland}
 
-\usepackage{tabularx, alltt, amsmath}
+\usepackage{tabularx, alltt, amsmath, multirow, graphicx}
 
 \begin{document}
 \maketitle
+
+\section{Runge-Kutta}
 
 % Initial equations
 
@@ -31,8 +33,8 @@ F is Force 	&  	\_bear is friction in the wheel bearings \\
 	$l_{c}$  is the length of the cycling crank and
 	% maybe use a parbox here? http://tex.stackexchange.com/questions/485/how-to-break-a-line-in-a-table
 	$r_{w}$  is the radius of the wheel
-}
-
+} \\
+\hline
 \end{tabularx}
 
 \vspace*{1cm}
@@ -107,5 +109,24 @@ y_1' & = \frac{y_2'}{\sqrt{2 * y_2}}\\
 \end{align*}
 This gives us the final form for function f:
 $$ f(t, y_1, y_2) = \frac{P_{ped} - 75.7665 * x'( t ) ^ 3}{14844.025288499999 * \sqrt{2 * y_2}}$$
+
+% Game theoretical model introdutcion
+
+\section{Game Theory model introduction}
+
+Modelling bike race can be quite challenging, hence we will begin with simplest case to introduce our methodology and explain the simplifying assumptions we are making. When participating in a race we can argue that racers are at each point faced with three possible options: breaking away from a group, fall back to group preceding the current one and cooperate with other members of the group (which essentially means to copy strategy of other players - which it will be discussed later). Each of the racers can change his mind as often as he wants, however, changes in strategy will likely incur penalties on their performance. In this section we try to determine whether there is one dominant strategy and try to find at which point in race it is beneficial for racer to change his strategy. We can easily see that strategy chosen by players will depend on their skills and fitness, i.e. better racers can afford more aggressive, less cooperative strategy in hope of being able to outdistance opponents. On the other hand weaker players will tend to cooperate more. The difficulty of this part is not the actual solution to the model since it might happen there will not be a general solution but fitting the model to the actual situation. It is fairly easy to construct arbitrary game theoretical games, however, when the games have to even remotely represent reality they get complicated very quickly.\\
+
+We start by discussion of case with two racers when they are not being chased and they are guaranteed to come first and second. We can clearly see that this is a zero-sum game since we can only gain place if our opponent loses one. We can argue that race is a zero-sum game in general regardless on number of players, however, we will leave discussion of this theory for later and we will see that the answer is not so obvious when we want to arrive at meaningful results. Since we have already concluded that this is the simplest of game theoretical models we need to investigate actual pay off matrix for this game. \\
+
+Pay off matrix for last stage of the race
+
+\begin{tabularx}{\linewidth}{ccccc|}
+& & \multicolumn{3}{ c }{Player 2} \\ \cline{3-5}
+& & break away & cooperate & \multicolumn{1}{c}{fallback}  \\ \cline{3-5}
+\multirow{3}{*}{\rotatebox{90}{Player 1}} &
+\multicolumn{1}{ |c| }{\rotatebox{90}{break away}} & 3 & 2 & 0 \\
+& \multicolumn{1}{ |c| }{\rotatebox{90}{cooperate}} & 2 & 3 & 1 \\
+& \multicolumn{1}{ |c| }{\rotatebox{90}{fallback}} & 2 & 2 & 0 \\ \cline{3-5}
+\end{tabularx}
 
 \end{document}
