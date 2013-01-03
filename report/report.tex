@@ -1,15 +1,13 @@
-\documentclass[10pt, a4paper, onside]{report}
-
+\documentclass[10pt, a4paper]{report}
 
 \title{Cycling simulation}
 \date{\today}
 \author{Dan Demeter, Robert Kruszewski, Alex Paunoiu, C\'esar Prout\'e, Julian Sutherland}
 
 \usepackage{tabularx, alltt, amsmath}
- 
+
 \begin{document}
 \maketitle
-
 
 % Initial equations
 
@@ -23,19 +21,19 @@ For the following equations we will use the next simbols: \\
 \hline
 P is power	&	\_pot is potential energy	\\
 T is torque	&	\_air is air drag			\\
-F is Force 	&  	\_bear is friction in the wheel bearings \\ 
+F is Force 	&  	\_bear is friction in the wheel bearings \\
 			& 	\_roll is the rolling friction (with the road) \\
 			& 	\_kin is kinetic energy \\
 			&	\_ped is cyclist's 'input' (e.g. $P_{ped}$ = power inputed into the system) \\
 \hline
 \multicolumn{2}{|c|}
 {
-	$l_{c}$  is the length of the cycling crank and 
+	$l_{c}$  is the length of the cycling crank and
 	% maybe use a parbox here? http://tex.stackexchange.com/questions/485/how-to-break-a-line-in-a-table
-	$r_{w}$  is the radius of the wheel 
+	$r_{w}$  is the radius of the wheel
 }
 
-\end{tabularx} 
+\end{tabularx}
 
 \vspace*{1cm}
 
@@ -53,14 +51,14 @@ $$ T_{pot} + T_{air} + T_{bear} + T_{roll} + T_{kin} = \frac{ \eta * T_{ped} }{ 
 
 From the above notations have $T_{ped}$ = $F_{ped} * l_{c}$ (due to mechanical advantage) and $T = \frac{F * l_{c}}{r_{w}}$ for all the other forces (as there is a dual mechanical advantage between the crank and the wheel)
 
-This gives us: $$ F_{pot} + F_{air} + F_{bear} + F_{roll} + F_{kin} 
-	= \frac{ \eta * l_{c} * T_{ped} }{ \gamma }  
+This gives us: $$ F_{pot} + F_{air} + F_{bear} + F_{roll} + F_{kin}
+	= \frac{ \eta * l_{c} * T_{ped} }{ \gamma }
 	= \frac{ \eta * l_{c} * P_{ped} }{ r_{w} * (\omega * \gamma)} $$
 
 As we assume the race is on a perfectly flat surface, then $F_{pot} = 0$. We also assume that the bicycle is 'perfect', so $F_{bear} = 0$. \\\\
 This simplifies to: $$F_{air} + F_{kin} = \frac{l_{c} * P_{ped} }{ \omega * \gamma } $$
 
-where $$ F_{air} 	= \frac{1}{2} * c_{d} * \rho * A * ( x'(t) )^{2} $$ 
+where $$ F_{air} 	= \frac{1}{2} * c_{d} * \rho * A * ( x'(t) )^{2} $$
 and	  $$ F_{kin} 	= ( m + ( \frac{l_w}{r_w^{2}} ) * x''(t) $$
 
 Results from the Paper (...)\\
@@ -79,29 +77,29 @@ step-up coefficient of gearing (\(\gamma\)) = 7.5
 angular velocity of wheels (\(\omega\)) = \(2 * \pi * speed / {r_{w}} \)
 \end{alltt}
 
-Therefore the differential equation simplifies to: 
-$$ 0.3215625 * (x'(t))^{2} + 63 * x''(t) 
-	= \frac{\eta * l_{c} * P_{ped}} {2 * \pi * x'(t) * \gamma } 
+Therefore the differential equation simplifies to:
+$$ 0.3215625 * (x'(t))^{2} + 63 * x''(t)
+	= \frac{\eta * l_{c} * P_{ped}} {2 * \pi * x'(t) * \gamma }
 	= \frac {0.2 * P_{ped}} {15 * \pi} $$
-	
+
 Which gives approximation of:
 $$ 75.7664 *(x'(t))^{3} + 14844.025288499999 * x'(t) * x''(t) = P_{ped}$$
 
 which is a second order non-linear differential equation.\\\\
-In order to apply the Runge-Kutta algorithm, we need to transform it into two linear differential equations. We will define 2 independent variables, $y_1$ and $y_2$ such that their differentials $y_1'$ and $y_2'$ must depend on the variables t, $y_1$ and $y_2$. Let 
+In order to apply the Runge-Kutta algorithm, we need to transform it into two linear differential equations. We will define 2 independent variables, $y_1$ and $y_2$ such that their differentials $y_1'$ and $y_2'$ must depend on the variables t, $y_1$ and $y_2$. Let
 $$ y_1' = f( t, y_1, y_2 )$$ and $$y_2' = g( t, y_1, y_2 )$$
 
-In order to get x'(t) we want to set one of the equations to contain it: $y_1 = x'(t)$ and because we want one of the equations to contain $x'(t) * x''(t) $ so set: $y_2' = x'( t ) * x''( t )$ . 
+In order to get x'(t) we want to set one of the equations to contain it: $y_1 = x'(t)$ and because we want one of the equations to contain $x'(t) * x''(t) $ so set: $y_2' = x'( t ) * x''( t )$ .
 This gives us $$ y_{2} = \frac{1}{2} * x'(t)^2 $$
-By rearranging the differential equation to have only $ x'( t ) * x''( t )$ on the left hand side, we get 
+By rearranging the differential equation to have only $ x'( t ) * x''( t )$ on the left hand side, we get
 $$ x'( t ) * x''( t ) = \frac{P_{ped} - 75.7665 * x'( t ) ^ 3}{14844.025288499999}$$
 $$ y_2' = \frac{P_{ped} - 75.7665 * x'( t ) ^ 3}{14844.025288499999}$$
 
-Now we have only $y_2'$ in terms of only t, $y_1$ and $y_2$ so we can set $$ g( t, y_1, y_2 ) = \frac{P_{ped} - 75.7665 * x'( t ) ^ 3}{14844.025288499999}$$ 
+Now we have only $y_2'$ in terms of only t, $y_1$ and $y_2$ so we can set $$ g( t, y_1, y_2 ) = \frac{P_{ped} - 75.7665 * x'( t ) ^ 3}{14844.025288499999}$$
 
 Writing $y_1$ in terms of t, $y_1$ and $y_2$: $$y_2 = \frac{1}{2} * x'(t)^2$$ yelds $$y_2 = \frac{1}{2} * y_1^2$$
-And by rearranging the left hand side we get: 
-$$y_1 = \sqrt{2 * y_2}$$ 
+And by rearranging the left hand side we get:
+$$y_1 = \sqrt{2 * y_2}$$
 Now we differentiate with respect to $t$:
 \begin{align*}
 y_1' & = \frac{y_2'}{\sqrt{2 * y_2}}\\
@@ -109,7 +107,5 @@ y_1' & = \frac{y_2'}{\sqrt{2 * y_2}}\\
 \end{align*}
 This gives us the final form for function f:
 $$ f(t, y_1, y_2) = \frac{P_{ped} - 75.7665 * x'( t ) ^ 3}{14844.025288499999 * \sqrt{2 * y_2}}$$
-
-
 
 \end{document}
