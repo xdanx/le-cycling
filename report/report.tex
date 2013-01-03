@@ -9,13 +9,13 @@
 \begin{document}
 \maketitle
 
-\section{Executive Summary}
+\chapter{Executive Summary}
 
 -- What does it do ?
 
 -- Why is it useful ?
 
-\section{Introduction}
+\chapter{Introduction}
 
 -- Motivation
 
@@ -23,13 +23,13 @@
 
 -- Achievements (yeah right :D)
 
-\section{Design and Implementation}
+\chapter{Design and Implementation}
 
-\subsection{The model}
+\section{The model}
 
 -- How it works, where it comes from.
 
-\subsection{Runge-Kutta}
+\section{Runge-Kutta}
 
 % Initial equations
 
@@ -132,7 +132,7 @@ $$ f(t, y_1, y_2) = \frac{P_{ped} - 75.7665 * x'( t ) ^ 3}{14844.025288499999 * 
 
 % Game theoretical model introdutcion
 
-\subsection{Game Theory model introduction}
+\section{Game Theory model introduction}
 
 Modelling bike race can be quite challenging, hence we will begin with simplest case to introduce our methodology and explain the simplifying assumptions we are making. When participating in a race we can argue that racers are at each point faced with three possible options: breaking away from a group, fall back to group preceding the current one and cooperate with other members of the group (which essentially means to copy strategy of other players - which it will be discussed later). Each of the racers can change his mind as often as he wants, however, changes in strategy will likely incur penalties on their performance. In this section we try to determine whether there is one dominant strategy and try to find at which point in race it is beneficial for racer to change his strategy. We can easily see that strategy chosen by players will depend on their skills and fitness, i.e. better racers can afford more aggressive, less cooperative strategy in hope of being able to outdistance opponents. On the other hand weaker players will tend to cooperate more. The difficulty of this part is not the actual solution to the model since it might happen there will not be a general solution but fitting the model to the actual situation. It is fairly easy to construct arbitrary game theoretical games, however, when the games have to even remotely represent reality they get complicated very quickly.\\
 
@@ -149,11 +149,11 @@ Pay off matrix for last stage of the race
 & \multicolumn{1}{ |c| }{\rotatebox{90}{fallback}} & 2 & 2 & 0 \\ \cline{3-5}
 \end{tabularx}
 
-\section{Evaluation}
+\chapter{Evaluation}
 
 -- What did we manage to do ?
 
-\section{Conclusion}
+\chapter{Conclusion}
 
 -- What have we learned ?
 
@@ -161,7 +161,7 @@ Pay off matrix for last stage of the race
 
 -- What could we do next ?
 
-\section{Project Management}
+\chapter{Project Management}
 
 -- How did we organise ? How did it work ?
 
