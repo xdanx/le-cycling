@@ -1,9 +1,132 @@
-\documentclass[10pt, a4paper, onside]{report}
+\documentclass[10pt, a4paper]{report}
 
 \title{Cycling simulation}
 \date{\today}
 \author{Dan Demeter, Robert Kruszewski, Alex Paunoiu, C\'esar Prout\'e, Julian Sutherland}
 
+\usepackage{tabularx, alltt, amsmath, multirow, graphicx}
+
 \begin{document}
 \maketitle
+
+\section{Runge-Kutta}
+
+% Initial equations
+
+Runge-Kutta is a standard numerical method that allows one to estimate a function based on an initial value and its differential. Its a lot like the standard newton method ( basically $f(x + h) \approx f(x) + h*f'(x)$ ) but it uses several points inside a trapezium to trace the function significantly better.
+
+However, you're going to say this is all very nice and it might well be useful for a first order differential equation, but we have a second order non-linear differential equation. Well one might notice that it is infact possible to adapt this method to tracing two (or more) interdependent functions (whos value depends on the value of the other) over the same variable (t) with two initial conditions. So if we can transform our second order differential equation into two first order ones, we can use Runge-Kutta to solve it numerically and then derive any necessary values from the result.
+
+For the following equations we will use the next simbols: \\
+
+\begin{tabularx}{\linewidth}{|c|X|}
+\hline
+P is power	&	\_pot is potential energy	\\
+T is torque	&	\_air is air drag			\\
+F is Force 	&  	\_bear is friction in the wheel bearings \\
+			& 	\_roll is the rolling friction (with the road) \\
+			& 	\_kin is kinetic energy \\
+			&	\_ped is cyclist's 'input' (e.g. $P_{ped}$ = power inputed into the system) \\
+\hline
+\multicolumn{2}{|c|}
+{
+	$l_{c}$  is the length of the cycling crank and
+	% maybe use a parbox here? http://tex.stackexchange.com/questions/485/how-to-break-a-line-in-a-table
+	$r_{w}$  is the radius of the wheel
+} \\
+\hline
+\end{tabularx}
+
+\vspace*{1cm}
+
+$\eta$ 		represents the frictional losses in the drive chain \\
+$\omega$ 	represents angular velocity.\\
+$\gamma$	is the step-up coefficient the bicycles gearing system.  \\
+
+So by conservation of energy:
+
+$$P_{pot} + P_{air} + P_{bear} + P_{roll} + P_{kin} = \eta * P_{ped}$$
+
+As $Power = Torque * \omega$ , by dividing with $\omega$ we get
+
+$$ T_{pot} + T_{air} + T_{bear} + T_{roll} + T_{kin} = \frac{ \eta * T_{ped} }{ \gamma }  = \frac{\eta * P_{ped}}{\omega * \gamma} $$
+
+From the above notations have $T_{ped}$ = $F_{ped} * l_{c}$ (due to mechanical advantage) and $T = \frac{F * l_{c}}{r_{w}}$ for all the other forces (as there is a dual mechanical advantage between the crank and the wheel)
+
+This gives us: $$ F_{pot} + F_{air} + F_{bear} + F_{roll} + F_{kin}
+	= \frac{ \eta * l_{c} * T_{ped} }{ \gamma }
+	= \frac{ \eta * l_{c} * P_{ped} }{ r_{w} * (\omega * \gamma)} $$
+
+As we assume the race is on a perfectly flat surface, then $F_{pot} = 0$. We also assume that the bicycle is 'perfect', so $F_{bear} = 0$. \\\\
+This simplifies to: $$F_{air} + F_{kin} = \frac{l_{c} * P_{ped} }{ \omega * \gamma } $$
+
+where $$ F_{air} 	= \frac{1}{2} * c_{d} * \rho * A * ( x'(t) )^{2} $$
+and	  $$ F_{kin} 	= ( m + ( \frac{l_w}{r_w^{2}} ) * x''(t) $$
+
+Results from the Paper (...)\\
+
+We are using the following estimates:
+
+\begin{alltt}
+mass of cyclist (m) 				= 63
+frontal area of cyclist (A) 		= 0.75
+length of crank (\(l_{c}\)) 		= 0.2
+air density (\(\rho\)) 				= 1.225 (sea level, 15 degree Celsius)
+drag coefficient of a cyclist (d) 	= 0.7
+wheel inertia (\(I_w\)) = 0 (as perfect bicycle)
+radius of wheel (\(r_w\)) = 0.35
+step-up coefficient of gearing (\(\gamma\)) = 7.5
+angular velocity of wheels (\(\omega\)) = \(2 * \pi * speed / {r_{w}} \)
+\end{alltt}
+
+Therefore the differential equation simplifies to:
+$$ 0.3215625 * (x'(t))^{2} + 63 * x''(t)
+	= \frac{\eta * l_{c} * P_{ped}} {2 * \pi * x'(t) * \gamma }
+	= \frac {0.2 * P_{ped}} {15 * \pi} $$
+
+Which gives approximation of:
+$$ 75.7664 *(x'(t))^{3} + 14844.025288499999 * x'(t) * x''(t) = P_{ped}$$
+
+which is a second order non-linear differential equation.\\\\
+In order to apply the Runge-Kutta algorithm, we need to transform it into two linear differential equations. We will define 2 independent variables, $y_1$ and $y_2$ such that their differentials $y_1'$ and $y_2'$ must depend on the variables t, $y_1$ and $y_2$. Let
+$$ y_1' = f( t, y_1, y_2 )$$ and $$y_2' = g( t, y_1, y_2 )$$
+
+In order to get x'(t) we want to set one of the equations to contain it: $y_1 = x'(t)$ and because we want one of the equations to contain $x'(t) * x''(t) $ so set: $y_2' = x'( t ) * x''( t )$ .
+This gives us $$ y_{2} = \frac{1}{2} * x'(t)^2 $$
+By rearranging the differential equation to have only $ x'( t ) * x''( t )$ on the left hand side, we get
+$$ x'( t ) * x''( t ) = \frac{P_{ped} - 75.7665 * x'( t ) ^ 3}{14844.025288499999}$$
+$$ y_2' = \frac{P_{ped} - 75.7665 * x'( t ) ^ 3}{14844.025288499999}$$
+
+Now we have only $y_2'$ in terms of only t, $y_1$ and $y_2$ so we can set $$ g( t, y_1, y_2 ) = \frac{P_{ped} - 75.7665 * x'( t ) ^ 3}{14844.025288499999}$$
+
+Writing $y_1$ in terms of t, $y_1$ and $y_2$: $$y_2 = \frac{1}{2} * x'(t)^2$$ yelds $$y_2 = \frac{1}{2} * y_1^2$$
+And by rearranging the left hand side we get:
+$$y_1 = \sqrt{2 * y_2}$$
+Now we differentiate with respect to $t$:
+\begin{align*}
+y_1' & = \frac{y_2'}{\sqrt{2 * y_2}}\\
+& = \frac{P_{ped} - 75.7665 * x'( t ) ^ 3}{14844.025288499999 * \sqrt{2 * y_2}}
+\end{align*}
+This gives us the final form for function f:
+$$ f(t, y_1, y_2) = \frac{P_{ped} - 75.7665 * x'( t ) ^ 3}{14844.025288499999 * \sqrt{2 * y_2}}$$
+
+% Game theoretical model introdutcion
+
+\section{Game Theory model introduction}
+
+Modelling bike race can be quite challenging, hence we will begin with simplest case to introduce our methodology and explain the simplifying assumptions we are making. When participating in a race we can argue that racers are at each point faced with three possible options: breaking away from a group, fall back to group preceding the current one and cooperate with other members of the group (which essentially means to copy strategy of other players - which it will be discussed later). Each of the racers can change his mind as often as he wants, however, changes in strategy will likely incur penalties on their performance. In this section we try to determine whether there is one dominant strategy and try to find at which point in race it is beneficial for racer to change his strategy. We can easily see that strategy chosen by players will depend on their skills and fitness, i.e. better racers can afford more aggressive, less cooperative strategy in hope of being able to outdistance opponents. On the other hand weaker players will tend to cooperate more. The difficulty of this part is not the actual solution to the model since it might happen there will not be a general solution but fitting the model to the actual situation. It is fairly easy to construct arbitrary game theoretical games, however, when the games have to even remotely represent reality they get complicated very quickly.\\
+
+We start by discussion of case with two racers when they are not being chased and they are guaranteed to come first and second. We can clearly see that this is a zero-sum game since we can only gain place if our opponent loses one. We can argue that race is a zero-sum game in general regardless on number of players, however, we will leave discussion of this theory for later and we will see that the answer is not so obvious when we want to arrive at meaningful results. Since we have already concluded that this is the simplest of game theoretical models we need to investigate actual pay off matrix for this game. \\
+
+Pay off matrix for last stage of the race
+
+\begin{tabularx}{\linewidth}{ccccc|}
+& & \multicolumn{3}{ c }{Player 2} \\ \cline{3-5}
+& & break away & cooperate & \multicolumn{1}{c}{fallback}  \\ \cline{3-5}
+\multirow{3}{*}{\rotatebox{90}{Player 1}} &
+\multicolumn{1}{ |c| }{\rotatebox{90}{break away}} & 3 & 2 & 0 \\
+& \multicolumn{1}{ |c| }{\rotatebox{90}{cooperate}} & 2 & 3 & 1 \\
+& \multicolumn{1}{ |c| }{\rotatebox{90}{fallback}} & 2 & 2 & 0 \\ \cline{3-5}
+\end{tabularx}
+
 \end{document}
