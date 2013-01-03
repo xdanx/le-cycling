@@ -1,3 +1,4 @@
+
 {- Modeling.hs
 Functions that have to do with the model of speed and energy.
 Based on the second paper :

@@ -1,3 +1,7 @@
+{- RungeKutta.hs
+Numerically solves the differential equation from the second paper.
+To compute the speed of a cyclist given his pped.
+-}
 {-# LANGUAGE BangPatterns, MagicHash, UnboxedTuples #-}
 
 module RungeKutta(updateCyclistSpeed) where

@@ -1,3 +1,9 @@
+{- Simulation.hs
+Functions that 
+The function turn is called to simulate the state of the race
+one minute after the given state.
+-}
+
 {-# LANGUAGE TupleSections, BangPatterns #-}
 module Simulation where
 
@@ -19,11 +25,13 @@ import Pack
 import Utils
 import Units
 
+-- Data type encoding the state of a race.
 --                turns length  runners  sprinters   (finishers, finishTime)
 data Race = Race  !Int  !Meters ![Pack]  ![Cyclist]  ![(Cyclist, Double)]
      deriving (Show)
 
--- 
+-- Main function of the simulation. Do all the updates needed from
+-- one state of the race to the next.
 turn :: Race -> RandT StdGen IO Race
 turn (Race trn len r s win) = do
      let
@@ -37,7 +45,7 @@ turn (Race trn len r s win) = do
      when (before /= after) . liftIO . putStrLn $ "You being foolish again fool, before: " ++ show before ++ ", after: " ++ show after ++ (if before < 5 then show r''' ++ ", " ++ show cyclists else "")
      updatePosition $ (Race (trn + 1) len cyclists s' win)
 
---Updates the breakaway groups
+--Updates the breakaway groups, i.e. reduce the timer then make it into a normal pack.
 updateBrkTime :: Race -> Race
 updateBrkTime (Race trn len r s w) = (Race trn len (map update r) s w)
   where
@@ -113,7 +121,8 @@ coalescePacks packs = Prelude.foldl (\(l:ls) x -> if(overlap x l)
                                                   team2 = team h2
                
 
---fixedish 
+--(fixedish) Make breakaways happen in a pack. Will output the rest of the original pack
+-- and maybe new Breakaway packs.
 doBreakaway :: Pack -> RandT StdGen IO [Pack]
 doBreakaway (Pack tLead l p pid) = do
   (break, stay) <- partitionM packCoop (l <| p) 
@@ -142,7 +151,6 @@ doBreakaway p = return [p]
 
 --Takes the number of minutes already passed, the length of the race and a list of
 -- cyclists and returns a list of pairs of cyclists and their respective finishing times : TESTED
-
 orderFinishers :: Int -> Meters -> [Cyclist] -> [(Cyclist, Double)]
 orderFinishers trn len = List.sortBy (\x y -> compare (snd x) (snd y)) . map (id &&& ((+fromIntegral(60*trn)) . pass)) 
                where pass :: Cyclist -> Double

@@ -1,3 +1,6 @@
+{- Rendering.hs
+Creates the visualisation.
+-}
 {-# LANGUAGE TupleSections #-}
 module Rendering where
 

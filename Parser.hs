@@ -24,11 +24,13 @@ import Stats
 import Utils
 import Units
 
+-- Function to call to generate a race.
 genRace :: String -> IO Race
 genRace n = do
   f <- readFile n 
   getStdGen >>= evalRandT (parse f)
 
+-- Stat of the parsing.
 parse :: String -> RandT StdGen IO Race
 parse [] = error "Empty parse file"
 parse f = do
@@ -38,6 +40,7 @@ parse f = do
   let (s, r) = partition (\c -> (len - distance c) < 5000) . concat $ cs 
   return (Race 0 len (getPacks r) s [])
                 
+-- Parse a line to generate the cyclists corresponding to it.
 parseLine :: String -> RandT StdGen IO [Cyclist]
 parseLine l = do
     let [str_teams, str_profile, str_attrs] = splitOn "|" l
@@ -60,7 +63,7 @@ makeCyclists t n pop ln = do
       trans = zipWith (\f m -> fromMaybe id (m >>= return . flip f . read)) transMakers mParse 
   replicateM n (genCyclist t pop >>= return . (foldl (.) id trans))
   
-
+-- Default settings.
 defaultPop :: String -> Population
 defaultPop s 
   | (strip s) == "avg" = avg
