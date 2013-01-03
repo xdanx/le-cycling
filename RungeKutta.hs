@@ -1,6 +1,8 @@
 {- RungeKutta.hs
 Numerically solves the differential equation from the second paper.
 To compute the speed of a cyclist given his pped.
+[Applications of Mathematical Models of Road Cycling 
+by Thorsten Dahmen, Stefan Wolf and Dietmar Saupe]
 -}
 {-# LANGUAGE BangPatterns, MagicHash, UnboxedTuples #-}
 
