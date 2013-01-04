@@ -165,18 +165,24 @@ Let us now consider the moment $\delta'$, with $\delta'>\delta$ and $\delta'\ll 
 
 
 \subsection{Non-zero sum game}
-
 Pay off matrix for last stage of the race
-$CS_i = \dfrac{P_{i,n} \times \delta \times n}{E_{i,n} \times v}$
+$$CS_{i,n} = \dfrac{P_{i,n} \cdot \delta \cdot n}{E_{i,n} \cdot v}$$
+$$CF_{draft}=(0.62 - 0.0104d_w + 0.0452 d_w^2)\cdot (1/2)\cdot c_d\cdot \rho\cdot A\cdot x'^2$$
 
-\begin{tabularx}{\linewidth}{ccccc|}
+\newcommand{\fallbreak}[2]{$(\begin{cases}#1, & \mbox{if } #1 < 1 \\ 0, & \mbox{if } #1 \ge 1\end{cases},\begin{cases}0, & \mbox{if } #2 < 1 \\ #2, & \mbox{if } #2 \ge 1\end{cases})$}
+\newcommand{\breakfall}[2]{$(\begin{cases}0, & \mbox{if } #2 < 1 \\ #2, & \mbox{if } #2 \ge 1\end{cases},\begin{cases}#1, & \mbox{if } #1 < 1 \\ 0, & \mbox{if } #1 \ge 1\end{cases})$}
+
+\begin{tabularx}{\textwidth}{ccXXX|}
 & & \multicolumn{3}{ c }{Player 2} \\ \cline{3-5}
 & & break away & cooperate & \multicolumn{1}{c}{fallback}  \\ \cline{3-5}
 \multirow{3}{*}{\rotatebox{90}{Player 1}} &
-\multicolumn{1}{ |c| }{break away} & 3 & 2 & 0 \\
-& \multicolumn{1}{ |c| }{cooperate} & 2 & 3 & 1 \\
-& \multicolumn{1}{ |c| }{fallback} & 2 & 2 & 0 \\ \cline{3-5}
+\multicolumn{1}{ |c| }{break away} & $(P,P-1)$ & $(P\cdot CF_{draft}\cdot CS_1,(P-1)\cdot CF_{draft}\cdot CS_2)$ & \breakfall{CS_1}{CS_2} \\
+& \multicolumn{1}{ |c| }{cooperate} & $(P\cdot CF_{draft}\cdot CS_1,(P-1)\cdot CF_{draft}\cdot CS_2)$ & $(P,P-1)$ & $(P\cdot CF_{draft}\cdot CS_1,(P-1)\cdot CF_{draft}\cdot CS_2)$ \\
+& \multicolumn{1}{ |c| }{fallback} & \fallbreak{CS_1}{CS_2} & $(P\cdot CF_{draft}\cdot CS_1,(P-1)\cdot CF_{draft}\cdot CS_2)$ & $(P,P-1)$ \\ \cline{3-5}
 \end{tabularx}
+
+Where\\
+$$P=\dfrac{CS_1}{CS_1+CS_2}$$
 
 \chapter{Evaluation}
 
