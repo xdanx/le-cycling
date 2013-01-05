@@ -147,7 +147,7 @@ While designing the model
 
 % Initial equations
 
-Runge-Kutta is a standard numerical method that allows one to estimate a function based on an initial value and its differential. Its a lot like the standard newton method [ needs citation here ] ( $f(x + h) \approx f(x) + h*f'(x)$ ) but it uses several points inside a trapezium to trace the function significantly better. Runge-Kutta method is used in [ write more here... ]
+Runge-Kutta is a standard numerical method that allows one to estimate a function based on an initial value and the function's differential. It is similar to the standard ``newton method" ($f(x + h) \approx f(x) + h*f'(x)$), but it uses several points inside a trapezium to trace the function significantly better. Runge-Kutta method is used in [ write more here... ]
 
 \textbf{However, you might say that this is all very nice and it might well be useful for a first order differential equation, but in fact we have a second order non-linear differential equation}. Also, you might notice that it is in fact possible to adapt this method to tracing two (or more) interdependent functions (whos value depends on the value of the other) over the same variable (t) with two initial conditions. So if we can transform our second order differential equation into two first order ones, we can use the Runge-Kutta method to solve it numerically and then derive any necessary values from the result.
 
