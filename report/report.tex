@@ -4,6 +4,8 @@
 \date{\today}
 \author{Dan Demeter\and Robert Kruszewski\and Alexandru P\u{a}unoiu \and C\'esar Prout\'e \and Julian Sutherland \thanks{Hello there}}
 
+
+\setlength\parindent{0pt}
 \usepackage{tabularx, alltt, amsmath, multirow, graphicx, url}
 
 %Our Executive Summary
@@ -96,9 +98,9 @@ Cycling races are amongst one of the most popular sports worldwide. Their histor
 $18^{th}$ century being adopted and since then the types of races spanned substantially: from Track cycling on banks and velodromes,
 Cyclo-cross, Mountain bike races, one-day road race, criterium or time trial to professional races such as 
 Tour de France, Giro d'Italia or Vuelta a Espa\~na. During those professional races it is expected that a group of riders break away
-from the main group and cooperate with each other in order to gain advantage from the main group ( called peleton ). Riders in such a 
+from the main group and cooperate with each other in order to gain advantage from the main group ( called peloton ). Riders in such a 
 group are forced to cooperate with each other, even though their chances of winning are decreasing as more members join the break away 
-group. Also, when a breakaway group is being formed, riders from the peleton have to decide whether to chase it down or remain where 
+group. Also, when a breakaway group is being formed, riders from the peloton have to decide whether to chase it down or remain where 
 they are.  
 
 During the race, based on their remaining strength, remaining distance untill the finish line and other factors riders need to decide 
@@ -145,7 +147,7 @@ While designing the model
 
 % Initial equations
 
-Runge-Kutta is a standard numerical method that allows one to estimate a function based on an initial value and its differential. Its a lot like the standard newton method [ needs citation here ] ( $f(x + h) \approx f(x) + h*f'(x)$ ) but it uses several points inside a trapezium to trace the function significantly better. Runge-Kutta method is used in [ write more here... ]
+Runge-Kutta is a standard numerical method that allows one to estimate a function based on an initial value and the function's differential. It is similar to the standard ``newton method" ($f(x + h) \approx f(x) + h*f'(x)$), but it uses several points inside a trapezium to trace the function significantly better. Runge-Kutta method is used in [ write more here... ]
 
 \textbf{However, you might say that this is all very nice and it might well be useful for a first order differential equation, but in fact we have a second order non-linear differential equation}. Also, you might notice that it is in fact possible to adapt this method to tracing two (or more) interdependent functions (whos value depends on the value of the other) over the same variable (t) with two initial conditions. So if we can transform our second order differential equation into two first order ones, we can use the Runge-Kutta method to solve it numerically and then derive any necessary values from the result.
 
@@ -276,7 +278,7 @@ Let us now consider the moment $\delta'$, with $\delta'>\delta$ and $\delta'\ll 
 \\\\
 In order to get the one-off game pay-off matrices we need the following formulas:\\
 $CS_{i,n} = \dfrac{P_{ped_{i,n}} \cdot \delta^{(n)}}{E_{i,n} \cdot v},\ i\in\{1,2\}$ - the interpretation of this coefficient is the proportion of energy we have to reach finish at given speed, calculated at moment $\delta^(n)$.\\
-$CF_{draft}(x)=(0.62 - 0.0104d_w + 0.0452 d_w^2)\cdot (1/2)\cdot c_d\cdot \rho\cdot A\cdot x^2$ -  represents the force applied to the cyclist due to the aerodynamic drag from the air taking into account the slipstream effect. In this case the $x$ is the speed of the cyclist.
+$CF_{draft}(x)=(0.62 - 0.0104d_w + 0.0452 d_w^2)\cdot (1/2)\cdot c_d\cdot \rho\cdot A\cdot x^2$ -  represents the force applied to the cyclist due to the aerodynamic drag from the air taking into account the slipstream effect. In this case the $x$ is the speed of the cyclist. We remind the reader that $d_w$ is the distance between the two cyclists.
 $P = \dfrac{CS_{1,n}}{CS_{1,n}+CS_{2,n}}$ - the probability of player 1 being in front on player 2 at moment $\delta^{(n)}$ depending on their $CS_{i,n}$.
 \\\\
 We will list the possible strategy combinations with their respective pay-off players might use during the game. Before doing so, let us define $CF_{max}$ to be the maximum draft a player can attain, and $CF_{min}$ the minimum one.
@@ -292,50 +294,62 @@ Let us consider the pay-off for Player 1 (for Player 2 we reasoning is similar).
 \\\\
 \textbf{Player 1 Cooperates, Player 2 Breaks-away}
 \\
-Player 1's pay-off is clearly the same as before, i.e. $(1-P)\cdot \dfrac{CF_{draft}(s_1)}{CF_{max}} + 1$ - after normalization. Because of the fact that Player 2 breaks-away then his pay-off depends on his positioning i.e. $1-P$, but we must also take into account whether or not he is trailing behind Player 1 and hence, if he can get any benefit from drafting. Thus, we can argue that his pay-off is in fact $(1-P)\cdot P\cdot \dfrac{CF_{draft}(s_2)}{CF_{max}} + 1$ - after normalization. To explain it a bit more, $P\cdot \dfrac{CF_{draft}(s_2)}{CF_{max}}$ this is the part of the pay-off that tells him the benefit he gets from drafting. We then want to specify that his pay-off also depends on the probability of him being in front and hence we multiply by $1-P$.
+Player 1's pay-off is clearly the same as before, i.e. $(1-P)\cdot \dfrac{CF_{draft}(s_1)}{CF_{max}} + 1$ - after normalization. Because of the fact that Player 2 breaks-away then his pay-off depends on his positioning i.e. $1-P$, but we must also take into account whether or not he is trailing behind Player 1 and hence, if he can get any benefit from drafting. Thus, we have two disjoint probability events and we can argue that the pay-off is $(1-P) +  P\cdot \dfrac{CF_{draft}(s_2)}{CF_{max}} + 1$ - after normalization. To explain it a bit more, $P\cdot \dfrac{CF_{draft}(s_2)}{CF_{max}}$ this is the part of the pay-off that tells him the benefit he gets from drafting. We then want to specify that his pay-off also depends on the probability of him being in front and hence we add $1-P$. It is to remark the fact that we are still in the [1,2] interval as the events (trailing or leading) are disjoint.
 \\\\
-\textbf{Player 1 Cooperates, Player 2 Falls back} - same as 2
+\textbf{Player 1 Cooperates, Player 2 Falls back} 
 \\
-\textbf{Player 1 Breaks-away, Player 2 Cooperates} - same as 2 - change order
+\textit{Note.} In this case by falling back, the reader should understand that Player 2 wants to trail behind Player 1 such that he can benefit from drafting. We have this interpretation because there is no chasing group that should be taken into account and thus, this is the only rational choice he can make.
+\\\\
+By the note above we conclude that the pay-off for the two players are $(1-P) +  P\cdot \dfrac{CF_{draft}(s_1)}{CF_{max}} + 1$ and $(1-P)\cdot \dfrac{CF_{draft}(s_2)}{CF_{max}} + 1$ for Player 1 and Player 2 respectively. Notice that the pay-offs are similar as in the situation above, only that they are swapped.
+\\\\
+\textbf{Player 1 Breaks-away, Player 2 Cooperates}
 \\
-\textbf{Player 1 Breaks-away, Player 2 Breaks-away} - same as 1? or we can treat it as if none of them benefits from drafting or make it so the better one doesn't and worse does
+Similar pay-off as in the case \textit{Player 1 Cooperates, Player 2 Breaks-away}. Only the order changes.
+\\\\
+\textbf{Player 1 Breaks-away, Player 2 Breaks-away}
 \\
-\textbf{Player 1 Breaks-away, Player 2 Falls back} - as if racing alone?
+In this case both players stop cooperating and they depend solely on their performance which is computed by $P$ and $1-P$. Thus, we can argue that the pay-off for Player 1 is $P+1$ and the one for Player 2 is $2-P$, after normalization.
+\\\\
+\textbf{Player 1 Breaks-away, Player 2 Falls back}
 \\
-\textbf{Player 1 Falls back, Player 2 Cooperates} - same as 2
+This is an interesting case, because Player 2 might play 'sneaky' and try to fall back and then benefit from drafting by chasing the player that broke away. However, we won't treat this situation because we want to preserve simplicity and because this case implies that Player 1 doesn't really manage to break-away. Thus, we conclude that the pay-off in this case is $P+1$ for Player 1 and 1 for Player 2.
+\\\\
+\textbf{Player 1 Falls back, Player 2 Cooperates}
 \\
-\textbf{Player 1 Falls back, Player 2 Breaks-away} - similar to break away - fallback
+Similar pay-off as in the case \textit{Player 1 Cooperates, Player 2 Falls back}. Only the order changes.
+\\\\
+\textbf{Player 1 Falls back, Player 2 Breaks-away}
 \\
-\textbf{Player 1 Falls back, Player 2 Falls back} - same as in break-away - break-away
+Similar pay-off as in the case \textit{Player 1 Breaks-away, Player 2 Falls back}. Only the order changes.
+\\\\
+\textbf{Player 1 Falls back, Player 2 Falls back}
+\\
+In this case, we set both pay-offs to 1 (worst pay-off) because this strategy does not fully apply to our case. 
+\\\\
+Now, we can trivially build a pay-off matrix containing the values we deduced above.\\\\
+Pay-off of the game theoretical model resembles the rules outlined in [mention papers] after which our simulation has been created. We identified independent variables and made them influence pay-off values since this way we can generalise it to all types of players. Also it gives us basis for comparison which results will be shown later.\\\\
+\textit{Note.} The reader may notice that we didn't specify the distance $d_w$. This should be varied in the simulation such that we can see which distance between the players is the optimal one for choosing certain strategies.
 
-Payoff of the game theoretical model resembles the rules outlined in [mention papers] after which our simulation has been created. We identified independent variables and made them influence payoff values since this way we can generalise it to all types of players. Also it gives us basis for comparison which results will be shown later.
-
-\subsection{Gettin caught}
+\subsection{Getting caught}
 Everything seems fairly simple when there are only two racers competing. Entering realm of n-player games leaves us with few definite results as more interpersonal qualities come into play. It is an important to know that communication, players attitude towards each other and perceived strength of a player in a game can influence strategies chosen. However, we separate on case where we can get some results.
-
-For a case when two racers have escaped and are being chased by peleton we can consider scenarions when there exsists a possibility of them being caught. It is no longer a zero-sum game since players can drop below 2nd place and one can lose without other gain. However, we are not considering the chasing peleton as players. We are merely treating them as moving group of people that has a potential of catching uo with the escape.
-
-First we need to quantify chance of being caught. Actually since we can know the distances between racers, their velocity and we can measure the time it is not only a possibility, but certainty. This holds as long as one of the groups does not change its strategy when we have to reevaluate the chance. Consider $\epsilon \in \{0,1\}$, it has value of 0 if the escape group consisting of our players will not be caught and 1 otherwise. We set $\epsilon$ at moment $\delta^{(n)}$ to 1 if $\frac{x}{v_{draft}}=\frac{x+d}{v_{group}}$ has a solution in range $0\le x\le d$ where $d$ is distance from peleton to escape group, $v_{draft}$ and $v_{group}$ are velocities of second (drafting) racer in escape and peleton (chasing group) respectively. Knowing value of epsilon we can simplify our model to considering two cases: one when players will safely reach finish first and second when they will be absorbed by peleton. It is easy to notice that the first case has been mostly solved in previous section. It only needs few adjustments. Also it is not difficult to derive payoffs for absorbed case since players are likely to get places depending on their fitness across whole race group (it clearly would not be the case if all racers were considered to be players and were allowed to choose strategies as racers will react differently when chasing tired racers from escape).
-
-
-
-\textbf{Player 1 Cooperates, Player 2 Cooperates}
+\\\\
+For a case when two racers have escaped and are being chased by peloton we can consider scenarios when there exists a possibility of them being caught. It is no longer a zero-sum game since players can drop below 2nd place and one can lose without other gain. However, we are not considering the chasing peloton as players. We are merely treating them as moving group of people that has a potential of catching uo with the escape.
+\\\\
+First we need to quantify chance of being caught. Actually since we can know the distances between racers, their velocity and we can measure the time it is not only a possibility, but certainty. This holds as long as one of the groups does not change its strategy when we have to re-evaluate the chance. Consider $\epsilon \in \{0,1\}$, it has value of 0 if the escape group consisting of our players will not be caught and 1 otherwise. We set $\epsilon$ at moment $\delta^{(n)}$ to 1 if $\frac{x}{v_{draft}}=\frac{x+d}{v_{group}}$ has a solution in range $0\le x\le d$ where $d$ is distance from peloton to escape group, $v_{draft}$ and $v_{group}$ are velocities of second (drafting) racer in escape and peloton (chasing group) respectively. Knowing value of $\epsilon$ we can simplify our model to considering two cases: one when players will safely reach finish first and second when they will be absorbed by peloton. It is easy to notice that the first case has been mostly solved in previous section. It only needs few adjustments. Also it is not difficult to derive pay-offs for absorbed case since players are likely to get places depending on their fitness across whole race group (it clearly would not be the case if all racers were considered to be players and were allowed to choose strategies as racers will react differently when chasing tired racers from escape).
+\\\\
+When trying to deduce the pay-off matrix one can notice that this problem can be divided into two cases - depending on the value of $\epsilon$ - which will finally yield in two matrices. These matrices will be swapped during the game depending on the situation players face. 
+\\\\
+\textbf{$\epsilon$ is zero}
 \\
-\textbf{Player 1 Cooperates, Player 2 Breaks-away}
+This case is one that it is easily dealt with considering the work we need in the previous section. By having $\epsilon = 0$, it means that we could ignore the group from the equation and the matrix pay-off is, hence, identical to the one we got before.
+\\\\
+\textbf{$\epsilon$ is one}
 \\
-\textbf{Player 1 Cooperates, Player 2 Falls back} - same as 2
-\\
-\textbf{Player 1 Breaks-away, Player 2 Cooperates} - same as 2 - change order
-\\
-\textbf{Player 1 Breaks-away, Player 2 Breaks-away} - same as 1? or we can treat it as if none of them benefits from drafting or make it so the better one doesn't and worse does
-\\
-\textbf{Player 1 Breaks-away, Player 2 Falls back} - as if racing alone?
-\\
-\textbf{Player 1 Falls back, Player 2 Cooperates} - same as 2
-\\
-\textbf{Player 1 Falls back, Player 2 Breaks-away} - similar to break away - fallback
-\\
-\textbf{Player 1 Falls back, Player 2 Falls back} - same as in break-away - break-away
+This case is a bit more interesting, but it can be easily solved by adding some extra observations on top of the previous game theoretical model. Before doing so, we define some more formulas that will be used.\\
+$CS_{race} = \sum\limits_{i=1}^{N} CS_i$, where $N$ is the number of players in the game. \\
+The first observation is that in some cases normalization will take place on the interval $[1,N]$. This is because the two front-runners can become part of the pack.\\
+The relevant situations are those when one of the two players decides to fall back - this time to the chasing group - or wants to break-away. We decided that the rest of the situations should be treated as in the case above, maybe with normalization on $[1,N]$ instead of $[1,2]$.\\\\
+Thus, when one of the players falls back, then his pay-off becomes $\dfrac{CS_i}{CS_{race}}$ where $i\in\{1,2\}$. Of course now we need to normalize this quantity on $[1,N]$. As we are on the interval $[0,1]$, the immediate solution is multiplying by $N-1$ and adding 1. The pay-off we get is $ \dfrac{CS_i}{CS_{race}}\cdot (N-1) + 1$. The next question is, what will the other player do? If the strategy is fall back as well, then his pay-off is calculated in a similar manner. Otherwise, any strategy will have the pay-off of the break-away strategy described in the previous model.
 
 \subsection{Repeated Game}
 We can consider our methodology of finding payoff for the whole game with alteration allowing for change of strategy in order to allow optimal value of the game. Evaluating our model this way enables us to answer questions of optimal strategies at given points in time.
