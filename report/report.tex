@@ -337,29 +337,19 @@ For a case when two racers have escaped and are being chased by peloton we can c
 \\\\
 First we need to quantify chance of being caught. Actually since we can know the distances between racers, their velocity and we can measure the time it is not only a possibility, but certainty. This holds as long as one of the groups does not change its strategy when we have to re-evaluate the chance. Consider $\epsilon \in \{0,1\}$, it has value of 0 if the escape group consisting of our players will not be caught and 1 otherwise. We set $\epsilon$ at moment $\delta^{(n)}$ to 1 if $\frac{x}{v_{draft}}=\frac{x+d}{v_{group}}$ has a solution in range $0\le x\le d$ where $d$ is distance from peloton to escape group, $v_{draft}$ and $v_{group}$ are velocities of second (drafting) racer in escape and peloton (chasing group) respectively. Knowing value of $\epsilon$ we can simplify our model to considering two cases: one when players will safely reach finish first and second when they will be absorbed by peloton. It is easy to notice that the first case has been mostly solved in previous section. It only needs few adjustments. Also it is not difficult to derive pay-offs for absorbed case since players are likely to get places depending on their fitness across whole race group (it clearly would not be the case if all racers were considered to be players and were allowed to choose strategies as racers will react differently when chasing tired racers from escape).
 \\\\
-When trying to deduce the pay-off matrix one can notice that this problem can be divided into two cases - depending on the value of $\epsilon$ - which will finally yield in two matrices. These matrices will be swapped during the game depending on the situation players face.
+When trying to deduce the pay-off matrix one can notice that this problem can be divided into two cases - depending on the value of $\epsilon$ - which will finally yield in two matrices. These matrices will be swapped during the game depending on the situation players face. 
 \\\\
 \textbf{$\epsilon$ is zero}
 \\
-
-
-\textbf{Player 1 Cooperates, Player 2 Cooperates}
+This case is one that it is easily dealt with considering the work we need in the previous section. By having $\epsilon = 0$, it means that we could ignore the group from the equation and the matrix pay-off is, hence, identical to the one we got before.
+\\\\
+\textbf{$\epsilon$ is one}
 \\
-\textbf{Player 1 Cooperates, Player 2 Breaks-away}
-\\
-\textbf{Player 1 Cooperates, Player 2 Falls back} - same as 2
-\\
-\textbf{Player 1 Breaks-away, Player 2 Cooperates} - same as 2 - change order
-\\
-\textbf{Player 1 Breaks-away, Player 2 Breaks-away} - same as 1? or we can treat it as if none of them benefits from drafting or make it so the better one doesn't and worse does
-\\
-\textbf{Player 1 Breaks-away, Player 2 Falls back} - as if racing alone?
-\\
-\textbf{Player 1 Falls back, Player 2 Cooperates} - same as 2
-\\
-\textbf{Player 1 Falls back, Player 2 Breaks-away} - similar to break away - fallback
-\\
-\textbf{Player 1 Falls back, Player 2 Falls back} - same as in break-away - break-away
+This case is a bit more interesting, but it can be easily solved by adding some extra observations on top of the previous game theoretical model. Before doing so, we define some more formulas that will be used.\\
+$CS_{race} = \sum\limits_{i=1}^{N} CS_i$, where $N$ is the number of players in the game. \\
+The first observation is that in some cases normalization will take place on the interval $[1,N]$. This is because the two front-runners can become part of the pack.\\
+The relevant situations are those when one of the two players decides to fall back - this time to the chasing group - or wants to break-away. We decided that the rest of the situations should be treated as in the case above, maybe with normalization on $[1,N]$ instead of $[1,2]$.\\\\
+Thus, when one of the players falls back, then his pay-off becomes $\dfrac{CS_i}{CS_{race}}$ where $i\in\{1,2\}$. Of course now we need to normalize this quantity on $[1,N]$. As we are on the interval $[0,1]$, the immediate solution is multiplying by $N-1$ and adding 1. The pay-off we get is $ \dfrac{CS_i}{CS_{race}}\cdot (N-1) + 1$. The next question is, what will the other player do? If the strategy is fall back as well, then his pay-off is calculated in a similar manner. Otherwise, any strategy will have the pay-off of the break-away strategy described in the previous model.
 
 \subsection{Repeated Game}
 We can consider our methodology of finding payoff for the whole game with alteration allowing for change of strategy in order to allow optimal value of the game. Evaluating our model this way enables us to answer questions of optimal strategies at given points in time.
