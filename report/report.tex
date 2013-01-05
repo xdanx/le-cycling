@@ -2,7 +2,9 @@
 
 \title{Cycling simulation\\or\\\textit{When} to break away?}
 \date{\today}
-\author{Dan Demeter, Robert Kruszewski, Alexandru P\u{a}unoiu\\ C\'esar Prout\'e, Julian Sutherland}
+\author{Dan Demeter\and Robert Kruszewski\and Alexandru P\u{a}unoiu \and C\'esar Prout\'e \and Julian Sutherland \thanks{Hello there}}
+
+
 
 \usepackage{tabularx, alltt, amsmath, multirow, graphicx}
 
@@ -17,11 +19,15 @@
 
 
 \begin{document}
+
+
 \maketitle
 
 \tableofcontents
 
 \begin{abstract}
+
+%TODO: needs improvement
 
 Cycling races are amongst one of the most popular sports worldwide. Their history dates back to the 
 $18^{th}$ century being adopted and since then the types of races spanned substantially: from Track cycling on banks and velodromes,
@@ -44,19 +50,25 @@ point of view, all these decisions can be modelled by a Game Theory strategy. Du
 
 \section{Motivation}
 
-The first cycling race is assumed to be held on the $31^{th}$ of May 1868 in Paris. Nowadays, after roughly 145 years, Cycling is one of the top 10 most popular sports during the Summer Olympics [ link www.topendsports.com/world/lists/popular-sport/ioc-website.htm ] and attracts millions of fans during the Professional Events ( like Tour de France ). Cycling competitions are divided roughly into 3 cathegories
+The first cycling race is assumed to be held on the $31^{th}$ of May 1868 in Paris. Nowadays, after roughly 145 years, Cycling is one of the top 10 most popular sports during the Summer Olympics [ link www.topendsports.com/world/lists/popular-sport/ioc-website.htm ] and attracts millions of fans worldwide. Cycling competitions are divided into 3 main cathegories: \textit{road races, track races and off-road races}. Each cathegory 
 
 
 For a novice watching those competitions, it might seem peculiar the way athlets compete with each other. Even thow they need to compete with each other, their only chance of success is to team up with their competitors. This behaviour is mostly noted in the ?? racess. The motivation 
 
 
-
-
 -- Objectives
+Introduce the other chapters here
+
 
 -- Achievements (yeah right :D)
 
 \chapter{Design and Implementation}
+
+Being a research project, after our initial meetings, we have divided into two small teams, one focued on implementing the simulation, and the other focusing on the mathematics for the Game Theory model.
+
+While designing the model
+
+
 
 \section{The model}
 
@@ -66,9 +78,9 @@ For a novice watching those competitions, it might seem peculiar the way athlets
 
 % Initial equations
 
-Runge-Kutta is a standard numerical method that allows one to estimate a function based on an initial value and its differential. Its a lot like the standard newton method ( basically $f(x + h) \approx f(x) + h*f'(x)$ ) but it uses several points inside a trapezium to trace the function significantly better.
+Runge-Kutta is a standard numerical method that allows one to estimate a function based on an initial value and its differential. Its a lot like the standard newton method [ needs citation here ] ( $f(x + h) \approx f(x) + h*f'(x)$ ) but it uses several points inside a trapezium to trace the function significantly better. Runge-Kutta method is used in [ write more here... ]
 
-However, you're going to say this is all very nice and it might well be useful for a first order differential equation, but we have a second order non-linear differential equation. Well one might notice that it is infact possible to adapt this method to tracing two (or more) interdependent functions (whos value depends on the value of the other) over the same variable (t) with two initial conditions. So if we can transform our second order differential equation into two first order ones, we can use Runge-Kutta to solve it numerically and then derive any necessary values from the result.
+\textbf{However, you might say that this is all very nice and it might well be useful for a first order differential equation, but in fact we have a second order non-linear differential equation}. Also, you might notice that it is in fact possible to adapt this method to tracing two (or more) interdependent functions (whos value depends on the value of the other) over the same variable (t) with two initial conditions. So if we can transform our second order differential equation into two first order ones, we can use the Runge-Kutta method to solve it numerically and then derive any necessary values from the result.
 
 For the following equations we will use the next simbols: \\
 
@@ -89,13 +101,12 @@ F is Force 	&  	\_bear is friction in the wheel bearings \\
 } \\
 \hline
 \end{tabularx}
-
-\vspace*{1cm}
+\vspace{1cm}
 
 $\eta$ 		represents the frictional losses in the drive chain \\
 $\omega$ 	represents angular velocity.\\
 $\gamma$	is the step-up coefficient the bicycles gearing system.  \\
-
+\newpage
 So by conservation of energy:
 
 $$P_{pot} + P_{air} + P_{bear} + P_{roll} + P_{kin} = \eta * P_{ped}$$
@@ -264,6 +275,7 @@ We can consider our methodology of finding payoff for the whole game with altera
 
 \subsection{N-player Cooperative Game}
 This is the field we have touched least on since Game Theory offers very little with respect to sientific methodology of solving this cases. When there are more than 2 players most of the rationality taken from granted in 2 player zero-sum games no longer applies.
+
 
 
 \chapter{Evaluation}
