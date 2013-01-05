@@ -1,43 +1,155 @@
 \documentclass[10pt, a4paper]{report}
 
-\title{Cycling simulation}
+\title{Cycling simulation\\or\\\textit{When} to break away?}
 \date{\today}
-\author{Dan Demeter, Robert Kruszewski, Alex Paunoiu, C\'esar Prout\'e, Julian Sutherland}
+\author{Dan Demeter\and Robert Kruszewski\and Alexandru P\u{a}unoiu \and C\'esar Prout\'e \and Julian Sutherland \thanks{Hello there}}
 
-\usepackage{tabularx, alltt, amsmath, multirow, graphicx}
 
-\setlength{\parindent}{0cm}
+\setlength\parindent{0pt}
+\usepackage{tabularx, alltt, amsmath, multirow, graphicx, url}
+
+%Our Executive Summary
+\renewcommand{\abstractname}{Executive Summary}
+
+% Better looking chapters headings
+\usepackage{titlesec}
+\titleformat{\chapter}
+  {\normalfont\LARGE\bfseries}{\thechapter}{1em}{}
+\titlespacing*{\chapter}{0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
+
 
 \begin{document}
-\maketitle
 
-\chapter{Executive Summary}
+\begin{titlepage}
 
--- What does it do ?
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
 
--- Why is it useful ?
+\center % Center everything on the page
+ 
+%----------------------------------------------------------------------------------------
+%	HEADING SECTIONS
+%----------------------------------------------------------------------------------------
+
+\textsc{\LARGE Imperial College London}\\[1.5cm] % Name of your university/college
+\textsc{\Large Department of Computing}\\[0.5cm] % Major heading such as course name
+\textsc{\large}\\[0.5cm] % Minor heading such as course title
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\HRule \\[0.4cm]
+{ \huge \bfseries Cycling simulation\\or\\\vspace{0.4cm}\textit{When} to break away?}\\[0.4cm] % Title of your document
+\HRule \\[1.5cm]
+ 
+%----------------------------------------------------------------------------------------
+%	AUTHOR SECTION
+%----------------------------------------------------------------------------------------
+
+\begin{minipage}{0.4\textwidth}
+\begin{flushleft} \large
+\emph{Authors:}\\
+Dan Demeter \\
+Robert Kruszewski\\
+Alexandru P\u{a}unoiu\\
+C\'esar Prout\'e\\
+Julian Sutherland
+\end{flushleft}
+\end{minipage}
+~
+\begin{minipage}{0.4\textwidth}
+\begin{flushright} \large
+\emph{Supervisor:} \\
+Dr. Panos \textsc{Parpas} % Supervisor's Name
+\end{flushright}
+\end{minipage}\\[5cm]
+
+% If you don't want a supervisor, uncomment the two lines below and remove the section above
+%\Large \emph{Author:}\\
+%John \textsc{Smith}\\[3cm] % Your name
+
+%----------------------------------------------------------------------------------------
+%	DATE SECTION
+%----------------------------------------------------------------------------------------
+
+{\large \today}\\[3cm] % Date, change the \today to a set date if you want to be precise
+
+%----------------------------------------------------------------------------------------
+%	LOGO SECTION
+%----------------------------------------------------------------------------------------
+
+%\includegraphics{Logo}\\[1cm] % Include a department/university logo - this will require the graphicx package
+ 
+%----------------------------------------------------------------------------------------
+
+\vfill % Fill the rest of the page with whitespace
+\end{titlepage}
+
+%% Ending of title page
+
+\tableofcontents
+
+\begin{abstract}
+
+%TODO: needs improvement
+% César : I think it needs to be more about what we did rather than how cycling works.
+
+Cycling races are amongst one of the most popular sports worldwide. Their history dates back to the 
+$18^{th}$ century being adopted and since then the types of races spanned substantially: from Track cycling on banks and velodromes,
+Cyclo-cross, Mountain bike races, one-day road race, criterium or time trial to professional races such as 
+Tour de France, Giro d'Italia or Vuelta a Espa\~na. During those professional races it is expected that a group of riders break away
+from the main group and cooperate with each other in order to gain advantage from the main group ( called peleton ). Riders in such a 
+group are forced to cooperate with each other, even though their chances of winning are decreasing as more members join the break away 
+group. Also, when a breakaway group is being formed, riders from the peleton have to decide whether to chase it down or remain where 
+they are.  
+
+During the race, based on their remaining strength, remaining distance untill the finish line and other factors riders need to decide 
+fast their next move. There are countless(?!) examples when the rider's hesitation or bad decision costed him the grand title. From our 
+%
+point of view, all these decisions can be modelled by a Game Theory strategy. During our project, we have tried to find optimum strategies that can be applied to various cycling races. We have proposed a Game Theory model based on our research and an independent simulation used to verify our model. We continued the work of [ cite the papers here] and try to obtain a model that is as appripriate as real life cycling races. Using our simulation combined with the game theory model we believe that one should be able to simulate any Professional cycling race. Coaches and racers can use this data then to compare decisions taken  during the race. Our project aims to combine both Game Theory strategies with data from multiple simulated races in order to output 'optimal' decisions 
+
+\end{abstract}
+
 
 \chapter{Introduction}
 
--- Motivation
+\section{Motivation}
+
+The first cycling race is assumed to be held on the $31^{th}$ of May 1868 in Paris. Nowadays, after roughly 145 years, Cycling is one of the top 10 most popular sports during the Summer Olympics [ link www.topendsports.com/world/lists/popular-sport/ioc-website.htm ] and attracts millions of fans worldwide. Cycling competitions are divided into 3 main cathegories: \textit{road races, track races and off-road races}. Each cathegory 
+
+
+For a novice watching those competitions, it might seem peculiar the way athlets compete with each other. Even thow they need to compete with each other, their only chance of success is to team up with their competitors. This behaviour is mostly noted in the ?? racess. The motivation 
+
 
 -- Objectives
+Introduce the other chapters here
+
 
 -- Achievements (yeah right :D)
 
 \chapter{Design and Implementation}
 
+% Shouldn't that be in the Project Management section ?
+Being a research project, after our initial meetings, we have divided into two small teams, one focued on implementing the simulation, and the other focusing on the mathematics for the Game Theory model.
+
+While designing the model
+
+
+
 \section{The model}
 
 -- How it works, where it comes from.
+
+\cite{MathModel} is good.
+\cite{AgentModel} is bad.
 
 \section{Runge-Kutta}
 
 % Initial equations
 
-Runge-Kutta is a standard numerical method that allows one to estimate a function based on an initial value and the function's differential. It is similar to the standard ``newton method" ($f(x + h) \approx f(x) + h*f'(x)$), but it uses several points inside a trapezium to trace the function significantly better.
+Runge-Kutta is a standard numerical method that allows one to estimate a function based on an initial value and the function's differential. It is similar to the standard ``newton method" ($f(x + h) \approx f(x) + h*f'(x)$), but it uses several points inside a trapezium to trace the function significantly better. Runge-Kutta method is used in [ write more here... ]
 
-However, you're going to say this is all very nice and it might well be useful for a first order differential equation, but we have a second order non-linear differential equation. Well one might notice that it is infact possible to adapt this method to tracing two (or more) interdependent functions (whos value depends on the value of the other) over the same variable (t) with two initial conditions. So if we can transform our second order differential equation into two first order ones, we can use Runge-Kutta to solve it numerically and then derive any necessary values from the result.
+\textbf{However, you might say that this is all very nice and it might well be useful for a first order differential equation, but in fact we have a second order non-linear differential equation}. Also, you might notice that it is in fact possible to adapt this method to tracing two (or more) interdependent functions (whos value depends on the value of the other) over the same variable (t) with two initial conditions. So if we can transform our second order differential equation into two first order ones, we can use the Runge-Kutta method to solve it numerically and then derive any necessary values from the result.
 
 For the following equations we will use the next simbols: \\
 
@@ -58,13 +170,12 @@ F is Force 	&  	\_bear is friction in the wheel bearings \\
 } \\
 \hline
 \end{tabularx}
-
-\vspace*{1cm}
+\vspace{1cm}
 
 $\eta$ 		represents the frictional losses in the drive chain \\
 $\omega$ 	represents angular velocity.\\
 $\gamma$	is the step-up coefficient the bicycles gearing system.  \\
-
+\newpage
 So by conservation of energy:
 
 $$P_{pot} + P_{air} + P_{bear} + P_{roll} + P_{kin} = \eta * P_{ped}$$
@@ -152,7 +263,7 @@ We assume that when cyclist breaks away he does so with maximum possible speed. 
 For a racer to cooperate means to follow the strategy of racers in the group. If there are more than two racers we assume that racers willing to cooperate will cooperate with break aways and not stay in the group. When there are no break aways cooperation will preserve current status of the game.
 
 \paragraph{Fall back} ~\\
-When a racer fallsback he limits his velocity so that he will get caught by the group preceding the one he is part of at the moment of making decision. If there is no group to fall back to the racer moves to further position in the group. This action isn't instantenous, however, we assume that racers will not form a group between falling back from one group to another.
+When a racer falls back he limits his velocity so that he will get caught by the group preceding the one he is part of at the moment of making decision. If there is no group to fall back to the racer moves to further position in the group. This action isn't instantaneous, however, we assume that racers will not form a group between falling back from one group to another.
 
 \paragraph{Value Of A Game} ~\\
 For a zero-sum game value of that game is the expected value to one of the players when both play a perfect strategy.
@@ -163,22 +274,99 @@ This is a game played at some moment $\delta^{(n)}$ before race finish line whic
 \subsection{Zero sum game}
 Let us consider the length of the race to be $R > 0$. In order to reason about the pay off of each player when choosing a certain strategy during the race, it is best to single out a moment when the choice of each player is clear. Hence, in the case we are currently discussing (two racers broke away from the chasing group and it is certain they cannot be caught), we easily realize that in the last $\delta\ km$, where $\delta\ll R$, the two players will definitely choose to breakaway and push as hard as possible in order to win the race. This will have pay off $C_i>0$ for player $i$, where $i \in \{1,2\}$.
 \\\\
-Let us now consider the moment $\delta'$, with $\delta'>\delta$ and $\delta'\ll R$. We can easily infer that the pay off for each player $i$ is $\max\{C_i,V_{\delta'_i}\}$, where $V_{\delta'_i}$ is the value of the one-off game at moment $\delta'$ for player $i$. By continuing in this manner we get that at moment $\delta^{(n)}$, with $\delta^{(j)}>\delta^{(i)}$ for all $j>i$ and $\delta^{(0)}=\delta$ we have that the pay off for each player $i$ is $P_{i,n} = \max\{P_{i,n-1},V_{\delta^{(n)}_i}\}$, where $P_{i,0} = C_i$.
+Let us now consider the moment $\delta'$, with $\delta'>\delta$ and $\delta'\ll R$. We can easily infer that the pay off for each player $i$ is $\max\{C_i,V_{\delta'_i}\}$, where $V_{\delta'_i}$ is the value of the one-off game at moment $\delta'$ for player $i$. By continuing in this manner we get that at moment $\delta^{(n)}$, with $\delta^{(j)}>\delta^{(i)}$ for all $j>i$ and $\delta^{(0)}=\delta$ we have that the pay off for each player $i$ is $P_{i,n} = \max\{P_{i,n-1},V_{\delta^{(n)}_i}\}$, where $P_{i,0} = C_i$. Hence, we have deduced a recursive relation that lets us easily reason about the choice of strategies.
+\\\\
+In order to get the one-off game pay-off matrices we need the following formulas:\\
+$CS_{i,n} = \dfrac{P_{ped_{i,n}} \cdot \delta^{(n)}}{E_{i,n} \cdot v},\ i\in\{1,2\}$ - the interpretation of this coefficient is the proportion of energy we have to reach finish at given speed, calculated at moment $\delta^(n)$.\\
+$CF_{draft}(x)=(0.62 - 0.0104d_w + 0.0452 d_w^2)\cdot (1/2)\cdot c_d\cdot \rho\cdot A\cdot x^2$ -  represents the force applied to the cyclist due to the aerodynamic drag from the air taking into account the slipstream effect. In this case the $x$ is the speed of the cyclist. We remind the reader that $d_w$ is the distance between the two cyclists.
+$P = \dfrac{CS_{1,n}}{CS_{1,n}+CS_{2,n}}$ - the probability of player 1 being in front on player 2 at moment $\delta^{(n)}$ depending on their $CS_{i,n}$.
+\\\\
+We will list the possible strategy combinations with their respective pay-off players might use during the game. Before doing so, let us define $CF_{max}$ to be the maximum draft a player can attain, and $CF_{min}$ the minimum one.
+\\\\
+\textbf{Player 1 Cooperates, Player 2 Cooperates}
+\\
+The pay-off for Player 1 is $(1-P)\cdot CF_{draft}(s_1)$ and $P \cdot CF_{draft}(s_2)$ for Player 2, where $s_i$ is the speed of Player $i$. The pay-off for the two players is as such because if they cooperate they gain an advantage by drafting one behind the other ($CF_{draft}(s_i)$). This advantage, however, is greater for the player behind as he will put less effort, hence we need the probability $P$ of Player 1 having first place.
+\\\\
+We now need to normalize these quantities such that we get a pay-off in the interval [1,2], where 1 represents the worst pay-off (i.e. second place) and 1 the best (i.e. first place). After normalization we get that the pay-off for Player 1 is $(1-P)\cdot \dfrac{CF_{draft}(s_1)}{CF_{max}} + 1$ and the one for Player 2 is $P\cdot \dfrac{CF_{draft}(s_2)}{CF_{max}} + 1$.
+\\\\
+The reasoning behind the normalization is as follows:\\
+Let us consider the pay-off for Player 1 (for Player 2 we reasoning is similar). Notice that is $P=1$, then the formula is 0. Let us multiply it by a normalization coefficient $N$ and add 1 to the formula. We get $(1-P)\cdot N\cdot CF_{draft}(s_1)  + 1$. Thus, if we replace $CF_{draft}(s_1)$ by $CF_{max}$, then this yields the following inequality: $(1-P)\cdot CF_{max} \cdot N + 1\le 2$. After several easy computations we get $N = \dfrac{1}{CF_{max}}$. Replacing it in the equation, we get the result. Note that the other inequality - $\ge 1$ - holds trivially.
+\\\\
+\textbf{Player 1 Cooperates, Player 2 Breaks-away}
+\\
+Player 1's pay-off is clearly the same as before, i.e. $(1-P)\cdot \dfrac{CF_{draft}(s_1)}{CF_{max}} + 1$ - after normalization. Because of the fact that Player 2 breaks-away then his pay-off depends on his positioning i.e. $1-P$, but we must also take into account whether or not he is trailing behind Player 1 and hence, if he can get any benefit from drafting. Thus, we have two disjoint probability events and we can argue that the pay-off is $(1-P) +  P\cdot \dfrac{CF_{draft}(s_2)}{CF_{max}} + 1$ - after normalization. To explain it a bit more, $P\cdot \dfrac{CF_{draft}(s_2)}{CF_{max}}$ this is the part of the pay-off that tells him the benefit he gets from drafting. We then want to specify that his pay-off also depends on the probability of him being in front and hence we add $1-P$. It is to remark the fact that we are still in the [1,2] interval as the events (trailing or leading) are disjoint.
+\\\\
+\textbf{Player 1 Cooperates, Player 2 Falls back} 
+\\
+\textit{Note.} In this case by falling back, the reader should understand that Player 2 wants to trail behind Player 1 such that he can benefit from drafting. We have this interpretation because there is no chasing group that should be taken into account and thus, this is the only rational choice he can make.
+\\\\
+By the note above we conclude that the pay-off for the two players are $(1-P) +  P\cdot \dfrac{CF_{draft}(s_1)}{CF_{max}} + 1$ and $(1-P)\cdot \dfrac{CF_{draft}(s_2)}{CF_{max}} + 1$ for Player 1 and Player 2 respectively. Notice that the pay-offs are similar as in the situation above, only that they are swapped.
+\\\\
+\textbf{Player 1 Breaks-away, Player 2 Cooperates}
+\\
+Similar pay-off as in the case \textit{Player 1 Cooperates, Player 2 Breaks-away}. Only the order changes.
+\\\\
+\textbf{Player 1 Breaks-away, Player 2 Breaks-away}
+\\
+In this case both players stop cooperating and they depend solely on their performance which is computed by $P$ and $1-P$. Thus, we can argue that the pay-off for Player 1 is $P+1$ and the one for Player 2 is $2-P$, after normalization.
+\\\\
+\textbf{Player 1 Breaks-away, Player 2 Falls back}
+\\
+This is an interesting case, because Player 2 might play 'sneaky' and try to fall back and then benefit from drafting by chasing the player that broke away. However, we won't treat this situation because we want to preserve simplicity and because this case implies that Player 1 doesn't really manage to break-away. Thus, we conclude that the pay-off in this case is $P+1$ for Player 1 and 1 for Player 2.
+\\\\
+\textbf{Player 1 Falls back, Player 2 Cooperates}
+\\
+Similar pay-off as in the case \textit{Player 1 Cooperates, Player 2 Falls back}. Only the order changes.
+\\\\
+\textbf{Player 1 Falls back, Player 2 Breaks-away}
+\\
+Similar pay-off as in the case \textit{Player 1 Breaks-away, Player 2 Falls back}. Only the order changes.
+\\\\
+\textbf{Player 1 Falls back, Player 2 Falls back}
+\\
+In this case, we set both pay-offs to 1 (worst pay-off) because this strategy does not fully apply to our case. 
+\\\\
+Now, we can trivially build a pay-off matrix containing the values we deduced above.\\\\
+Pay-off of the game theoretical model resembles the rules outlined in [mention papers] after which our simulation has been created. We identified independent variables and made them influence pay-off values since this way we can generalise it to all types of players. Also it gives us basis for comparison which results will be shown later.\\\\
+\textit{Note.} The reader may notice that we didn't specify the distance $d_w$. This should be varied in the simulation such that we can see which distance between the players is the optimal one for choosing certain strategies.
+
+\subsection{Getting caught}
+Everything seems fairly simple when there are only two racers competing. Entering realm of n-player games leaves us with few definite results as more interpersonal qualities come into play. It is an important to know that communication, players attitude towards each other and perceived strength of a player in a game can influence strategies chosen. However, we separate on case where we can get some results.
+\\\\
+For a case when two racers have escaped and are being chased by peleton we can consider scenarions when there exsists a possibility of them being caught. It is no longer a zero-sum game since players can drop below 2nd place and one can lose without other gain. However, we are not considering the chasing peleton as players. We are merely treating them as moving group of people that has a potential of catching uo with the escape.
+\\\\
+First we need to quantify chance of being caught. Actually since we can know the distances between racers, their velocity and we can measure the time it is not only a possibility, but certainty. This holds as long as one of the groups does not change its strategy when we have to reevaluate the chance. Consider $\epsilon \in \{0,1\}$, it has value of 0 if the escape group consisting of our players will not be caught and 1 otherwise. We set $\epsilon$ at moment $\delta^{(n)}$ to 1 if $\frac{x}{v_{draft}}=\frac{x+d}{v_{group}}$ has a solution in range $0\le x\le d$ where $d$ is distance from peleton to escape group, $v_{draft}$ and $v_{group}$ are velocities of second (drafting) racer in escape and peleton (chasing group) respectively. Knowing value of epsilon we can simplify our model to considering two cases: one when players will safely reach finish first and second when they will be absorbed by peleton. It is easy to notice that the first case has been mostly solved in previous section. It only needs few adjustments. Also it is not difficult to derive payoffs for absorbed case since players are likely to get places depending on their fitness across whole race group (it clearly would not be the case if all racers were considered to be players and were allowed to choose strategies as racers will react differently when chasing tired racers from escape).
+\\\\
 
 
-\subsection{Non-zero sum game}
+\textbf{Player 1 Cooperates, Player 2 Cooperates}
+\\
+\textbf{Player 1 Cooperates, Player 2 Breaks-away}
+\\
+\textbf{Player 1 Cooperates, Player 2 Falls back} - same as 2
+\\
+\textbf{Player 1 Breaks-away, Player 2 Cooperates} - same as 2 - change order
+\\
+\textbf{Player 1 Breaks-away, Player 2 Breaks-away} - same as 1? or we can treat it as if none of them benefits from drafting or make it so the better one doesn't and worse does
+\\
+\textbf{Player 1 Breaks-away, Player 2 Falls back} - as if racing alone?
+\\
+\textbf{Player 1 Falls back, Player 2 Cooperates} - same as 2
+\\
+\textbf{Player 1 Falls back, Player 2 Breaks-away} - similar to break away - fallback
+\\
+\textbf{Player 1 Falls back, Player 2 Falls back} - same as in break-away - break-away
 
-Pay off matrix for last stage of the race
-$CS_i = \dfrac{P_{i,n} \times \delta \times n}{E_{i,n} \times v}$
+\subsection{Repeated Game}
+We can consider our methodology of finding payoff for the whole game with alteration allowing for change of strategy in order to allow optimal value of the game. Evaluating our model this way enables us to answer questions of optimal strategies at given points in time.
 
-\begin{tabularx}{\linewidth}{ccccc|}
-& & \multicolumn{3}{ c }{Player 2} \\ \cline{3-5}
-& & break away & cooperate & \multicolumn{1}{c}{fallback}  \\ \cline{3-5}
-\multirow{3}{*}{\rotatebox{90}{Player 1}} &
-\multicolumn{1}{ |c| }{break away} & 3 & 2 & 0 \\
-& \multicolumn{1}{ |c| }{cooperate} & 2 & 3 & 1 \\
-& \multicolumn{1}{ |c| }{fallback} & 2 & 2 & 0 \\ \cline{3-5}
-\end{tabularx}
+\subsection{N-player Cooperative Game}
+This is the field we have touched least on since Game Theory offers very little with respect to sientific methodology of solving this cases. When there are more than 2 players most of the rationality taken from granted in 2 player zero-sum games no longer applies.
+
+\cite{GameTheoryNonTechnical} is good
+\cite{GameTheoryApplications} is also good
+\cite{TheoryOfGames} is awesome
+
 
 \chapter{Evaluation}
 
@@ -195,5 +383,11 @@ $CS_i = \dfrac{P_{i,n} \times \delta \times n}{E_{i,n} \times v}$
 \chapter{Project Management}
 
 -- How did we organise ? How did it work ?
+
+
+
+
+\bibliographystyle{plain}
+\bibliography{refs}
 
 \end{document}
