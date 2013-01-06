@@ -223,6 +223,17 @@ $$ 75.7664 *(x'(t))^{3} + 14844.025288499999 * x'(t) * x''(t) = P_{ped}$$
 
 which is a second order non-linear differential equation.\\\\
 
+However this differential equation does not take into account the ``slipstream'' effect.
+
+\subsubsection{Integrating the slipstream effect into the differential equation for modeling the motion of a cyclist.}
+
+The slipstream effect is the effect by which the drag on a object moving through a fluid is diminished by the fact that the fluid it is moving through is already moving at a certain speed due to it being in the wake of another object in motion. \newline \par
+
+This can be modeled for cyclists by applying a correction factor, $CF_{draft}$ to the $P_{air}$ (which creates the same change in $F_{air}$) in the derivation of the differential equation that depends on the distance between a cyclist and the cyclist in front of him ($d_w$). \newline \par
+
+If $d_w \ge 3$, then $C_{draft} = 1$ as the slipstream effect makes no distance over greater distances (the fluid in the wake of the object infront has the time to stop moving). \\
+If $d_w < 3$, then $C_{draft} = 0.62 - 0.0104*d_w + 0.0452*d_w^2$ . $^{\cite{SlipStream}}$
+
 \subsection{The implementation}
 
 \subsubsection{Runge-Kutta}
