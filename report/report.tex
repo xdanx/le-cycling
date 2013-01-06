@@ -61,7 +61,8 @@ Julian Sutherland
 \begin{minipage}{0.4\textwidth}
 \begin{flushright} \large
 \emph{Supervisor:} \\
-Dr. Panos \textsc{Parpas} % Supervisor's Name
+Dr. Panos \textsc{Parpas} \\% Supervisor's Name
+%Michael \textsc{Hadjiyiannis}
 \end{flushright}
 \end{minipage}\\[5cm]
 
@@ -92,10 +93,7 @@ Dr. Panos \textsc{Parpas} % Supervisor's Name
 
 \begin{abstract}
 
-%TODO: needs improvement
-% César : I think it needs to be more about what we did rather than how cycling works.
-
-During our Group Project we were charged with analysing cycling races, in particular trying to provide theoretical foundations for analysing their outcomes. Cycling races are amongst one of the most popular sports worldwide. Their history dates back to the
+During our Group Project we were challanged with analysing cycling races, in particular trying to provide theoretical foundations for analysing their outcomes. Cycling races are amongst one of the most popular sports worldwide. Their history dates back to the
 $18^{th}$ century being adopted and since then the types of races spanned substantially: from Track cycling on banks and velodromes,
 Cycle-cross, Mountain bike races, one-day road race, criterion or time trial to professional races such as
 Tour de France, Giro d'Italia or Vuelta a Espa\~na. Despite their large popularity and considerable financing attracted by large races there is no formal way of estimating outcome of a race not to mention choosing the right strategy. Even though racing does not seem like a sport involving . Cycling racers are extremely exhaustive for organism and right timing of effort is of paramount importance for winning. One example might be Andy Schleck's victory during one of 2011 Tour de France stage races. His escape 60 km before finish line had been perceived unimportant by other racers, however, it granted him almost 4 minute lead at finish.
@@ -104,27 +102,18 @@ Result of our work are two tools that can assist when analysing cycling races. F
 
 What we have created during this project could invaluable decision making framework for coaches and racers equally. One could use game theoretical model to derive set of candidate strategies. Further the strategies can be evaluated using our agent based model to correct the inherent inaccuracy of game theory when approximating real life situations. We believe that with growth of computational power and better understanding of cycling races the results achieved from models similar to ours can become very accurate. However, better understanding of human psychology will be essential in order to solve general game theoretical model. Currently existing frameworks from Von Neumann–Morgenstern and Aumann-Maschler do not specify which coalition will dominate the others, they just specify conditions for dominating coalition to satisfy.
 
-% During those professional races it is expected that a group of riders break away
-% from the main group and cooperate with each other in order to gain advantage from the main group ( called peloton ). Riders in such a
-% group are forced to cooperate with each other, even though their chances of winning are decreasing as more members join the break away
-% group. Also, when a breakaway group is being formed, riders from the peloton have to decide whether to chase it down or remain where
-% they are.
-
-% From our point of view, all these decisions can be modelled by a Game Theory strategy. During our project, we have tried to find optimum strategies that can be applied to various cycling races. We have proposed a Game Theory model based on our research and an independent simulation used to verify our model. We continued the work of [ cite the papers here] and try to obtain a model that is as appropriate as real life cycling races. Using our simulation combined with the game theory model we believe that one should be able to simulate any Professional cycling race. Coaches and racers can use this data then to compare decisions taken  during the race. Our project aims to combine both Game Theory strategies with data from multiple simulated races in order to output 'optimal' decisions
-
 \end{abstract}
 
 
 \chapter{Introduction}\label{ch:intro}
 
-The first cycling race is assumed to be held on the $31^{th}$ of May 1868 in Paris. Nowadays, after roughly 145 years, Cycling is one of the top 10 most popular sports during the Summer Olympics \cite{TopEndSportsUrl} and attracts millions of fans worldwide. Cycling competitions are divided into three main categories: \textit{road, track and off-road events}. Like in any popular sports, researchers showed their interest in strategies that could simulate the outcome of races. Efforts have been made to characterize as accurately as possible cycling races, and led to mathematical formulas taking into consideration almost all the physical [ from physics, like gravity, etc etc.. - need rephrase ? ] factors in a race. Some examples can be seen in \cite{AgentModel} or \cite{SlipStream} .
+The first cycling race is assumed to be held on the $31^{th}$ of May 1868 in Paris. Nowadays, after roughly 145 years, cycling is one of the top 10 most popular sports during the Summer Olympics \cite{TopEndSportsUrl} and attracts millions of fans worldwide. Cycling competitions are divided into three main categories: \textit{road, track and off-road events}. Like in any popular sports, researchers showed their interest in strategies that could simulate the outcome of races. Efforts have been made to characterize as accuratelly as possible cycling races, and led to formulas taking into consideration almost all the ( mathematical and physical factors in a race - needs rephrase? ). Some examples can be seen in \cite{AgentModel} or \cite{SlipStream} .
 
-During our project, we have focused mainly on \textit{road events}: \textbf{road race, criterium, hill climbing and stage races} and Sprint \textit{track events}. For a novice watching those competitions, it might seem peculiar the way athletes compete with each other. Even though they are competing  with each other, their only chance of success is to team up with their competitors. This behaviour is mostly noted in the Stage Races like Tour de France or Tour de Faso.
+During our project, we have focused mainly on \textit{road events}: \textbf{road race, criterium, hill climbing and stage races} and Sprint \textit{track events}. For a novice watching those competitions, it might seem peculiar the way athletes compete with each other. Even though they are racing against each other, their only chance of success is teaming up with their competitors. Unfortunately, as more members join the break-away grup, the rider's chances of crossing the finish line first decrease. This behaviour is mostly noted in the Stage Races like Tour de France or Tour de Faso in Africa where even entire teams with no chance of winning are teaming up with top teams in order to help them out. Also, riders can be taken by surprise by their break away companions who start sprinting towards the finish line.
 
 In the following report we will focus on races where players are forced to cooperate and ask ourself  whether we can derive a game theory model that can model the optimal behaviour for a cyclist. The aims we set ourselves at the beginning of this project was first to create a cycling race simulation that could realistically reproduce the progress of a race. Then to create a game theoretical framework to be able to determine the optimal strategy for a cyclist in a certain situation. Ultimately it would be possible to join these together and develop the game theory using data collected from the simulation, and include strategies designed from the game theory framework in the simulation.
 
 We have managed to create a simulation of road races and aimed to make it as realistic as possible, even if we had to make a number of assumptions, this is described in section \ref{sec:softmodel}. We have also proposed a game theoretical model that should cover the possible outcomes of a race in several type of situations, this is described in section \ref{sec:gameth}. We are also using the model in order to validate the results from the simulation.
-
 
 \chapter{Design and Implementation}\label{ch:design&impl}
 
@@ -169,20 +158,20 @@ F is Force 	&  	\_bear is friction in the wheel bearings \\
 			& 	\_kin is kinetic energy \\
 			&	\_ped is cyclist's 'input' (e.g. $P_{ped}$ = power input into the system) \\
 \hline
-\multicolumn{2}{|c|}
-{
-	$l_{c}$  is the length of the cycling crank and
-	% maybe use a parbox here? http://tex.stackexchange.com/questions/485/how-to-break-a-line-in-a-table
-	$r_{w}$  is the radius of the wheel
-} \\
-\hline
 \end{tabularx}
-\vspace{1cm}
 
+\begin{tabularx}{\linewidth}{|X|}
+
+$l_{c}$  is the length of the cycling crank and \\
+% maybe use a parbox here? http://tex.stackexchange.com/questions/485/how-to-break-a-line-in-a-table
+$r_{w}$  is the radius of the wheel \\
 $\eta$ 		represents the frictional losses in the drive chain \\
 $\omega$ 	represents angular velocity.\\
 $\gamma$	is the step-up coefficient the bicycles gearing system.  \\
-\newpage
+\hline
+\end{tabularx}
+
+\vspace{1cm}
 So by conservation of energy:
 
 $$P_{pot} + P_{air} + P_{bear} + P_{roll} + P_{kin} = \eta * P_{ped}$$
@@ -203,6 +192,7 @@ This simplifies to: $$F_{air} + F_{kin} = \frac{l_{c} * P_{ped} }{ \omega * \gam
 where $$ F_{air} 	= \frac{1}{2} * c_{d} * \rho * A * ( x'(t) )^{2} $$
 and	  $$ F_{kin} 	= ( m + ( \frac{l_w}{r_w^{2}} ) * x''(t) $$
 
+% TODO : Julian, please can you link this to the results from the papers? Or discuss them here or in a later chapter
 Results from the Paper (...)\\
 
 We are using the following estimates:
@@ -371,14 +361,13 @@ $d_w$ can either be set to the initial value at the beginning of the minute or c
 
 In order to create a thorough mathematical model, we aim to construct a game theoretical model. This model will help racers to change their strategies and choose the optimal one as the race unfolds.\\
 
-Modelling bike races can be quite challenging, hence we will begin with the simplest case in order to introduce our methodology and explain the simplifying assumptions we are making. When participating in a race we can argue that racers are at each point faced with three possible options: either break away from their current group or fall back to the group preceding the current one or cooperate with the other members of the group (which essentially implies copying the strategy of the other players in their group - which will be discussed later). Each of the racers can change his mind as often as he wants, however, changes in strategy will likely incur penalties on their performance. In this section we try to determine whether there is one dominant strategy and try to find at which point in race it is beneficial for racer to change his strategy. We can easily see that strategy chosen by players will depend on their skills and fitness, i.e. better racers can afford more aggressive, less cooperative strategy in hope of being able to outdistance opponents. On the other hand weaker players will tend to cooperate more. The difficulty of this part is not the actual solution to the model since it might happen there will not be a general solution but fitting the model to the actual situation. It is fairly easy to construct arbitrary game theoretical games, however, when the games have to even remotely represent reality they get complicated very quickly.\\
+Modelling bike races can be quite challenging, hence we will begin with the simplest case in order to introduce our methodology and explain the simplifying assumptions we are making. When participating in a race we can argue that racers are at each point faced with three possible options: either break away from their current group or fall back to the group preceding the current one or cooperate with the other members of the group (which essentially implies copying the strategy of the other players in their group - which will be discussed later). Each of the racers can change his mind as often as he wants, however, changes in strategy will likely incur penalties on their performance. In this section we try to determine whether there is dominant strategy and try to find at which point in race it is beneficial for racer to change his strategy. We can easily see that strategy chosen by players will depend on their skills and fitness, i.e. better racers can afford more aggressive, less cooperative strategy in hope of being able to outdistance opponents. On the other hand weaker players will tend to cooperate more. The difficulty of this part is not the actual solution to the model since it might happen there will not be a general solution but fitting the model to the actual situation. It is fairly easy to construct arbitrary game theoretical games, however, when the games have to even remotely represent reality they get complicated very quickly.\\
 
-We start by a discussion of case with two racers when the group chasing them is very far from them and does not affect the strategies. Thus, they are guaranteed to come first and second. We can clearly see that this is a zero-sum game since we can only gain place if our opponent loses one. We can argue that race is a zero-sum game in general regardless on number of players, however, we will leave discussion of this theory for later and we will see that the answer is not so obvious when we want to arrive at meaningful results. Since we have already concluded that this is the simplest of game theoretical models, we need to investigate actual pay off matrix for this game.
-
+Before we can dive into discussion of game theoretical models we have created we aim to present short introduction to game theoretical concepts we are using. Also short summary of core principles of game theory is included with references to further reading. We then continue to consideration of case with two racers when the group chasing them is very far from them and does not affect the strategies. Thus, they are guaranteed to come first and second.
 
 \subsection{Definitions}\label{subsec:defs}
 
-Before we can dive into discussion of game theory can be used to approach bicycle racing problem we must introduce the terms we are making use of.
+Before we can indulge ourselves in discussion of game theory can be used to approach bicycle racing problem we must introduce the terms we are making use of.
 
 \paragraph{2-person Zero-sum Game} ~\\
 Two-person zero-sum game describes conflict of interest between two players with strictly opposite interests. Formally this means that any change in the pay-off of one player has to be offset with equal decrease in amount of payout to the second player. These types of games can be divided into three subsections depending on the achievable results to the game. We can have a dominant strategy equilibrium, pure strategy Nash equilibrium and mixed strategy Nash equilibrium each with less strictness imposed on the result.
@@ -521,11 +510,11 @@ Above description can be represented by pay-off matrix like this:
 	\caption{Prisoner's Dilemma pay-off matrix}
 \end{table}
 \\
-We will leave it to the reader to find optimal strategy for this game as it turns out to be quite rewarding task. One can also consider whether his or hers strategy will be the same if the game was to be played more than once.
+We will leave it to the reader to find optimal strategy for this game as it turns out to be quite rewarding task. One can also consider whether his or hers strategy will change if the game is to be played more than once.
 
 \paragraph{N-person Game} ~\\
 Considering N-person games leaves much to be desired from. One of the problems is that possible strategies can grow exponentially with number of players, hence, these problems are at least more computationally difficult than 2-person games. Also when a player is faced with more than one equivalent, however, differing in terms of pay-off option will not always choose the strategy guaranteeing highest pay-off. Furthermore interpersonal factors come into play and are of great significance and players need to carefully consider what inducements they must offer and accept. In our work we do not consider pure N-person games, however, we present how with respect to cycling races such cases can be simplified with some level of accuracy.
-
+\\\\
 For deeper and more detailed explanation reader is encouraged to make himself familiar with contents of "Game theory : a nontechnical introduction"\cite{GameTheoryNonTechnical} or "Games, theory and applications"\cite{GameTheoryApplications}. Further in the work we assume that reader is at least familiar with the concepts presented above.
 
 \paragraph{Breaking away} ~\\
@@ -663,9 +652,14 @@ As our project consisted of two parts very different in nature, we divided the w
 
 In the simulation team, we worked closely together during the whole duration of the project. We made sure both of us agreed on the design decisions before writing any code. We usually worked together on the same part of the code or divided the work into small individual tasks. \\
 
+On the other hand, for the Game Theory initially we started our research individually. After that, we have discussed the methodology with our supervisor and this led to a draft Game Theory model. Then we had weekly meetings where we would work towards getting closer to finding the final model. 
+
+
 [How the game theory worked] \\
 
-Despite our attempt to have a productive and dynamic organisation, our different obligations for other courses and work applications made the communication between people working on different parts of the project difficult sometimes, resulting in problems being unresolved for an unnecessary amount of time and leading ultimately to not being able to achieve all the goals we set for our project. \\
+Despite our attempt to have a productive and dynnamic organisation, our different obligations for other courses and work applications made the communication between people working on different parts of the project difficult sometimes, resulting in problems being unresolved for an unnecessary amount of time and leading ultimatelly to not being able to achieve all the goals we set for our project. 
+There have been weeks during which we managed to make significant progress and others that were not very productive. This is due to coursework and the fact that three out of five members decided to take more optional courses than average. 
+
 
 
 % To add something to the bibliography, look for the "import into BibTex" thingy on google scholar, and add the stuff into refs.bib.
