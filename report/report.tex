@@ -300,7 +300,7 @@ $$ y_2' = \frac{P_{ped} - 75.7665 * y_1 ^ 3}{14844.025288499999}$$
 
 Now we have only $y_2'$ in terms of only t, $y_1$ and $y_2$ so we can set $$ g( t, y_1, y_2 ) = \frac{P_{ped} - 75.7665 * y_1 ^ 3}{14844.025288499999}$$
 
-Writing $y_1$ in terms of t, $y_1$ and $y_2$: $$y_2 = \frac{1}{2} * x'(t)^2$$ yelds $$y_2 = \frac{1}{2} * y_1^2$$
+Writing $y_1$ in terms of t, $y_1$ and $y_2$: $$y_2 = \frac{1}{2} * x'(t)^2$$ yields $$y_2 = \frac{1}{2} * y_1^2$$
 And by rearranging the left hand side we get:
 $$y_1 = \sqrt{2 * y_2}$$
 Now we differentiate with respect to $t$:
@@ -316,7 +316,7 @@ $$ f(t, y_1, y_2) = \frac{P_{ped} - 75.7665 * (0.62 - 0.0104*d_w + 0.0452*d_w^2)
 
 $$ g( t, y_1, y_2 ) = \frac{P_{ped} - 75.7665 * (0.62 - 0.0104*d_w + 0.0452*d_w^2) * y_1 ^ 3}{14844.025288499999}$$ \\
 
-$d_w$ can either be set to the initial value at the beginning of the minute or changed dynamically, but this requiers a simultaneous simulation of all the cyclists to see how they change in real time, which is quite complex.
+$d_w$ can either be set to the initial value at the beginning of the minute or changed dynamically, but this requires a simultaneous simulation of all the cyclists to see how they change in real time, which is quite complex.
 
 % Game theoretical model introduction
 
@@ -337,57 +337,127 @@ Before we can dive into discussion of game theory can be used to approach bicycl
 Two-person zero-sum game describes conflict of interest between two players with strictly opposite interests. Formally this means that any change in the pay-off of one player has to be offset with equal decrease in amount of payout to the second player. These types of games can be divided into three subsections depending on the achievable results to the game. We can have a dominant strategy equilibrium, pure strategy Nash equilibrium and mixed strategy Nash equilibrium each with less strictness imposed on the result.
 \subparagraph{Dominant Strategy Equilibrium}
 is represented by table below. Ease of analysing such games stems from the fact that there is always a clear strategy that a player has to follow in order to achieve maximum payout.
+
+% Dominant strategy equilibrium derivation %
+
 \begin{table}[ht!]
 	\hspace{-4em}
 	\centering
 	\begin{tabular}{ccccc|}
-		& & \multicolumn{3}{c}{Player1}                                \\ \cline{3-5}
-		& & A & B & \multicolumn{1}{c}{C}                              \\ \cline{3-5}
-		\multirow{3}{*}{Player2} & \multicolumn{1}{|c|}{a} & 2 & 1 & 7 \\
-		& \multicolumn{1}{|c|}{b} & 4 & 5 & 6                          \\
-		& \multicolumn{1}{|c|}{c} & 3 & 1 & 7                          \\ \cline{3-5}
+		& & \multicolumn{3}{c}{Player 1}                                \\ \cline{3-5}
+		& & A & B & \multicolumn{1}{c}{C}                               \\ \cline{3-5}
+		\multirow{3}{*}{Player 2} & \multicolumn{1}{|c|}{a} & 2 & 1 & 7 \\
+		& \multicolumn{1}{|c|}{b} & 4 & 5 & 6                           \\
+		& \multicolumn{1}{|c|}{c} & 3 & 1 & 7                           \\ \cline{3-5}
+	\end{tabular}
+	\caption{2-person zero-sum game\\ dominant strategy equilibrium}
+\end{table}
+In order to find dominant strategy equilibrium we need to find dominant strategy.
+\subparagraph{Row player} strategy $i$ dominates strategy $j$ (for row player) if $\forall k. a_{ik} \ge a_{jk}$ and $\exists k.a_{ik} > a_{jk}$.
+\subparagraph{Column player} strategy $i$ dominates strategy $j$ if $\forall k. a_{ki} \le a_{kj}$ and $\exists k.a_{ki} < a_{kj}$.
+\\\\
+Using these rules we can reduce pay-off matrix. It is clear that strategy $C$ is dominated by either $A$ and $B$. Hence, the matrix is reduced to:
+\begin{table}[ht!]
+	\hspace{-4em}
+	\centering
+	\begin{tabular}{cccc|}
+		& & \multicolumn{2}{c}{Player 1}                            \\ \cline{3-4}
+		& & A & \multicolumn{1}{c}{B}                               \\ \cline{3-4}
+		\multirow{3}{*}{Player 2} & \multicolumn{1}{|c|}{a} & 2 & 1 \\
+		& \multicolumn{1}{|c|}{b} & 4 & 5                           \\
+		& \multicolumn{1}{|c|}{c} & 3 & 1                           \\ \cline{3-4}
+	\end{tabular}
+	\caption{2-person zero-sum game\\ dominant strategy equilibrium}
+\end{table}
+\\\\
+Furthermore one can spot that both strategy $a$ and $c$ are dominated by $b$
+\begin{table}[ht!]
+	\hspace{-4em}
+	\centering
+	\begin{tabular}{cccc|}
+		& & \multicolumn{2}{c}{Player 1}           \\ \cline{3-4}
+		& & A & \multicolumn{1}{c}{B}              \\ \cline{3-4}
+		Player 2 & \multicolumn{1}{|c|}{b} & 4 & 5 \\ \cline{3-4}
+	\end{tabular}
+	\caption{2-person zero-sum game\\ dominant strategy equilibrium}
+\end{table}
+\\\\
+Which comes down to the following.
+\begin{table}[ht!]
+	\hspace{-4em}
+	\centering
+	\begin{tabular}{ccc|}
+		& & \multicolumn{1}{c}{Player 1}       \\ \cline{3-3}
+		& & \multicolumn{1}{c}{A}              \\ \cline{3-3}
+		Player 2 & \multicolumn{1}{|c|}{b} & 4 \\ \cline{3-3}
 	\end{tabular}
 	\caption{2-person zero-sum game\\ dominant strategy equilibrium}
 \end{table}
 \\
-In case of above matrix one can deduce that dominant strategy is (A,b).
+Hence the final and dominant strategy pair is $(A,b)$.
+
+% Pure Nash equilibriu derivation
 
 \subparagraph{Pure Nash Strategy Equilibrium} represents a situation when no player has an incentive to deviate from the strategy chosen, since no player can choose a better strategy given the choices of the other players. Consider following table.
 \begin{table}[ht!]
 	\hspace{-4em}
 	\centering
+	\begin{tabular}{ccccc|}
+		& & \multicolumn{3}{c}{Player 1}                                  \\ \cline{3-5}
+		& & A & B & \multicolumn{1}{c}{C}                                 \\ \cline{3-5}
+		\multirow{3}{*}{Player 2} & \multicolumn{1}{|c|}{a} & 11 & -7 & 8 \\
+		& \multicolumn{1}{|c|}{b} & 1 & 1 & 2                             \\
+		& \multicolumn{1}{|c|}{c} & -10 & -7 & 21                         \\ \cline{3-5}
+	\end{tabular}
+	\caption{2-person zero-sum game\\ pure strategy Nash equilibrium}
+\end{table}
+\\
+One can put Nash strategy equilibria in simpler words the row player (Player 2) wants to maximise minimal gain from the game and column player (Player 1) wants to minimasie maximal payout of the game. We can then easily derive Nash strategy equilibrium by looking at rows and following the rules. Consider the table below.
+\begin{table}[ht!]
+	\hspace{-4em}
+	\centering
 	\begin{tabular}{ccccc|c}
-		& & \multicolumn{3}{c}{Player1} &                                     \\ \cline{3-5}
-		& & A & B & \multicolumn{1}{c}{C} & min                               \\ \cline{3-5}
-		\multirow{3}{*}{Player2} & \multicolumn{1}{|c|}{a} & 11 & -7 & 8 & -7 \\
-		& \multicolumn{1}{|c|}{b} & 1 & 1 & 2 & 1                             \\
-		& \multicolumn{1}{|c|}{c} & -10 & -7 & 21 & -10                       \\ \cline{3-5}
+		& & \multicolumn{3}{c}{Player 1} &                                     \\ \cline{3-5}
+		& & A & B & \multicolumn{1}{c}{C} & min                                \\ \cline{3-5}
+		\multirow{3}{*}{Player 2} & \multicolumn{1}{|c|}{a} & 11 & -7 & 8 & -7 \\
+		& \multicolumn{1}{|c|}{b} & 1 & 1 & 2 & 1                              \\
+		& \multicolumn{1}{|c|}{c} & -10 & -7 & 21 & -10                        \\ \cline{3-5}
 		& max & 11 & 1 & \multicolumn{1}{c}{21} &
 	\end{tabular}
 	\caption{2-person zero-sum game\\ pure strategy Nash equilibrium}
 \end{table}
 \\
-In case of above matrix one can deduce that Nash equilibrium is at (B,b) since no player can do any better taking into account his opponents strategy.
+The resulting table allows to easily point the Nash equilibrium. Other way of looking at this solution is to realise that it is a saddle point in the graph of strategy space. Hence, neither of the players has incentive to deviate from it. In case of above matrix one can deduce that Nash equilibrium is at (B,b).
 
 \subparagraph{Mixed Strategy Nash Equilibrium} is a situation when there is no pure strategy, hence we cannot state that one strategy is better than the other always. However, we can still obtain a solution to this game by assigning probabilities to strategies. By playing strategies according to their corresponding probabilities one can achieve optimal expected output of the game. Following table show situation like this
 \begin{table}[ht!]
 	\hspace{-2em}
 	\centering
-	\begin{tabular}{ccccc|c}
-		& & \multicolumn{3}{c}{Player1} &                                  \\ \cline{3-5}
-		& & A & B & \multicolumn{1}{c}{C} & min                            \\ \cline{3-5}
-		\multirow{3}{*}{Player2} & \multicolumn{1}{|c|}{a} & 0 & 0 & 8 & 0 \\
-		& \multicolumn{1}{|c|}{b} & -1 & 1 & 2 & -1                        \\
-		& \multicolumn{1}{|c|}{c} & -10 & -7 & 21 & -10                    \\ \cline{3-5}
-		& max & -1 & 1 & \multicolumn{1}{c}{21} &
+	\begin{tabular}{cccc|c}
+		& & \multicolumn{2}{c}{Player 1} &                                \\ \cline{3-4}
+		& & A & \multicolumn{1}{c}{B} & min                               \\ \cline{3-4}
+		\multirow{2}{*}{Player 2} & \multicolumn{1}{|c|}{a} & -1 & 5 & -1 \\
+		& \multicolumn{1}{|c|}{b} & 3 & -5 & -5                           \\ \cline{3-4}
+		& max & -3 & \multicolumn{1}{c}{5} &
 	\end{tabular}
 	\caption{2-person zero-sum game\\mixed strategy Nash equilibrium}
 \end{table}
 \\
-There is no equilibrium strategy, however, on can be found using Linear Programming techniques.
+There is no pure equilibrium strategy, however, on can be found using Linear Programming techniques. If we apply such technique to this problem we will find out following probabilities (given in brackets) for this game.
+\begin{table}[ht!]
+	\hspace{-2em}
+	\centering
+	\begin{tabular}{cccc|}
+		& & \multicolumn{2}{c}{Player 1}                                      \\ \cline{3-4}
+		& & A (0.7143)& \multicolumn{1}{c}{B (0.2857)}                        \\ \cline{3-4}
+		\multirow{2}{*}{Player 2} & \multicolumn{1}{|c|}{a (0.5714)} & -1 & 5 \\
+		& \multicolumn{1}{|c|}{b (0.4286)} & 3 & -5                           \\ \cline{3-4}
+	\end{tabular}
+	\caption{2-person zero-sum game\\mixed strategy Nash equilibrium}
+\end{table}
 
-\paragraph{2-person Non Zero-sum Game} ~\\
-Non zero-sum game turn out to be considerably more difficult to analyse properly. Even tough we are usually able to find optimal strategy it might not be the best strategy. Furthermore when game is played more than once, strategy presumed to be optimal in single case might not be the most effective one. The most famous example of such game is the Prisoner's Dilemma. Albert W. Tucker formalised this problem giving it its name:
+\paragraph{2-person Non-Zero-sum Game} ~\\
+Non-zero-sum game turn out to be considerably more difficult to analyse properly. Even tough we are usually able to find optimal strategy it might not be the best strategy. Furthermore when game is played more than once, strategy presumed to be optimal in single case might not be the most effective one. The most famous example of such game is the Prisoner's Dilemma. Albert W. Tucker formalised this problem giving it its name:
 \begin{quotation}
     Two members of a criminal gang are arrested and imprisoned. Each prisoner is in solitary confinement with no means of speaking to or exchanging messages with the other. The police admit they don't have enough evidence to convict the pair on the principal charge. They plan to sentence both to a year in prison on a lesser charge. Simultaneously, the police offer each prisoner a Faustian bargain. If he testifies against his partner, he will go free while the partner will get three years in prison on the main charge. Oh, yes, there is a catch ... If both prisoners testify against each other, both will be sentenced to two years in jail.
 \end{quotation}
@@ -533,7 +603,7 @@ In this project we managed to create a functional simulation of cycling races. I
 
 [Stuff about group theory] \\
 
-A future extention could look into trying to make the simulation and the group theoretical framework work together to produce new result. We could be able to analyse more complex games with information gained from tests on the simulation, for example to determine the payoff of different strategies. 
+A future extention could look into trying to make the simulation and the group theoretical framework work together to produce new result. We could be able to analyse more complex games with information gained from tests on the simulation, for example to determine the payoff of different strategies.
 
 It would also be possible to implement very complex strategies, based on game theory, to add the the simulation. \\
 
