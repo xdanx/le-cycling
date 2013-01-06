@@ -242,6 +242,13 @@ As in this figure:
   \caption{plot of $CF_{draft}$ against $d_w$}
 \end{figure}
 
+Note that $CF_{draft} \approx 1$ at $d_w = 3$ on this graph. \\
+
+Multiplying $F_{draft}$ by this correction factor gives the new differential equation: 
+$$ (0.62 - 0.0104*d_w + 0.0452*d_w^2) * 75.7664 *(x'(t))^{3} + 14844.025288499999 * x'(t) * x''(t) = P_{ped}$$
+
+A second order differential equation that models our systems and takes into account the slipstream effect.
+
 \subsection{The implementation}
 
 \subsubsection{Runge-Kutta}
@@ -283,6 +290,13 @@ y_1' & = \frac{y_2'}{\sqrt{2 * y_2}}\\
 \end{align*}
 This gives us the final form for function f:
 $$ f(t, y_1, y_2) = \frac{P_{ped} - 75.7665 * y_1 ^ 3}{14844.025288499999 * \sqrt{2 * y_2}}$$
+
+To take the slipstream effect into account, we only have to make a relatively small modification (only the movement to the left hand side changes for $y_2'$ changes, adding a dependence on $d_w$):
+$$ f(t, y_1, y_2) = \frac{P_{ped} - 75.7665 * (0.62 - 0.0104*d_w + 0.0452*d_w^2) * y_1 ^ 3}{14844.025288499999 * \sqrt{2 * y_2}}$$
+
+$$ g( t, y_1, y_2 ) = \frac{P_{ped} - 75.7665 * (0.62 - 0.0104*d_w + 0.0452*d_w^2) * y_1 ^ 3}{14844.025288499999}$$ \\
+
+$d_w$ can either be set to the initial value at the beginning of the minute or changed dynamically, but this requiers a simultaneous simulation of all the cyclists to see how they change in real time, which is quite complex.
 
 % Game theoretical model introduction
 
