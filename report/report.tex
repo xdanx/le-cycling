@@ -158,9 +158,19 @@ In section 2 of \cite{AgentModel} is descibed an agent based model for cycling r
 
 % Initial equations
 
-Runge-Kutta is a standard numerical method that allows one to estimate a function based on an initial value and the function's differential. It is similar to the standard ``newton method" ($f(x + h) \approx f(x) + h*f'(x)$), but it uses several points inside a trapezium to trace the function significantly better. Runge-Kutta method is used in [ write more here... ]
+Runge-Kutta is a standard numerical method that allows one to estimate a function based on an initial value and the function's differential. It is similar to the standard ``newton method" ($f(x + h) \approx f(x) + h*f'(x)$), but it uses several points inside a trapezium to trace the function significantly better. \\ % Runge-Kutta method is used in [ write more here... ]
+\newline
+full desc of runge-kutta.\\
+\newline
+This allows approximations to be made for functions for which we have a first order differential equation. It can also be used to approximate $n$ interdependent functions if it has an initial value for each and a differential that depends on the $n - 1$ other functions' values at $x$ and on $x$ itself.\\
 
-\textbf{However, you might say that this is all very nice and it might well be useful for a first order differential equation, but in fact we have a second order non-linear differential equation}. Also, you might notice that it is in fact possible to adapt this method to tracing two (or more) interdependent functions (whose value depends on the value of the other) over the same variable (t) with two initial conditions. So if we can transform our second order differential equation into two first order ones, we can use the Runge-Kutta method to solve it numerically and then derive any necessary values from the result.
+So as above we have the differentials of $n$ functions denoted $y_1'(t),..,y_n'(t)$, which can each be written as: \\
+
+{\centering $y_k'(t) = f_k(t,y_1(t),y_2(t),..,y_{(k-1)}(t),y_{(k+1)},..,y_n(t))$ \newline \par}
+
+The each of the differentials can be given the current value of t and the $n - 1$ previous estimated values (initially the initial values) of the other function and then running Runge-Kutta with respect to t on each of them with a small h. \par
+
+This means that if we can transform our second order differential equation into a system of two first order coupled differential equations from which the information we want can be analytically derived, we can use the Runge-Kutta method to solve it numerically and then derive any necessary values from the result.
 
 For the following equations we will use the next symbols: \\
 
@@ -390,7 +400,6 @@ The reader may notice that we need to apply N-player games when the front-runner
 \chapter{Project Management}
 
 -- How did we organise ? How did it work ?
-
 
 
 % To add something to the bibliography, look for the "import into BibTex" thingy on google scholar, and add the stuff into refs.bib.
