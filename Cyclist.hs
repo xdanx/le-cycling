@@ -21,18 +21,18 @@ import Stats
 import Utils
 import Units
 
-data Cyclist = Cyclist {uid :: Int,           -- Unique ID
-                        pmax :: Double,       -- Max power (W/kg?)
-                        pcp :: Double,        -- Maximum aneorbosfewnqgff power
+data Cyclist = Cyclist {uid :: Int,           -- C Unique ID
+                        pmax :: Double,       -- C Max power (W/kg?)
+                        pcp :: Double,        -- C Maximum aneorbosfewnqgff power
                         usedEnergy :: Double, -- e_an : used aneorobic energy 
-                        energyLim :: Double,  -- E_an : maximum aneorobic energy
+                        energyLim :: Double,  -- C E_an : maximum aneorobic energy
                         packCoop :: RandT StdGen IO Bool, -- General cooperation function
                         teamCoop :: RandT StdGen IO Bool, -- Team cooperation function
                         groupProb :: Double,  -- If the default cooperation function is 
                         teamProb :: Double,   -- used, these stores the probabilities.
                         speed :: Speed,       -- Current speed
                         distance :: Meters,   -- Current distance
-                        team :: Int           -- Team number.
+                        team :: Int           -- C Team number.
                        }
 
 instance Show Cyclist where
