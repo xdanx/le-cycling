@@ -288,6 +288,26 @@ We will describe the implementation module by module
 
 \subsubsection{Cyclist}
 
+This module contains the definition the type Cyclist, which represent a individual cyclist, and functions to edit the properties of a cyclists and to generate a certain number of cyclists with particular initial state. \\
+
+The type cyclist contains the following variables : 
+
+\begin{itemize}
+\item \texttt{uid :: Int} \\ A unique id for the cyclist (constant).
+\item \texttt{pmax :: Double} \\ The maximum power output (constant).
+\item \texttt{pcp :: Double} \\ The maximum anaerobic power output (constant).
+\item \texttt{usedEnergy :: Double} \\ Used aneorobic energy, correspond to $e_{an}$ above.
+\item \texttt{energyLim :: Double} \\ Maximum aneorobic energy, correspond to $E_{an}$ above (constant).
+\item \texttt{packCoop :: RandT StdGen IO Bool} \\ The general cooperation decision function.
+\item \texttt{teamCoop :: RandT StdGen IO Bool} \\ The team cooperation decision function.
+\item \texttt{groupProb :: Double} and \texttt{teamProb :: Double} \\ If the default cooperation function is used, these stores the probabilities.
+\item \texttt{speed :: Speed} \\ Current speed.
+\item \texttt{distance :: Meters} \\ Current distance.
+\item \texttt{team :: Int} \\ Team number (constant).
+\end{itemize}
+
+The types Speed and Meters are defined in Units.hs just to make the code clearer and are synonymous of Double.
+
 \subsubsection{Pack}
 
 \subsubsection{Simulation}
