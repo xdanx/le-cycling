@@ -79,10 +79,10 @@ Dr. Panos \textsc{Parpas} % Supervisor's Name
 %----------------------------------------------------------------------------------------
 
 %\includegraphics{Logo}\\[1cm] % Include a department/university logo - this will require the graphicx package
- 
+
 %----------------------------------------------------------------------------------------
 
-\vfill % Fill the rest of the page with whitespace
+\vfill % Fill the rest of the page with white space
 \end{titlepage}
 
 %% Ending of title page
@@ -94,19 +94,19 @@ Dr. Panos \textsc{Parpas} % Supervisor's Name
 %TODO: needs improvement
 % César : I think it needs to be more about what we did rather than how cycling works.
 
-Cycling races are amongst one of the most popular sports worldwide. Their history dates back to the 
+Cycling races are amongst one of the most popular sports worldwide. Their history dates back to the
 $18^{th}$ century being adopted and since then the types of races spanned substantially: from Track cycling on banks and velodromes,
-Cyclo-cross, Mountain bike races, one-day road race, criterium or time trial to professional races such as 
+Cycle-cross, Mountain bike races, one-day road race, criterion or time trial to professional races such as
 Tour de France, Giro d'Italia or Vuelta a Espa\~na. During those professional races it is expected that a group of riders break away
-from the main group and cooperate with each other in order to gain advantage from the main group ( called peloton ). Riders in such a 
-group are forced to cooperate with each other, even though their chances of winning are decreasing as more members join the break away 
-group. Also, when a breakaway group is being formed, riders from the peloton have to decide whether to chase it down or remain where 
-they are.  
+from the main group and cooperate with each other in order to gain advantage from the main group ( called peloton ). Riders in such a
+group are forced to cooperate with each other, even though their chances of winning are decreasing as more members join the break away
+group. Also, when a breakaway group is being formed, riders from the peloton have to decide whether to chase it down or remain where
+they are.
 
-During the race, based on their remaining strength, remaining distance untill the finish line and other factors riders need to decide 
-fast their next move. There are countless(?!) examples when the rider's hesitation or bad decision costed him the grand title. From our 
+During the race, based on their remaining strength, remaining distance until the finish line and other factors riders need to decide
+fast their next move. There are countless(?!) examples when the rider's hesitation or bad decision costed him the grand title. From our
 %
-point of view, all these decisions can be modelled by a Game Theory strategy. During our project, we have tried to find optimum strategies that can be applied to various cycling races. We have proposed a Game Theory model based on our research and an independent simulation used to verify our model. We continued the work of [ cite the papers here] and try to obtain a model that is as appripriate as real life cycling races. Using our simulation combined with the game theory model we believe that one should be able to simulate any Professional cycling race. Coaches and racers can use this data then to compare decisions taken  during the race. Our project aims to combine both Game Theory strategies with data from multiple simulated races in order to output 'optimal' decisions 
+point of view, all these decisions can be modelled by a Game Theory strategy. During our project, we have tried to find optimum strategies that can be applied to various cycling races. We have proposed a Game Theory model based on our research and an independent simulation used to verify our model. We continued the work of [ cite the papers here] and try to obtain a model that is as appropriate as real life cycling races. Using our simulation combined with the game theory model we believe that one should be able to simulate any Professional cycling race. Coaches and racers can use this data then to compare decisions taken  during the race. Our project aims to combine both Game Theory strategies with data from multiple simulated races in order to output 'optimal' decisions
 
 \end{abstract}
 
@@ -115,6 +115,7 @@ point of view, all these decisions can be modelled by a Game Theory strategy. Du
 
 \section{Motivation}
 
+<<<<<<< HEAD
 The first cycling race is assumed to be held on the $31^{th}$ of May 1868 in Paris. Nowadays, after roughly 145 years, Cycling is one of the top 10 most popular sports during the Summer Olympics \cite{TopEndSportsUrl} and attracts millions of fans worldwide. Cycling competitions are divided into three main cathegories: \textit{road, track and off-road events}. Like in any popular sports, researchers showed their interest in strategies that could simulate the outcome of races. Efforts have been made to characterize as accurate as possible cycling races, and led to mathematical formulas taking into consideration almost all the physical [ from physics, like gravity, etc etc.. - need rephrase ? ] factors in a race. Some examples can be seen in \cite{AgentModel} or \cite{MathematicsOfBreakingAway} .
 
 During our project, we have focused mainly on \textit{road events}: \textbf{road race, criterium, hill climbing and stage races} and Sprint \textit{track events}. For a novice watching those competitions, it might seem peculiar the way athlets compete with each other. Even thow they are competing  with each other, their only chance of success is to team up with their competitors. This behaviour is mostly noted in the Stage Races like Tour de France or Tour de Faso. In the following report we will focus on races where players are forced to cooperate and ask ourself  whether we can derive a game theory model that can model the optimal behaviour for a cyclist. We  
@@ -150,9 +151,9 @@ While designing the model
 
 Runge-Kutta is a standard numerical method that allows one to estimate a function based on an initial value and the function's differential. It is similar to the standard ``newton method" ($f(x + h) \approx f(x) + h*f'(x)$), but it uses several points inside a trapezium to trace the function significantly better. Runge-Kutta method is used in [ write more here... ]
 
-\textbf{However, you might say that this is all very nice and it might well be useful for a first order differential equation, but in fact we have a second order non-linear differential equation}. Also, you might notice that it is in fact possible to adapt this method to tracing two (or more) interdependent functions (whos value depends on the value of the other) over the same variable (t) with two initial conditions. So if we can transform our second order differential equation into two first order ones, we can use the Runge-Kutta method to solve it numerically and then derive any necessary values from the result.
+\textbf{However, you might say that this is all very nice and it might well be useful for a first order differential equation, but in fact we have a second order non-linear differential equation}. Also, you might notice that it is in fact possible to adapt this method to tracing two (or more) interdependent functions (whose value depends on the value of the other) over the same variable (t) with two initial conditions. So if we can transform our second order differential equation into two first order ones, we can use the Runge-Kutta method to solve it numerically and then derive any necessary values from the result.
 
-For the following equations we will use the next simbols: \\
+For the following equations we will use the next symbols: \\
 
 \begin{tabularx}{\linewidth}{|c|X|}
 \hline
@@ -244,7 +245,7 @@ y_1' & = \frac{y_2'}{\sqrt{2 * y_2}}\\
 This gives us the final form for function f:
 $$ f(t, y_1, y_2) = \frac{P_{ped} - 75.7665 * x'( t ) ^ 3}{14844.025288499999 * \sqrt{2 * y_2}}$$
 
-% Game theoretical model introdutcion
+% Game theoretical model introduction
 
 \section{Game Theory model introduction}
 
@@ -261,7 +262,7 @@ Before we can dive into discussion of game theory can be used to approach bicycl
 We assume that when cyclist breaks away he does so with maximum possible speed. Hence, he is expending as much energy as possible.
 
 \paragraph{Cooperation} ~\\
-For a racer to cooperate means to follow the strategy of racers in the group. If there are more than two racers we assume that racers willing to cooperate will cooperate with break aways and not stay in the group. When there are no break aways cooperation will preserve current status of the game.
+For a racer to cooperate means to follow the strategy of racers in the group. If there are more than two racers we assume that racers willing to cooperate will cooperate with breakaways and not stay in the group. When there are no breakaways cooperation will preserve current status of the game.
 
 \paragraph{Fall back} ~\\
 When a racer falls back he limits his velocity so that he will get caught by the group preceding the one he is part of at the moment of making decision. If there is no group to fall back to the racer moves to further position in the group. This action isn't instantaneous, however, we assume that racers will not form a group between falling back from one group to another.
@@ -297,7 +298,7 @@ Let us consider the pay-off for Player 1 (for Player 2 we reasoning is similar).
 \\
 Player 1's pay-off is clearly the same as before, i.e. $(1-P)\cdot \dfrac{CF_{draft}(s_1)}{CF_{max}} + 1$ - after normalization. Because of the fact that Player 2 breaks-away then his pay-off depends on his positioning i.e. $1-P$, but we must also take into account whether or not he is trailing behind Player 1 and hence, if he can get any benefit from drafting. Thus, we have two disjoint probability events and we can argue that the pay-off is $(1-P) +  P\cdot \dfrac{CF_{draft}(s_2)}{CF_{max}} + 1$ - after normalization. To explain it a bit more, $P\cdot \dfrac{CF_{draft}(s_2)}{CF_{max}}$ this is the part of the pay-off that tells him the benefit he gets from drafting. We then want to specify that his pay-off also depends on the probability of him being in front and hence we add $1-P$. It is to remark the fact that we are still in the [1,2] interval as the events (trailing or leading) are disjoint.
 \\\\
-\textbf{Player 1 Cooperates, Player 2 Falls back} 
+\textbf{Player 1 Cooperates, Player 2 Falls back}
 \\
 \textit{Note.} In this case by falling back, the reader should understand that Player 2 wants to trail behind Player 1 such that he can benefit from drafting. We have this interpretation because there is no chasing group that should be taken into account and thus, this is the only rational choice he can make.
 \\\\
@@ -325,7 +326,7 @@ Similar pay-off as in the case \textit{Player 1 Breaks-away, Player 2 Falls back
 \\\\
 \textbf{Player 1 Falls back, Player 2 Falls back}
 \\
-In this case, we set both pay-offs to 1 (worst pay-off) because this strategy does not fully apply to our case. 
+In this case, we set both pay-offs to 1 (worst pay-off) because this strategy does not fully apply to our case.
 \\\\
 Now, we can trivially build a pay-off matrix containing the values we deduced above.\\\\
 Pay-off of the game theoretical model resembles the rules outlined in [mention papers] after which our simulation has been created. We identified independent variables and made them influence pay-off values since this way we can generalise it to all types of players. Also it gives us basis for comparison which results will be shown later.\\\\
@@ -334,11 +335,11 @@ Pay-off of the game theoretical model resembles the rules outlined in [mention p
 \subsection{Getting caught}
 Everything seems fairly simple when there are only two racers competing. Entering realm of n-player games leaves us with few definite results as more interpersonal qualities come into play. It is an important to know that communication, players attitude towards each other and perceived strength of a player in a game can influence strategies chosen. However, we separate on case where we can get some results.
 \\\\
-For a case when two racers have escaped and are being chased by peloton we can consider scenarios when there exists a possibility of them being caught. It is no longer a zero-sum game since players can drop below 2nd place and one can lose without other gain. However, we are not considering the chasing peloton as players. We are merely treating them as moving group of people that has a potential of catching uo with the escape.
+For a case when two racers have escaped and are being chased by peloton we can consider scenarios when there exists a possibility of them being caught. It is no longer a zero-sum game since players can drop below 2nd place and one can lose without other gain. However, we are not considering the chasing peloton as players. We are merely treating them as moving group of people that has a potential of catching up with the escape.
 \\\\
 First we need to quantify chance of being caught. Actually since we can know the distances between racers, their velocity and we can measure the time it is not only a possibility, but certainty. This holds as long as one of the groups does not change its strategy when we have to re-evaluate the chance. Consider $\epsilon \in \{0,1\}$, it has value of 0 if the escape group consisting of our players will not be caught and 1 otherwise. We set $\epsilon$ at moment $\delta^{(n)}$ to 1 if $\frac{x}{v_{draft}}=\frac{x+d}{v_{group}}$ has a solution in range $0\le x\le d$ where $d$ is distance from peloton to escape group, $v_{draft}$ and $v_{group}$ are velocities of second (drafting) racer in escape and peloton (chasing group) respectively. Knowing value of $\epsilon$ we can simplify our model to considering two cases: one when players will safely reach finish first and second when they will be absorbed by peloton. It is easy to notice that the first case has been mostly solved in previous section. It only needs few adjustments. Also it is not difficult to derive pay-offs for absorbed case since players are likely to get places depending on their fitness across whole race group (it clearly would not be the case if all racers were considered to be players and were allowed to choose strategies as racers will react differently when chasing tired racers from escape).
 \\\\
-When trying to deduce the pay-off matrix one can notice that this problem can be divided into two cases - depending on the value of $\epsilon$ - which will finally yield in two matrices. These matrices will be swapped during the game depending on the situation players face. 
+When trying to deduce the pay-off matrix one can notice that this problem can be divided into two cases - depending on the value of $\epsilon$ - which will finally yield in two matrices. These matrices will be swapped during the game depending on the situation players face.
 \\\\
 \textbf{$\epsilon$ is zero}
 \\
@@ -353,11 +354,13 @@ The relevant situations are those when one of the two players decides to fall ba
 Thus, when one of the players falls back, then his pay-off becomes $\dfrac{CS_i}{CS_{race}}$ where $i\in\{1,2\}$. Of course now we need to normalize this quantity on $[1,N]$. As we are on the interval $[0,1]$, the immediate solution is multiplying by $N-1$ and adding 1. The pay-off we get is $ \dfrac{CS_i}{CS_{race}}\cdot (N-1) + 1$. The next question is, what will the other player do? If the strategy is fall back as well, then his pay-off is calculated in a similar manner. Otherwise, any strategy will have the pay-off of the break-away strategy described in the previous model.
 
 \subsection{Repeated Game}
-We can consider our methodology of finding payoff for the whole game with alteration allowing for change of strategy in order to allow optimal value of the game. Evaluating our model this way enables us to answer questions of optimal strategies at given points in time.
+We can consider our methodology of finding pay-off for the whole game with alteration allowing for change of strategy in order to allow optimal value of the game. Evaluating our model this way enables us to answer questions of optimal strategies at given points in time.\\\\
+In order to evaluate the games presented above, we reduced everything to solving 3 by 3 one-off games. After doing this, we plug the values into the recursive formula and we get the required value of the game. 
 
 \subsection{N-player Cooperative Game}
-This is the field we have touched least on since Game Theory offers very little with respect to sientific methodology of solving this cases. When there are more than 2 players most of the rationality taken from granted in 2 player zero-sum games no longer applies.
-
+This is the field we have touched least on since Game Theory offers very little with respect to identification methodology of solving this cases. When there are more than 2 players most of the rationality taken from granted in 2 player zero-sum games no longer applies. However, we could try and reduce everything to 2 players games, even though the results might not be as exact. The idea is to average the performance of $N-1$ players in order to create a new player. We will make this new player compete with the $N$th player. Thus, we reduce this to a 2 player game.\\\\
+The reader may notice that we need to apply N-player games when the front-runners from the previous sections get caught by the chasing group. Here would be a place where we can apply the aforementioned reasoning. Another idea is to transform this game into an LP problem and solve it using classic algorithms.
+\\\\
 \cite{GameTheoryNonTechnical} is good
 \cite{GameTheoryApplications} is also good
 \cite{TheoryOfGames} is awesome
