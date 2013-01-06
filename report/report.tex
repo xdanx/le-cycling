@@ -6,7 +6,7 @@
 
 
 \setlength\parindent{0pt}
-\usepackage{tabularx, alltt, amsmath, multirow, graphicx, url}
+\usepackage{tabularx, alltt, amsmath, multirow, graphicx, url, graphics}
 
 %Our Executive Summary
 \renewcommand{\abstractname}{Executive Summary}
@@ -227,12 +227,19 @@ However this differential equation does not take into account the ``slipstream''
 
 \subsubsection{Integrating the slipstream effect into the differential equation for modeling the motion of a cyclist.}
 
-The slipstream effect is the effect by which the drag on a object moving through a fluid is diminished by the fact that the fluid it is moving through is already moving at a certain speed due to it being in the wake of another object in motion. \newline \par
+The slipstream effect is the effect by which the drag on an object moving through a fluid is diminished by the fact that the fluid it is moving through is already moving at a certain speed due to it being in the wake of another object in motion. \newline \par
 
-This can be modeled for cyclists by applying a correction factor, $CF_{draft}$ to the $P_{air}$ (which creates the same change in $F_{air}$) in the derivation of the differential equation that depends on the distance between a cyclist and the cyclist in front of him ($d_w$). \newline \par
+This can be modeled for cyclists by applying a correction factor ($CF_{draft}$) to $P_{air}$ (which creates the same change in $F_{air}$) in the derivation of the differential equation that depends on the distance between a cyclist and the cyclist in front of him ($d_w$). \newline \par
 
 If $d_w \ge 3$, then $C_{draft} = 1$ as the slipstream effect makes no distance over greater distances (the fluid in the wake of the object infront has the time to stop moving). \\
-If $d_w < 3$, then $C_{draft} = 0.62 - 0.0104*d_w + 0.0452*d_w^2$ . $^{\cite{SlipStream}}$
+If $d_w < 3$, then $C_{draft} = 0.62 - 0.0104*d_w + 0.0452*d_w^2$ . $^{\cite{SlipStream}}$ \\
+As in this figure:
+
+\begin{figure}[!ht]
+  \centering
+    \input{plot.tex}
+  \caption{plot of $CF_{draft}$ against $d_w$}
+\end{figure}
 
 \subsection{The implementation}
 
