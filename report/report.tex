@@ -2,7 +2,7 @@
 
 \title{Cycling simulation\\or\\\textit{When} to break away?}
 \date{\today}
-\author{Dan Demeter\and Robert Kruszewski\and Alexandru P\u{a}unoiu \and C\'esar Prout\'e \and Julian Sutherland \thanks{Hello there}}
+\author{Dan Demeter\and Robert Kruszewski\and Alexandru P\u{a}unoiu \and C\'esar Prout\'e \and Julian Sutherland}
 
 
 \setlength\parindent{0pt}
@@ -25,7 +25,7 @@
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
 
 \center % Center everything on the page
- 
+
 %----------------------------------------------------------------------------------------
 %	HEADING SECTIONS
 %----------------------------------------------------------------------------------------
@@ -41,7 +41,7 @@
 \HRule \\[0.4cm]
 { \huge \bfseries Cycling simulation\\or\\\vspace{0.4cm}\textit{When} to break away?}\\[0.4cm] % Title of your document
 \HRule \\[1.5cm]
- 
+
 %----------------------------------------------------------------------------------------
 %	AUTHOR SECTION
 %----------------------------------------------------------------------------------------
@@ -89,7 +89,7 @@ Dr. Panos \textsc{Parpas} % Supervisor's Name
 
 \tableofcontents
 
-\begin{abstract}
+\begin{abstract} 
 
 %TODO: needs improvement
 % César : I think it needs to be more about what we did rather than how cycling works.
@@ -104,41 +104,37 @@ group. Also, when a breakaway group is being formed, riders from the peloton hav
 they are.
 
 During the race, based on their remaining strength, remaining distance until the finish line and other factors riders need to decide
-fast their next move. There are countless(?!) examples when the rider's hesitation or bad decision costed him the grand title. From our
-%
-point of view, all these decisions can be modelled by a Game Theory strategy. During our project, we have tried to find optimum strategies that can be applied to various cycling races. We have proposed a Game Theory model based on our research and an independent simulation used to verify our model. We continued the work of [ cite the papers here] and try to obtain a model that is as appropriate as real life cycling races. Using our simulation combined with the game theory model we believe that one should be able to simulate any Professional cycling race. Coaches and racers can use this data then to compare decisions taken  during the race. Our project aims to combine both Game Theory strategies with data from multiple simulated races in order to output 'optimal' decisions
+fast their next move. There are famous examples when the rider's hesitation or bad decision costed him the grand title. One notable event might be the 2011 tour de france when Alberto Contador made escapes on during some stages only to be caught by the rest because very few and mostly weak racers escaped with him. [ Will add another relevand and interesting example ]
+
+From our point of view, all these decisions can be modelled by a Game Theory strategy. During our project, we have tried to find optimum strategies that can be applied to various cycling races. We have proposed a Game Theory model based on our research and an independent simulation used to verify our model. We continued the work of [ cite the papers here] and try to obtain a model that is as appropriate as real life cycling races. Using our simulation combined with the game theory model we believe that one should be able to simulate any Professional cycling race. Coaches and racers can use this data then to compare decisions taken  during the race. Our project aims to combine both Game Theory strategies with data from multiple simulated races in order to output 'optimal' decisions
 
 \end{abstract}
 
 
 \chapter{Introduction}
 
-\section{Motivation}
+The first cycling race is assumed to be held on the $31^{th}$ of May 1868 in Paris. Nowadays, after roughly 145 years, Cycling is one of the top 10 most popular sports during the Summer Olympics \cite{TopEndSportsUrl} and attracts millions of fans worldwide. Cycling competitions are divided into three main cathegories: \textit{road, track and off-road events}. Like in any popular sports, researchers showed their interest in strategies that could simulate the outcome of races. Efforts have been made to characterize as accurate as possible cycling races, and led to mathematical formulas taking into consideration almost all the physical [ from physics, like gravity, etc etc.. - need rephrase ? ] factors in a race. Some examples can be seen in \cite{AgentModel} or \cite{MathematicsOfBreakingAway} .
 
-The first cycling race is assumed to be held on the $31^{th}$ of May 1868 in Paris. Nowadays, after roughly 145 years, Cycling is one of the top 10 most popular sports during the Summer Olympics [ link www.topendsports.com/world/lists/popular-sport/ioc-website.htm ] and attracts millions of fans worldwide. Cycling competitions are divided into 3 main cathegories: \textit{road races, track races and off-road races}. Each category
+During our project, we have focused mainly on \textit{road events}: \textbf{road race, criterium, hill climbing and stage races} and Sprint \textit{track events}. For a novice watching those competitions, it might seem peculiar the way athlets compete with each other. Even thow they are competing  with each other, their only chance of success is to team up with their competitors. This behaviour is mostly noted in the Stage Races like Tour de France or Tour de Faso. 
 
-
-For a novice watching those competitions, it might seem peculiar the way athletes compete with each other. Even though they need to compete with each other, their only chance of success is to team up with their competitors. This behaviour is mostly noted in the ?? races. The motivation
-
-
--- Objectives
-Introduce the other chapters here
-
-
--- Achievements (yeah right :D)
+In the following report we will focus on races where players are forced to cooperate and ask ourself  whether we can derive a game theory model that can model the optimal behaviour for a cyclist. We have created a simulation of a road race and aimed to make it as real as possible as a real life race (\textbf{Chapter ?}). In order to generate our needed functions, we had to use the Runge-Kutta method ( \textbf{Chapter ?} ) of estimating a function based on an initial value and it's derivates. Due to the fact that the strategies used in the above mentioned races can be modelled using Game Theory, we have proposed a model that should cover the possible outcomes of a race ( \textbf{Chapter ?} ). We are also using the model in order to validate the results from the simulation.
+ 
 
 \chapter{Design and Implementation}
 
+As you can see from the Introduction, our project is split into 2 parts that are described below:
+
 % Shouldn't that be in the Project Management section ?
 Being a research project, after our initial meetings, we have divided into two small teams, one focued on implementing the simulation, and the other focusing on the mathematics for the Game Theory model.
-
-While designing the model
 
 
 
 \section{The software model}
 
 The first part of our project was to create a software simulation of cycling races. For that we first considered reproducing a model described in \cite{AgentModel}. It seemed like a fairly easy task at first, but we ran into several complications.
+
+\cite{MathModel} is good.
+\cite{GameTheoryApplications} is bad.
 
 \subsection{The first model}
 
@@ -289,7 +285,7 @@ $$ f(t, y_1, y_2) = \frac{P_{ped} - 75.7665 * x'( t ) ^ 3}{14844.025288499999 * 
 
 In order to create a thorough mathematical model, we aim at constructing a game theoretical model. This model will help racers to change their strategies and choose the optimal one as the race unfolds.\\
 
-Modelling bike races can be quite challenging, hence we will begin with the simplest case in order to introduce our methodology and explain the simplifying assumptions we are making. When participating in a race we can argue that racers are at each point faced with three possible options: breaking away from a group, fall back to group preceding the current one and cooperate with other members of the group (which essentially means to copy strategy of other players - which will be discussed later). Each of the racers can change his mind as often as he wants, however, changes in strategy will likely incur penalties on their performance. In this section we try to determine whether there is one dominant strategy and try to find at which point in race it is beneficial for racer to change his strategy. We can easily see that strategy chosen by players will depend on their skills and fitness, i.e. better racers can afford more aggressive, less cooperative strategy in hope of being able to outdistance opponents. On the other hand weaker players will tend to cooperate more. The difficulty of this part is not the actual solution to the model since it might happen there will not be a general solution but fitting the model to the actual situation. It is fairly easy to construct arbitrary game theoretical games, however, when the games have to even remotely represent reality they get complicated very quickly.\\
+Modelling bike races can be quite challenging, hence we will begin with the simplest case in order to introduce our methodology and explain the simplifying assumptions we are making. When participating in a race we can argue that racers are at each point faced with three possible options: breaking away from a group, fall back to group preceding the current one and cooperate with other members of the group (which essentially means to copy strategy of other players - which will be discussed later). Each of the racers can change his mind as often as he wants, however, changes in strategy will likely incur penalties on their performance. In this section we try to determine whether there is one dominant strategy and try to find at which point in race it is beneficial for racer to change his strategy. We can teasily see that strategy chosen by players will depend on their skills and fitness, i.e. better racers can afford more aggressive, less cooperative strategy in hope of being able to outdistance opponents. On the other hand weaker players will tend to cooperate more. The difficulty of this part is not the actual solution to the model since it might happen there will not be a general solution but fitting the model to the actual situation. It is fairly easy to construct arbitrary game theoretical games, however, when the games have to even remotely represent reality they get complicated very quickly.\\
 
 We start by discussion of case with two racers when the group chasing them is very far from them and does not affect the strategies. Thus, they are guaranteed to come first and second. We can clearly see that this is a zero-sum game since we can only gain place if our opponent loses one. We can argue that race is a zero-sum game in general regardless on number of players, however, we will leave discussion of this theory for later and we will see that the answer is not so obvious when we want to arrive at meaningful results. Since we have already concluded that this is the simplest of game theoretical models, we need to investigate actual pay off matrix for this game.
 
@@ -393,15 +389,15 @@ Thus, when one of the players falls back, then his pay-off becomes $\dfrac{CS_i}
 
 \subsection{Repeated Game}
 We can consider our methodology of finding pay-off for the whole game with alteration allowing for change of strategy in order to allow optimal value of the game. Evaluating our model this way enables us to answer questions of optimal strategies at given points in time.\\\\
-In order to evaluate the games presented above, we reduced everything to solving 3 by 3 one-off games. After doing this, we plug the values into the recursive formula and we get the required value of the game. 
+In order to evaluate the games presented above, we reduced everything to solving 3 by 3 one-off games. After doing this, we plug the values into the recursive formula and we get the required value of the game.
 
 \subsection{N-player Cooperative Game}
 This is the field we have touched least on since Game Theory offers very little with respect to identification methodology of solving this cases. When there are more than 2 players most of the rationality taken from granted in 2 player zero-sum games no longer applies. However, we could try and reduce everything to 2 players games, even though the results might not be as exact. The idea is to average the performance of $N-1$ players in order to create a new player. We will make this new player compete with the $N$th player. Thus, we reduce this to a 2 player game.\\\\
 The reader may notice that we need to apply N-player games when the front-runners from the previous sections get caught by the chasing group. Here would be a place where we can apply the aforementioned reasoning. Another idea is to transform this game into an LP problem and solve it using classic algorithms.
 \\\\
-\cite{GameTheoryNonTechnical} is good
-\cite{GameTheoryApplications} is also good
-\cite{TheoryOfGames} is awesome
+%\cite{GameTheoryNonTechnical} is good
+%\cite{GameTheoryApplications} is also good
+%\cite{TheoryOfGames} is awesome
 
 
 \chapter{Evaluation}
