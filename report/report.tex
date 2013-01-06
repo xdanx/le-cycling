@@ -168,7 +168,7 @@ So as above we have the differentials of $n$ functions denoted $y_1'(t),..,y_n'(
 
 {\centering $y_k'(t) = f_k(t,y_1(t),y_2(t),..,y_{(k-1)}(t),y_{(k+1)},..,y_n(t))$ \newline \par}
 
-The each of the differentials can be given the current value of t and the $n - 1$ previous estimated values (initially the initial values) of the other function and then running Runge-Kutta with respect to t on each of them with a small h. \par
+The each of the differentials can be given the current value of t and the $n - 1$ previous estimated values (initially the initial values) of the other function and then running Runge-Kutta with respect to t on each of them with a small h. \newline \par
 
 This means that if we can transform our second order differential equation into a system of two first order coupled differential equations from which the information we want can be analytically derived, we can use the Runge-Kutta method to solve it numerically and then derive any necessary values from the result.
 
