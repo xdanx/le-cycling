@@ -150,27 +150,7 @@ In section 2 of \cite{AgentModel} is descibed an agent based model for cycling r
 
 [This is what we changed with \cite{MathModel}]
 
-[This was the 2nd problem (the equation)]
-
-\subsection{The implementation}
-
-\section{Runge-Kutta}
-
-% Initial equations
-
-Runge-Kutta is a standard numerical method that allows one to estimate a function based on an initial value and the function's differential. It is similar to the standard ``newton method" ($f(x + h) \approx f(x) + h*f'(x)$), but it uses several points inside a trapezium to trace the function significantly better. \\ % Runge-Kutta method is used in [ write more here... ]
-\newline
-full desc of runge-kutta.\\
-\newline
-This allows approximations to be made for functions for which we have a first order differential equation. It can also be used to approximate $n$ interdependent functions if it has an initial value for each and a differential that depends on the $n - 1$ other functions' values at $x$ and on $x$ itself.\\
-
-So as above we have the differentials of $n$ functions denoted $y_1'(t),..,y_n'(t)$, which can each be written as: \\
-
-{\centering $y_k'(t) = f_k(t,y_1(t),y_2(t),..,y_{(k-1)}(t),y_{(k+1)},..,y_n(t))$ \newline \par}
-
-The each of the differentials can be given the current value of t and the $n - 1$ previous estimated values (initially the initial values) of the other function and then running Runge-Kutta with respect to t on each of them with a small h. \newline \par
-
-This means that if we can transform our second order differential equation into a system of two first order coupled differential equations from which the information we want can be analytically derived, we can use the Runge-Kutta method to solve it numerically and then derive any necessary values from the result.
+\subsubsection{Derivation of the differential equation for modeling the motion of a cyclist}
 
 For the following equations we will use the next symbols: \\
 
@@ -242,6 +222,27 @@ Which gives approximation of:
 $$ 75.7664 *(x'(t))^{3} + 14844.025288499999 * x'(t) * x''(t) = P_{ped}$$
 
 which is a second order non-linear differential equation.\\\\
+
+\subsection{The implementation}
+
+\subsubsection{Runge-Kutta}
+
+% Initial equations
+
+Runge-Kutta is a standard numerical method that allows one to estimate a function based on an initial value and the function's differential. It is similar to the standard ``newton method" ($f(x + h) \approx f(x) + h*f'(x)$), but it uses several points inside a trapezium to trace the function significantly better. \\ % Runge-Kutta method is used in [ write more here... ]
+\newline
+full desc of runge-kutta.\\
+\newline
+This allows approximations to be made for functions for which we have a first order differential equation. It can also be used to approximate $n$ interdependent functions if it has an initial value for each and a differential that depends on the $n - 1$ other functions' values at $x$ and on $x$ itself.\\
+
+So as above we have the differentials of $n$ functions denoted $y_1'(t),..,y_n'(t)$, which can each be written as: \\
+
+{\centering $y_k'(t) = f_k(t,y_1(t),y_2(t),..,y_{(k-1)}(t),y_{(k+1)},..,y_n(t))$ \newline \par}
+
+The each of the differentials can be given the current value of t and the $n - 1$ previous estimated values (initially the initial values) of the other function and then running Runge-Kutta with respect to t on each of them with a small h. \newline \par
+
+This means that if we can transform our second order differential equation into a system of two first order coupled differential equations from which the information we want can be analytically derived, we can use the Runge-Kutta method to solve it numerically and then derive any necessary values from the result. \newline \par
+
 In order to apply the Runge-Kutta algorithm, we need to transform it into two linear differential equations. We will define 2 independent variables, $y_1$ and $y_2$ such that their differentials $y_1'$ and $y_2'$ must depend on the variables t, $y_1$ and $y_2$. Let
 $$ y_1' = f( t, y_1, y_2 )$$ and $$y_2' = g( t, y_1, y_2 )$$
 
