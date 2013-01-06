@@ -5,7 +5,7 @@
 \author{Dan Demeter\and Robert Kruszewski\and Alexandru P\u{a}unoiu \and C\'esar Prout\'e \and Julian Sutherland}
 
 
-\setlength\parindent{0pt}
+%\setlength\parindent{0pt}
 \usepackage{tabularx, alltt, amsmath, multirow, graphicx, url, graphics}
 
 %Our Executive Summary
@@ -135,13 +135,21 @@ The first part of our project was to create a software simulation of cycling rac
 
 \subsection{The first model}
 
-In section 2 of \cite{AgentModel} is descibed an agent based model for cycling races. Each individual cyclist is represented by its physical and stategic attributes. The cyclists are themselves grouped into packs, any two cyclists that are within three meters of each others are in the same pack. To keep the model manageable, simplifications on the real world had to be made (physicals as well as behaviourals). In spite of those simplifications, the model still captures the principal elements of professional cycling.
+In section 2 of \cite{AgentModel} is descibed an agent based model for cycling races. Each individual cyclist is represented by its physical and stategic attributes. The cyclists are themselves grouped into packs, any two cyclists that are within three meters of each others are in the same pack. To keep the model manageable, simplifications of the real world had to be made (physicals as well as behaviourals). In spite of those simplifications, the model still captures the principal elements of professional cycling. \\
 
-The strategies are defined probabilistically, .
+The goal of packs is to use the slipstream effect cooperativelly, taking turns in breaking the wind. Therefore in a pack cyclists rotate to the position of leader (which is more physically demanding), ideally each cyclist in the pack spend the same amount of time being the leader.
+
+The strategies are defined probabilistically, each cyclist depends on two probabilities to make his decisions. These are distributed normally with mean 0.48 and distribution 0.21 with truncation at 0 and 1. The fist of these probability is the probability of the cyclist acting cooperativelly towards his pack, i.e. whether or not he will breakaway and if he is the leader whether or not he will do his share in full. The second one is the probability of acting cooperativelly towards your team, i.e. if one of his teammate breaks away, will he follow him. \\
+
+During the race, the cyclists can therefore be in two different states, they are either part of a pack, or breaking away. When they are breaking away, they will stay in a breakaway state for three minutes before forming a new pack or joining an existing one.
+
+In the last 5 kilometers of the race, the packs dissolves and each cyclists acts individually and starts sprinting. \\
+
+The issue with this model however was with the description of how the cyclists get tired. It was unclear in the paper exactly how it was done, and there was no way of cumulating the energy used. We therefore looked at the description of a better exhaustion model on another paper.
 
 \subsection{The updated model}
 
-[This is what we changed with \cite{MathModel}]
+We used the desciption of the physical model provided in \cite{MathModel} to update our previous simulation. It has a more precise description of the physical abilities of a cyclists, being based on power output instead of speed.
 
 \subsubsection{Derivation of the differential equation for modeling the motion of a cyclist}
 
