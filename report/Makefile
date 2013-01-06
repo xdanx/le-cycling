@@ -8,4 +8,4 @@ watch:
 	./build.sh
 
 clean:
-	rm *.aux *.bbl *.blg *.dvi *.toc *.log
+	rm -f *.synctex.gz *.fdb_latexmk *.aux *.bbl *.blg *.dvi *.toc *.log
