@@ -474,10 +474,10 @@ There is no pure equilibrium strategy, however, on can be found using Linear Pro
 	\hspace{-2em}
 	\centering
 	\begin{tabular}{cccc|}
-		& & \multicolumn{2}{c}{Player 1}                                      \\ \cline{3-4}
-		& & A (0.7143)& \multicolumn{1}{c}{B (0.2857)}                        \\ \cline{3-4}
-		\multirow{2}{*}{Player 2} & \multicolumn{1}{|c|}{a (0.5714)} & -1 & 5 \\
-		& \multicolumn{1}{|c|}{b (0.4286)} & 3 & -5                           \\ \cline{3-4}
+		& & \multicolumn{2}{c}{Player 1}                                               \\ \cline{3-4}
+		& & A \textit{(0.7143)}& \multicolumn{1}{c}{B \textit{(0.2857)}}               \\ \cline{3-4}
+		\multirow{2}{*}{Player 2} & \multicolumn{1}{|c|}{a \textit{(0.5714)}} & -1 & 5 \\
+		& \multicolumn{1}{|c|}{b \textit{(0.4286)}} & 3 & -5                           \\ \cline{3-4}
 	\end{tabular}
 	\caption{2-person zero-sum game\\mixed strategy Nash equilibrium}
 \end{table}
@@ -604,10 +604,10 @@ Thus, when one of the players falls back, then his pay-off becomes $\dfrac{CS_i}
 
 \subsection{Repeated Game}\label{subsec:repgame}
 We can consider our methodology of finding pay-off for the whole game with alteration allowing for change of strategy in order to allow optimal value of the game. Evaluating our model this way enables us to answer questions of optimal strategies at given points in time.\\\\
-In order to evaluate the games presented above, we reduced everything to solving 3 by 3 one-off games. After doing this, we plug the values into the recursive formula and we get the required value of the game.
+In order to evaluate the games presented above, we reduced everything to solving 3 by 3 one-off games. After doing this, we plug the values into the recursive formula and we get the required value of the game. Furthermore once we store the pay-off matrices at given $\delta^{(n)}$ moments we can find and optimal strategy trail from beginning to the end. Using search algorithms we could then attempt finding optimal strategies for given scenario. However, such computation would be very computationally intensive since search space grows exponentially with number of moments.
 
 \subsection{N-player Cooperative Game}\label{subsec:nplaycoopgame}
-This is the field we have touched least on since Game Theory offers very little with respect to identification methodology of solving this cases. When there are more than 2 players most of the rationality taken from granted in 2 player zero-sum games no longer applies. However, we could try and reduce everything to 2 players games, even though the results might not be as exact. The idea is to average the performance of $N-1$ players in order to create a new player. We will make this new player compete with the $N$th player. Thus, we reduce this to a 2 player game.\\\\
+This is the field we have touched least on since Game Theory offers very little with respect to identification methodology of solving this cases. When there are more than 2 players most of the rationality taken for granted in 2 player zero-sum games no longer applies. However, we could try and reduce everything to 2 player games, even though the results might not be as exact. The idea is to average the performance of $N-1$ players in order to create a new player. We will make this new player compete with the $N$th player. Thus, we reduce this to a 2 player game.\\\\
 The reader may notice that we need to apply N-player games when the front-runners from the previous sections get caught by the chasing group. Here would be a place where we can apply the aforementioned reasoning. Another idea is to transform this game into an LP problem and solve it using classic algorithms.
 \\\\
 %\cite{GameTheoryNonTechnical} is good
