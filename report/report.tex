@@ -276,20 +276,21 @@ We decided to implement the above model in Haskell as it allows for highly polym
 We split our implementation into these primary modules:
 \begin{itemize}
 \item Cyclist
-\item Simulation
 \item Pack
+\item Simulation
 \item Modeling
 \item RungeKutta
 \item Parser
+\item Main
 \end{itemize}
 
 We will describe the implementation module by module
 
 \subsubsection{Cyclist}
 
-\subsubsection{Simulation}
-
 \subsubsection{Pack}
+
+\subsubsection{Simulation}
 
 \subsubsection{Modeling}
 
@@ -341,6 +342,8 @@ $$ g( t, y_1, y_2 ) = \frac{P_{ped} - 75.7665 * (0.62 - 0.0104*d_w + 0.0452*d_w^
 $d_w$ can either be set to the initial value at the beginning of the minute or changed dynamically, but this requiers a simultaneous simulation of all the cyclists to see how they change in real time, which is quite complex.
 
 \subsubsection{Parser}
+
+\subsubsection{Main}
 
 % Game theoretical model introduction
 
