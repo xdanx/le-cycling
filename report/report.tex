@@ -261,9 +261,9 @@ In order to get x'(t) we want to set one of the equations to contain it: $y_1 = 
 This gives us $$ y_{2} = \frac{1}{2} * x'(t)^2 $$
 By rearranging the differential equation to have only $ x'( t ) * x''( t )$ on the left hand side, we get
 $$ x'( t ) * x''( t ) = \frac{P_{ped} - 75.7665 * x'( t ) ^ 3}{14844.025288499999}$$
-$$ y_2' = \frac{P_{ped} - 75.7665 * x'( t ) ^ 3}{14844.025288499999}$$
+$$ y_2' = \frac{P_{ped} - 75.7665 * y_1 ^ 3}{14844.025288499999}$$
 
-Now we have only $y_2'$ in terms of only t, $y_1$ and $y_2$ so we can set $$ g( t, y_1, y_2 ) = \frac{P_{ped} - 75.7665 * x'( t ) ^ 3}{14844.025288499999}$$
+Now we have only $y_2'$ in terms of only t, $y_1$ and $y_2$ so we can set $$ g( t, y_1, y_2 ) = \frac{P_{ped} - 75.7665 * y_1 ^ 3}{14844.025288499999}$$
 
 Writing $y_1$ in terms of t, $y_1$ and $y_2$: $$y_2 = \frac{1}{2} * x'(t)^2$$ yelds $$y_2 = \frac{1}{2} * y_1^2$$
 And by rearranging the left hand side we get:
@@ -271,10 +271,10 @@ $$y_1 = \sqrt{2 * y_2}$$
 Now we differentiate with respect to $t$:
 \begin{align*}
 y_1' & = \frac{y_2'}{\sqrt{2 * y_2}}\\
-& = \frac{P_{ped} - 75.7665 * x'( t ) ^ 3}{14844.025288499999 * \sqrt{2 * y_2}}
+& = \frac{P_{ped} - 75.7665 * y_1 ^ 3}{14844.025288499999 * \sqrt{2 * y_2}}
 \end{align*}
 This gives us the final form for function f:
-$$ f(t, y_1, y_2) = \frac{P_{ped} - 75.7665 * x'( t ) ^ 3}{14844.025288499999 * \sqrt{2 * y_2}}$$
+$$ f(t, y_1, y_2) = \frac{P_{ped} - 75.7665 * y_1 ^ 3}{14844.025288499999 * \sqrt{2 * y_2}}$$
 
 % Game theoretical model introduction
 
