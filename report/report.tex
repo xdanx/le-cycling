@@ -271,9 +271,29 @@ The values of $e_{an}$ are truncated such that $0 < e_{an} < E_{an}$. If at some
 
 \subsection{The implementation}\label{subsec:impl}
 
-We decided to implement the above model in Haskell, as this is clearly the best language for everything.
+We decided to implement the above model in Haskell as it allows for highly polymorphic modular code. This allowed us to make the code highly extensible. For example each cyclist can have an independent strategy that can be easily be added to the code. It takes some 'reasonable' amount of information about the suroundings of the cyclist and returns a decision inside the IO Monad allowing for arbitrary side effecting computations to occur. This could allow us to potentially extend it to perform user interaction. \par
 
-\subsubsection{Runge-Kutta}
+We split our implementation into these primary modules:
+\begin{itemize}
+\item Cyclist
+\item Simulation
+\item Pack
+\item Modeling
+\item RungeKutta
+\item Parser
+\end{itemize}
+
+We will describe the implementation module by module
+
+\subsubsection{Cyclist}
+
+\subsubsection{Simulation}
+
+\subsubsection{Pack}
+
+\subsubsection{Modeling}
+
+\subsubsection{RungeKutta}
 
 % Initial equations
 
@@ -319,6 +339,8 @@ $$ f(t, y_1, y_2) = \frac{P_{ped} - 75.7665 * (0.62 - 0.0104*d_w + 0.0452*d_w^2)
 $$ g( t, y_1, y_2 ) = \frac{P_{ped} - 75.7665 * (0.62 - 0.0104*d_w + 0.0452*d_w^2) * y_1 ^ 3}{14844.025288499999}$$ \\
 
 $d_w$ can either be set to the initial value at the beginning of the minute or changed dynamically, but this requiers a simultaneous simulation of all the cyclists to see how they change in real time, which is quite complex.
+
+\subsubsection{Parser}
 
 % Game theoretical model introduction
 
