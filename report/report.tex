@@ -92,7 +92,7 @@ Dr. Panos \textsc{Parpas} % Supervisor's Name
 
 \begin{abstract}
 
-During our Group Project we were charged with analysing cycling races, in particular trying to provide theoretical foundations for analysing their outcomes. Cycling races are amongst one of the most popular sports worldwide. Their history dates back to the
+During our Group Project we were challanged with analysing cycling races, in particular trying to provide theoretical foundations for analysing their outcomes. Cycling races are amongst one of the most popular sports worldwide. Their history dates back to the
 $18^{th}$ century being adopted and since then the types of races spanned substantially: from Track cycling on banks and velodromes,
 Cycle-cross, Mountain bike races, one-day road race, criterion or time trial to professional races such as
 Tour de France, Giro d'Italia or Vuelta a Espa\~na. Despite their large popularity and considerable financing attracted by large races there is no formal way of estimating outcome of a race not to mention choosing the right strategy. Even though racing does not seem like a sport involving . Cycling racers are extremely exhaustive for organism and right timing of effort is of paramount importance for winning. One example might be Andy Schleck's victory during one of 2011 Tour de France stage races. His escape 60 km before finish line had been perceived unimportant by other racers, however, it granted him almost 4 minute lead at finish.
@@ -101,24 +101,16 @@ Result of our work are two tools that can assist when analysing cycling races. F
 
 What we have created during this project could invaluable decision making framework for coaches and racers equally. One could use game theoretical model to derive set of candidate strategies. Further the strategies can be evaluated using our agent based model to correct the inherent inaccuracy of game theory when approximating real life situations. We believe that with growth of computational power and better understanding of cycling races the results achieved from models similar to ours can become very accurate. However, better understanding of human psychology will be essential in order to solve general game theoretical model. Currently existing frameworks from Von Neumann–Morgenstern and Aumann-Maschler do not specify which coalition will dominate the others, they just specify conditions for dominating coalition to satisfy.
 
-% During those professional races it is expected that a group of riders break away
-% from the main group and cooperate with each other in order to gain advantage from the main group ( called peloton ). Riders in such a
-% group are forced to cooperate with each other, even though their chances of winning are decreasing as more members join the break away
-% group. Also, when a breakaway group is being formed, riders from the peloton have to decide whether to chase it down or remain where
-% they are.
-
-% From our point of view, all these decisions can be modelled by a Game Theory strategy. During our project, we have tried to find optimum strategies that can be applied to various cycling races. We have proposed a Game Theory model based on our research and an independent simulation used to verify our model. We continued the work of [ cite the papers here] and try to obtain a model that is as appropriate as real life cycling races. Using our simulation combined with the game theory model we believe that one should be able to simulate any Professional cycling race. Coaches and racers can use this data then to compare decisions taken  during the race. Our project aims to combine both Game Theory strategies with data from multiple simulated races in order to output 'optimal' decisions
-
 \end{abstract}
 
 
 \chapter{Introduction}\label{ch:intro}
 
-The first cycling race is assumed to be held on the $31^{th}$ of May 1868 in Paris. Nowadays, after roughly 145 years, Cycling is one of the top 10 most popular sports during the Summer Olympics \cite{TopEndSportsUrl} and attracts millions of fans worldwide. Cycling competitions are divided into three main categories: \textit{road, track and off-road events}. Like in any popular sports, researchers showed their interest in strategies that could simulate the outcome of races. Efforts have been made to characterize as accuratelly as possible cycling races, and led to mathematical formulas taking into consideration almost all the physical [ from physics, like gravity, etc etc.. - need rephrase ? ] factors in a race. Some examples can be seen in \cite{AgentModel} or \cite{SlipStream} .
+The first cycling race is assumed to be held on the $31^{th}$ of May 1868 in Paris. Nowadays, after roughly 145 years, cycling is one of the top 10 most popular sports during the Summer Olympics \cite{TopEndSportsUrl} and attracts millions of fans worldwide. Cycling competitions are divided into three main categories: \textit{road, track and off-road events}. Like in any popular sports, researchers showed their interest in strategies that could simulate the outcome of races. Efforts have been made to characterize as accuratelly as possible cycling races, and led to mathematical formulas taking into consideration almost all the mathematical and physical factors in a race. Some examples can be seen in \cite{AgentModel} or \cite{SlipStream} .
 
-During our project, we have focused mainly on \textit{road events}: \textbf{road race, criterium, hill climbing and stage races} and Sprint \textit{track events}. For a novice watching those competitions, it might seem peculiar the way athletes compete with each other. Even though they are competing  with each other, their only chance of success is to team up with their competitors. This behaviour is mostly noted in the Stage Races like Tour de France or Tour de Faso.
+During our project, we have focused mainly on \textit{road events}: \textbf{road race, criterium, hill climbing and stage races} and Sprint \textit{track events}. For a novice watching those competitions, it might seem peculiar the way athletes compete with each other. Even though they are racing against each other, their only chance of success is teaming up with their competitors. Unfortunately, as more members join the break-away grup, the rider's chances of crossing the finish line first decrease. This behaviour is mostly noted in the Stage Races like Tour de France or Tour de Faso in Africa where even entire teams with no chance of winning are teaming up with top teams in order to help them out. Also, riders can be taken by surprise by their break away companions who start sprinting towards the finish line.
 
-In the following report we will focus on races where players are forced to cooperate and ask ourself  whether we can derive a game theory model that can model the optimal behaviour for a cyclist. We have created a simulation of a road race and aimed to make it as realistic as possible, this is described in section \ref{sec:softmodel}. Due to the fact that the strategies used in the above mentioned races can be modelled using Game Theory, we have proposed a model that should cover the possible outcomes of a race in section \ref{sec:gameth}. We are also using the model in order to validate the results from the simulation.
+In the following report we will focus on races where players are forced to cooperate and ask ourself whether we can derive a game theory model that can model the optimal behaviour for a cyclist. We have created a simulation of a road race and aimed to make it as realistic as possible, this is described in section \ref{sec:softmodel}. Due to the fact that the strategies used in the above mentioned races can be modelled using Game Theory, we have proposed a model that should cover the possible outcomes of a race in section \ref{sec:gameth}. We are also using the model in order to validate the results from the simulation.
 
 
 \chapter{Design and Implementation}\label{ch:design&impl}
@@ -198,6 +190,7 @@ This simplifies to: $$F_{air} + F_{kin} = \frac{l_{c} * P_{ped} }{ \omega * \gam
 where $$ F_{air} 	= \frac{1}{2} * c_{d} * \rho * A * ( x'(t) )^{2} $$
 and	  $$ F_{kin} 	= ( m + ( \frac{l_w}{r_w^{2}} ) * x''(t) $$
 
+% TODO : Julian, please can you link this to the results from the papers? Or discuss them here or in a later chapter
 Results from the Paper (...)\\
 
 We are using the following estimates:
@@ -532,6 +525,7 @@ As our project consisted of two parts very different in nature, we divided the w
 
 In the simulation team, we worked closely together during the whole duration of the project. We made sure both of us agreed on the design decisions before writing any code. We usually worked together on the same part of the code or divided the work into small individual tasks. \\
 
+On the other hand, in the Game Theory team we have divided
 [How the game theory worked] \\
 
 Despite our attempt to have a productive and dynnamic organisation, our different obligations for other courses and work applications made the communication between people working on different parts of the project difficult sometimes, resulting in problems being unresolved for an unnecessary amount of time and leading ultimatelly to not being able to achieve all the goals we set for our project. \\
