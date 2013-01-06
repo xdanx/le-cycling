@@ -145,11 +145,11 @@ During the race, the cyclists can therefore be in two different states, they are
 
 In the last 5 kilometers of the race, the packs dissolves and each cyclists acts individually and starts sprinting. \\
 
-The issue with this model however was with the description of how the cyclists get tired. It was unclear in the paper exactly how it was done, and there was no way of cumulating the energy used. We therefore looked at the description of a better exhaustion model on another paper.
+The issue with this model however was with the description of how the cyclists get tired. It was unclear in the paper exactly how it was done, and there was no way of cumulating the energy used. We therefore looked at the description of a better exhaustion and performance model in another paper.
 
 \subsection{The updated model}
 
-We used the desciption of the physical model provided in \cite{MathModel} to update our previous simulation. It has a more precise description of the physical abilities of a cyclists, being based on power output instead of speed.
+We used the desciption of the physical model provided in \cite{MathModel} to update our previous simulation. It has a more precise description of the physical abilities of a cyclist, the motion being based on power output instead of speed, and of the effects of exhaustion. These are described bellow.  
 
 \subsubsection{Derivation of the differential equation for modeling the motion of a cyclist}
 
@@ -248,6 +248,21 @@ Multiplying $F_{draft}$ by this correction factor gives the new differential equ
 $$ (0.62 - 0.0104*d_w + 0.0452*d_w^2) * 75.7664 *(x'(t))^{3} + 14844.025288499999 * x'(t) * x''(t) = P_{ped}$$
 
 A second order differential equation that models our systems and takes into account the slipstream effect.
+
+\subsubsection{An exhaustion model for cycling}
+
+We add three new constants (all normally distributed) and one new variable to the definition of each cyclist to implement this model. The new constants are : 
+\begin{itemize}
+\item $P_{max}$ : the maximum power output of a cyclist.
+\item $P_{CP}$ : the maximum aerobic power output of a cyclist. (The highest speed at which the can cycle without ever getting tired)
+\item $E_{an}$ : the maximum energy output from the cyclist anaerobic system before it must rest.
+\end{itemize}
+The new variable is $e_{an}$ : the amount of the anaerobic energy capacity that has already been consumed (initially $e_{an} = 0$). \\
+
+The differential of $e_{an}$ depends on the difference between the cyclist maximum aerobic power output ($P_{CP}$) and his current power output ($P_{ped}$, set according to the psychological model), giving : 
+$$ e_{an}' = P_{ped} - P_{CP} $$
+
+The values of $e_{an}$ are truncated such that $0 < e_{an} < E_{an}$. If at some point $e_{an}$ reaches $E_{an}$ the cyclist has to stop [add issues].
 
 \subsection{The implementation}
 
