@@ -92,9 +92,6 @@ Dr. Panos \textsc{Parpas} % Supervisor's Name
 
 \begin{abstract}
 
-%TODO: needs improvement
-% César : I think it needs to be more about what we did rather than how cycling works.
-
 During our Group Project we were charged with analysing cycling races, in particular trying to provide theoretical foundations for analysing their outcomes. Cycling races are amongst one of the most popular sports worldwide. Their history dates back to the
 $18^{th}$ century being adopted and since then the types of races spanned substantially: from Track cycling on banks and velodromes,
 Cycle-cross, Mountain bike races, one-day road race, criterion or time trial to professional races such as
@@ -167,20 +164,20 @@ F is Force 	&  	\_bear is friction in the wheel bearings \\
 			& 	\_kin is kinetic energy \\
 			&	\_ped is cyclist's 'input' (e.g. $P_{ped}$ = power input into the system) \\
 \hline
-\multicolumn{2}{|c|}
-{
-	$l_{c}$  is the length of the cycling crank and
-	% maybe use a parbox here? http://tex.stackexchange.com/questions/485/how-to-break-a-line-in-a-table
-	$r_{w}$  is the radius of the wheel
-} \\
-\hline
 \end{tabularx}
-\vspace{1cm}
 
+\begin{tabularx}{\linewidth}{|X|}
+
+$l_{c}$  is the length of the cycling crank and \\
+% maybe use a parbox here? http://tex.stackexchange.com/questions/485/how-to-break-a-line-in-a-table
+$r_{w}$  is the radius of the wheel \\
 $\eta$ 		represents the frictional losses in the drive chain \\
 $\omega$ 	represents angular velocity.\\
 $\gamma$	is the step-up coefficient the bicycles gearing system.  \\
-\newpage
+\hline
+\end{tabularx}
+
+\vspace{1cm}
 So by conservation of energy:
 
 $$P_{pot} + P_{air} + P_{bear} + P_{roll} + P_{kin} = \eta * P_{ped}$$
