@@ -93,14 +93,11 @@ Dr. Panos \textsc{Parpas} \\% Supervisor's Name
 
 \begin{abstract}
 
-During our Group Project we were challanged with analysing cycling races, in particular trying to provide theoretical foundations for analysing their outcomes. Cycling races are amongst one of the most popular sports worldwide. Their history dates back to the
-$18^{th}$ century being adopted and since then the types of races spanned substantially: from Track cycling on banks and velodromes,
-Cycle-cross, Mountain bike races, one-day road race, criterion or time trial to professional races such as
-Tour de France, Giro d'Italia or Vuelta a Espa\~na. Despite their large popularity and considerable financing attracted by large races there is no formal way of estimating outcome of a race not to mention choosing the right strategy. Even though racing does not seem like a sport involving . Cycling racers are extremely exhaustive for organism and right timing of effort is of paramount importance for winning. One example might be Andy Schleck's victory during one of 2011 Tour de France stage races. His escape 60 km before finish line had been perceived unimportant by other racers, however, it granted him almost 4 minute lead at finish.
+During our Group Project we were challenged with analysing cycling races, in particular trying to provide theoretical foundations for predicting their outcomes. Cycling races are amongst one of the most popular sports worldwide. Their history dates back to the $18^{th}$ century when they have been adopted. Since then the number of types of races expanded substantially: from Track cycling on banks and velodromes, Cycle-cross, Mountain bike races, one-day road race, criterion or time trial to professional races such as Tour de France, Giro d'Italia or Vuelta a Espa\~na. Despite their large popularity and considerable financing attracted by large races there is no formal way of estimating outcome of a race not to mention choosing the right strategy. Even though racing does not seem like a sport involving . Cycling races are extremely exhaustive for organism and right timing of effort is of paramount importance for winning. One example might be Andy Schleck's victory during one of 2011 Tour de France stage races. His escape 60 km before finish line had been perceived unimportant by other racers, however, it granted him almost 4 minute lead at finish.
 
-Result of our work are two tools that can assist when analysing cycling races. First of them is agent based software model, based on work done in \cite{AgentModel}, \cite{MathModel} and \cite{SlipStream}, which aims to approximate real races and allows for simulation of arbitrary scenarios. It makes assumptions on some physical, psychological and biological conditions in order to make computations feasible from current technology and knowledge point of view. Hence, the model is limited with respect to accuracy. Although limited, with development in computational power and expansion of our understanding of human physiology the model could be extended and allow increasing accuracy of predictions, and it has therefore been developed with modularity and possibility of extensions in mind. Even though the agent based model is quite versatile it doesn't allow to extract strategy from it. Hence, alongside the aforementioned model we have also derived a simple game theoretical framework which can be used not only to predict result but also compute optimal strategy for racer. Deriving game theoretical model from real life scenario is not an easy task which has been shown by \cite{GameTheoryApplications} and \cite{GameTheoryNonTechnical}. The game theoretical model would be of more use when one would want to make on the spot decisions regarding his strategy.
+Result of our work are two tools that can assist when analysing cycling races. First of them is agent based software model, based on work done in \cite{AgentModel}, \cite{MathModel} and \cite{SlipStream}, which aims to approximate real races and allows for simulation of arbitrary scenarios. It makes assumptions on some physical, psychological and biological conditions in order to make computations feasible from current technology and knowledge point of view. Hence, the model is limited with respect to accuracy. Although limited, with development in computational power and expansion of our understanding of human physiology the model could be extended and allow increasing accuracy of predictions, and it has therefore been developed with modularity and possibility of extension in mind. Even though the agent based model is quite versatile it doesn't allow to extract strategy from it. Hence, alongside the aforementioned model we have also derived a simple game theoretical framework which can be used not only to predict result but also compute optimal strategy for racer. Deriving game theoretical model from real life scenario is not an easy task which has been shown by \cite{GameTheoryApplications} and \cite{GameTheoryNonTechnical}. The game theoretical model would be of more use when one would want to make on the spot decisions regarding his strategy.
 
-What we have created during this project could invaluable decision making framework for coaches and racers equally. One could use game theoretical model to derive set of candidate strategies. Further the strategies can be evaluated using our agent based model to correct the inherent inaccuracy of game theory when approximating real life situations. We believe that with growth of computational power and better understanding of cycling races the results achieved from models similar to ours can become very accurate. However, better understanding of human psychology will be essential in order to solve general game theoretical model. Currently existing frameworks from Von Neumann–Morgenstern and Aumann-Maschler do not specify which coalition will dominate the others, they just specify conditions for dominating coalition to satisfy.
+What we have created during this project could become invaluable decision making framework for coaches and racers equally. One could use game theoretical model to derive set of candidate strategies. Further the strategies can be evaluated using our agent based model to correct the inherent inaccuracy of game theory when approximating real life situations. We believe that with growth of computational power and better understanding of cycling races the results achieved from models similar to ours can become very accurate. However, better understanding of human psychology will be essential in order to solve general game theoretical model. Currently existing frameworks from Von Neumann-Morgenstern and Aumann-Maschler do not specify which coalition will dominate the others, they just specify conditions for dominating coalition to satisfy.
 
 \end{abstract}
 
@@ -167,7 +164,7 @@ $l_{c}$  is the length of the cycling crank \\
 $r_{w}$  is the radius of the wheel \\
 $\eta$ 		represents the frictional losses in the drive chain \\
 $\omega$ 	represents angular velocity.\\
-$\gamma$	is the step-up coefficient the bicycles gearing system.  \\
+$\gamma$	is the step-up coefficient of the bicycle gearing system.  \\
 \hline
 \end{tabularx}
 
@@ -265,32 +262,85 @@ We decided to implement the above model in Haskell as it allows for highly polym
 
 We split our implementation into these primary modules:
 \begin{itemize}
-\item Cyclist
-\item Pack
-\item Simulation
-\item Modeling
-\item RungeKutta
-\item Parser
-\item Main
+\item \texttt{Cyclist}
+\item \texttt{Pack}
+\item \texttt{Simulation}
+\item \texttt{Modeling}
+\item \texttt{RungeKutta}
+\item \texttt{Parser}
+\item \texttt{Main}
 \end{itemize}
 
 We will describe the implementation module by module
 
 \subsubsection{Cyclist}
 
+This module contains the definition the type \texttt{Cyclist}, which represent a individual cyclist, and functions to edit the properties of a cyclists and to generate a certain number of cyclists with particular initial state. \\
+
+The type cyclist contains the following variables : 
+
+\begin{itemize}
+\item \texttt{uid :: Int} \\ A unique id for the cyclist (constant).
+\item \texttt{pmax :: Double} \\ The maximum power output (constant).
+\item \texttt{pcp :: Double} \\ The maximum anaerobic power output (constant).
+\item \texttt{usedEnergy :: Double} \\ Used aneorobic energy, correspond to $e_{an}$ above.
+\item \texttt{energyLim :: Double} \\ Maximum aneorobic energy, correspond to $E_{an}$ above (constant).
+\item \texttt{packCoop :: RandT StdGen IO Bool} \\ The general cooperation decision function.
+\item \texttt{teamCoop :: RandT StdGen IO Bool} \\ The team cooperation decision function.
+\item \texttt{groupProb :: Double} and \texttt{teamProb :: Double} \\ If the default cooperation function is used, these stores the probabilities.
+\item \texttt{speed :: Speed} \\ Current speed.
+\item \texttt{distance :: Meters} \\ Current distance.
+\item \texttt{team :: Int} \\ Team number (constant).
+\end{itemize}
+
+The types \texttt{Speed} and \texttt{Meters} are defined in \texttt{Units.hs} just to make the code clearer and are synonymous of \texttt{Double}.
+
 \subsubsection{Pack}
 
+The type \texttt{Pack} is defined here. It has two different constructor : 
+
+\begin{itemize}
+\item \texttt{Pack Int Cyclist (Seq Cyclist) Int} \\ Which correspond to a normal pack. The parameters are respectivelly : The type the leader spent in this position, the cyclist that is leading, a sequence of the other cyclists in the Pack and an unique pack id.
+\item \texttt{Breakaway (Seq Cyclist) Int Int} \\ Which correspond to a breakaway pack. The parameters are repectivelly : The sequence of cyclists in the pack, the number of turns before the pack becomes a normal pack, and an unique pack id.
+\end{itemize}
+
+The module also contains the functions \texttt{defLeader} and \texttt{rotate} which are used to enforce the rotation of the cyclist in the leading position. The \texttt{defLeader} function will start a rotation if the current leader has been in this position for five turns or if he decides to act as a defector and not finish his share. \\
+
+The rest of the module is composed of utility functions to facilitate the use of packs.
+
 \subsubsection{Simulation}
+
+This is the core of the software. It defines the type \texttt{Race} like this : 
+\begin{itemize}
+\item \texttt{Race Int Meters [Pack] [Cyclist] [(Cyclist, Double)]} \\ where the parameters are : the current turn number, the total lenght of the race, a list of the packs in the main part of the race, a list of the cyclists that are in the sprinting phase in the last five kilometers of the race, and a list of the cyclists that have finished the race, coupled with their finish time.
+\end{itemize}
+
+The principal function is \texttt{turn} which is called repeatedly to go from one state of the race to the next one. The algorithm it performs is as follows : 
+
+\begin{enumerate}
+\item Generate the new breakaway packs. We go throught every cyclist in each pack and call their strategy function to know if they will breakaway, or if a teammate breaks away, if they follow him and form the new breakaway packs.
+\item Update the leaders of each pack if needed, by calling \texttt{defLeader} of the \texttt{Pack} module on each of them.
+\item Update the speed of the riders, which is defined in the \texttt{Modeling} and \texttt{RungeKutta} modules that describe the physical model.
+\item Update their position from their speed. Here we also check for colisions between packs, in which case the coliding packs are merged into one. 
+\item Update their energy, from their current energy and $P_{ped}$ in \texttt{Modeling}.
+\end{enumerate}
 
 \subsubsection{Modeling}
 
 \subsubsection{RungeKutta}
 
 % Initial equations
+To model the we have of the motion of cyclists requiers us to solve the differential equation:
 
-Runge-Kutta is a standard numerical method that allows one to estimate a function based on an initial value and the function's differential. It is similar to the standard ``newton method" ($f(x + h) \approx f(x) + h*f'(x)$), but it uses several points inside a trapezium to trace the function significantly better. \\ % Runge-Kutta method is used in [ write more here... ]
-\newline
-full desc of runge-kutta.\\
+$$ 75.7664 *(x'(t))^{3} + 14844.025288499999 * x'(t) * x''(t) = P_{ped}$$
+
+\noindent for x'(t), the speed of the cyclist. \newline \par
+
+Unfortunatly, this is a non-linear differential equation, which in general has no analytic equation (i.e. in general, no equation can be found in terms of the variables in the equation which gives a solution to $x'$) \newline \par
+
+So we decided to use a numerical solving algorithm to solve for x'(t) so we could compute the change in velocity of our cyclists over time. \newline \par
+
+Runge-Kutta is a standard numerical method that allows one to estimate a function based on an initial value and the function's differential. It is similar to the standard ``newton method" ($f(x + h) \approx f(x) + h*f'(x)$), but it uses several points inside a trapezium to trace the function significantly better. \\
 \newline
 This allows approximations to be made for functions for which we have a first order differential equation. It can also be used to approximate $n$ interdependent functions if it has an initial value for each and a differential that depends on the $n - 1$ other functions' values at $x$ and on $x$ itself.\\
 
@@ -464,10 +514,10 @@ There is no pure equilibrium strategy, however, on can be found using Linear Pro
 	\hspace{-2em}
 	\centering
 	\begin{tabular}{cccc|}
-		& & \multicolumn{2}{c}{Player 1}                                      \\ \cline{3-4}
-		& & A (0.7143)& \multicolumn{1}{c}{B (0.2857)}                        \\ \cline{3-4}
-		\multirow{2}{*}{Player 2} & \multicolumn{1}{|c|}{a (0.5714)} & -1 & 5 \\
-		& \multicolumn{1}{|c|}{b (0.4286)} & 3 & -5                           \\ \cline{3-4}
+		& & \multicolumn{2}{c}{Player 1}                                               \\ \cline{3-4}
+		& & A \textit{(0.7143)}& \multicolumn{1}{c}{B \textit{(0.2857)}}               \\ \cline{3-4}
+		\multirow{2}{*}{Player 2} & \multicolumn{1}{|c|}{a \textit{(0.5714)}} & -1 & 5 \\
+		& \multicolumn{1}{|c|}{b \textit{(0.4286)}} & 3 & -5                           \\ \cline{3-4}
 	\end{tabular}
 	\caption{2-person zero-sum game\\mixed strategy Nash equilibrium}
 \end{table}
@@ -595,10 +645,10 @@ Thus, when one of the players falls back, then his pay-off becomes $\dfrac{CS_i}
 
 \subsection{Repeated Game}\label{subsec:repgame}
 We can consider our methodology of finding pay-off for the whole game with alteration allowing for change of strategy in order to allow optimal value of the game. Evaluating our model this way enables us to answer questions of optimal strategies at given points in time.\\\\
-In order to evaluate the games presented above, we reduced everything to solving 3 by 3 one-off games. After doing this, we plug the values into the recursive formula and we get the required value of the game.
+In order to evaluate the games presented above, we reduced everything to solving 3 by 3 one-off games. After doing this, we plug the values into the recursive formula and we get the required value of the game. Furthermore once we store the pay-off matrices at given $\delta^{(n)}$ moments we can find and optimal strategy trail from beginning to the end. Using search algorithms we could then attempt finding optimal strategies for given scenario. However, such computation would be very computationally intensive since search space grows exponentially with number of moments.
 
 \subsection{N-player Cooperative Game}\label{subsec:nplaycoopgame}
-This is the field we have touched least on since Game Theory offers very little with respect to identification methodology of solving this cases. When there are more than 2 players most of the rationality taken from granted in 2 player zero-sum games no longer applies. However, we could try and reduce everything to 2 players games, even though the results might not be as exact. The idea is to average the performance of $N-1$ players in order to create a new player. We will make this new player compete with the $N$th player. Thus, we reduce this to a 2 player game.\\\\
+This is the field we have touched least on since Game Theory offers very little with respect to identification methodology of solving this cases. When there are more than 2 players most of the rationality taken for granted in 2 player zero-sum games no longer applies. However, we could try and reduce everything to 2 player games, even though the results might not be as exact. The idea is to average the performance of $N-1$ players in order to create a new player. We will make this new player compete with the $N$th player. Thus, we reduce this to a 2 player game.\\\\
 The reader may notice that we need to apply N-player games when the front-runners from the previous sections get caught by the chasing group. Here would be a place where we can apply the aforementioned reasoning. Another idea is to transform this game into an LP problem and solve it using classic algorithms.
 \\\\
 %\cite{GameTheoryNonTechnical} is good
