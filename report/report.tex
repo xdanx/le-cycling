@@ -327,7 +327,9 @@ The principal function is \texttt{turn} which is called repeatedly to go from on
 
 \subsubsection{Modeling}
 
+The Modeling module of this simulation contains all the function necessary to update the speed and pack structure of a cyclist either in the normal part of the race (breakaway group or pack) and that for updating the speeds of the sprinters. \newline \par
 
+For cyclists that are in a breakaway group or in a pack, we compute the average power of the cyclists in the grouping and set their speed to 80\% or 90\% of the speed achievable at this power output. For sprinters, the speed is set to that possible with 95\% of their \texttt{pmax}. This module calls the \texttt{RungeKutta} module below for computing the speed of each cyclist depending on his power output and his previous speed. \newline \par
 
 \subsubsection{RungeKutta}
 
