@@ -408,6 +408,17 @@ The module works by parsing a \texttt{String} then calling the generating functi
 
 \subsubsection{Main}
 
+The \texttt{Main} module of this program contains the \texttt{main} function.
+The main function parses the arguments to the program and loads any requiered input file.
+
+The arguments that can be passed to the program are:
+\begin{itemize}
+\item ``-X'': Activates the graphical interface that shows an accelerated rendering of the race.
+\item ``-P'': Outputs a plot that is defined in the code (This could be extended to having a configurable plotting feature).
+\end{itemize}
+
+The main function then loads the input file and generates the corresponding race by using the parser. It then calls turn repeatedly until the Race has finished, giving a graphical representation if the ``-X'' option is given. It then outputs the results of the race and a plot if the ``-P'' option is given.
+
 % Game theoretical model introduction
 
 \section{Game Theory Model}\label{sec:gameth}
