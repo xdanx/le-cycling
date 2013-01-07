@@ -327,6 +327,8 @@ The principal function is \texttt{turn} which is called repeatedly to go from on
 
 \subsubsection{Modeling}
 
+
+
 \subsubsection{RungeKutta}
 
 % Initial equations
@@ -380,6 +382,8 @@ $$ f(t, y_1, y_2) = \frac{P_{ped} - 75.7665 * (0.62 - 0.0104*d_w + 0.0452*d_w^2)
 $$ g( t, y_1, y_2 ) = \frac{P_{ped} - 75.7665 * (0.62 - 0.0104*d_w + 0.0452*d_w^2) * y_1 ^ 3}{14844.025288499999}$$ \\
 
 $d_w$ can either be set to the initial value at the beginning of the minute or changed dynamically, but this requires a simultaneous simulation of all the cyclists to see how they change in real time, which is quite complex.
+
+The solution of these coupled differential equations via the Runge-Kutta algorithm is implemented in the RungeKutta module using haskell 'prim-ops', to make it extremely fast.
 
 \subsubsection{Parser}
 
