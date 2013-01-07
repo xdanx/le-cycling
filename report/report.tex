@@ -297,10 +297,17 @@ We will describe the implementation module by module
 \subsubsection{RungeKutta}
 
 % Initial equations
+To model the we have of the motion of cyclists requiers us to solve the differential equation:
 
-Runge-Kutta is a standard numerical method that allows one to estimate a function based on an initial value and the function's differential. It is similar to the standard ``newton method" ($f(x + h) \approx f(x) + h*f'(x)$), but it uses several points inside a trapezium to trace the function significantly better. \\ % Runge-Kutta method is used in [ write more here... ]
-\newline
-full desc of runge-kutta.\\
+$$ 75.7664 *(x'(t))^{3} + 14844.025288499999 * x'(t) * x''(t) = P_{ped}$$
+
+\noindent for x'(t), the speed of the cyclist. \newline \par
+
+Unfortunatly, this is a non-linear differential equation, which in general has no analytic equation (i.e. in general, no equation can be found in terms of the variables in the equation which gives a solution to $x'$) \newline \par
+
+So we decided to use a numerical solving algorithm to solve for x'(t) so we could compute the change in velocity of our cyclists over time. \newline \par
+
+Runge-Kutta is a standard numerical method that allows one to estimate a function based on an initial value and the function's differential. It is similar to the standard ``newton method" ($f(x + h) \approx f(x) + h*f'(x)$), but it uses several points inside a trapezium to trace the function significantly better. \\
 \newline
 This allows approximations to be made for functions for which we have a first order differential equation. It can also be used to approximate $n$ interdependent functions if it has an initial value for each and a differential that depends on the $n - 1$ other functions' values at $x$ and on $x$ itself.\\
 
