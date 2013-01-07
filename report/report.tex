@@ -232,8 +232,7 @@ The values of $e_{an}$ are truncated such that $0 < e_{an} < E_{an}$.
 
 \subsection{The implementation}\label{subsec:impl}
 
-We decided to implement the above model in Haskell as it allows for highly polymorphic modular code. This allowed us to make the code highly extensible. For example each cyclist can have an independent strategy that can be easily be added to the code. It takes some 'reasonable' amount of information about the surroundings of the cyclist and returns a decision inside the IO Monad allowing for arbitrary side effecting computations to occur. This could allow us to potentially extend it to perform user interaction. \par
-
+We decided to implement the above model in Haskell as it allows for highly polymorphic modular code. This allowed us to make the code highly extensible. For example each cyclist can have an independent strategy that can be easily be added to the code. It takes some 'reasonable' amount of information about the surroundings of the cyclist and returns a decision inside the IO Monad allowing for arbitrary side effecting computations to occur. This could allow us to potentially extend it to perform user interaction. \\\\
 We split our implementation into these primary modules:
 \begin{itemize}
 \item \texttt{Cyclist}
@@ -244,13 +243,11 @@ We split our implementation into these primary modules:
 \item \texttt{Parser}
 \item \texttt{Main}
 \end{itemize}
-
 We will describe the implementation module by module
 
 \subsubsection{Cyclist}
 
-This module contains the definition the type \texttt{Cyclist}, which represent a individual cyclist, and functions to edit the properties of a cyclists and to generate a certain number of cyclists with particular initial state. \\
-
+This module contains the definition the type \texttt{Cyclist}, which represent a individual cyclist, and functions to edit the properties of a cyclists and to generate a certain number of cyclists with particular initial state. \\\\
 The type cyclist contains the following variables :
 
 \begin{itemize}
@@ -266,44 +263,37 @@ The type cyclist contains the following variables :
 \item \texttt{distance :: Meters} \\ Current distance.
 \item \texttt{team :: Int} \\ Team number (constant).
 \end{itemize}
-
 The types \texttt{Speed} and \texttt{Meters} are defined in \texttt{Units.hs} just to make the code clearer and are synonyms of \texttt{Double}.
 
 \subsubsection{Pack}
-
 The type \texttt{Pack} is defined here. It has two different constructor :
 
 \begin{itemize}
 \item \texttt{Pack Int Cyclist (Seq Cyclist) Int} \\ Which correspond to a normal pack. The parameters are respectively : The type the leader spent in this position, the cyclist that is leading, a sequence of the other cyclists in the Pack and an unique pack id.
 \item \texttt{Breakaway (Seq Cyclist) Int Int} \\ Which correspond to a breakaway pack. The parameters are respectively : The sequence of cyclists in the pack, the number of turns before the pack becomes a normal pack, and an unique pack id.
 \end{itemize}
-
-The module also contains the functions \texttt{defLeader} and \texttt{rotate} which are used to enforce the rotation of the cyclist in the leading position. The \texttt{defLeader} function will start a rotation if the current leader has been in this position for five turns or if he decides to act as a defector and not finish his share. \\
-
+The module also contains the functions \texttt{defLeader} and \texttt{rotate} which are used to enforce the rotation of the cyclist in the leading position. The \texttt{defLeader} function will start a rotation if the current leader has been in this position for five turns or if he decides to act as a defector and not finish his share. \\\\
 The rest of the module is composed of utility functions to facilitate the use of packs.
 
 \subsubsection{Simulation}
-
 This is the core of the software. It defines the type \texttt{Race} like this :
 \begin{itemize}
 \item \texttt{Race Int Meters [Pack] [Cyclist] [(Cyclist, Double)]} \\ where the parameters are : the current turn number, the total length of the race, a list of the packs in the main part of the race, a list of the cyclists that are in the sprinting phase in the last five kilometres of the race, and a list of the cyclists that have finished the race, coupled with their finish time.
 \end{itemize}
-
 The principal function is \texttt{turn} which is called repeatedly to go from one state of the race to the next one. The algorithm it performs is as follows :
 
 \begin{enumerate}
-\item Generate the new breakaway packs. We go through every cyclist in each pack and call their strategy function to know if they will breakaway, or if a teammate breaks away, if they follow him and form the new breakaway packs.
+\item Generate the new breakaway packs. We go through every cyclist in each pack and call their strategy function to know if they will breakaway, or if a team-mate breaks away, if they follow him and form the new breakaway packs.
 \item Update the leaders of each pack if needed, by calling \texttt{defLeader} of the \texttt{Pack} module on each of them.
-\item Update the speed of the riders, which is defined in the \texttt{Modeling} and \texttt{RungeKutta} modules that describe the physical model.
+\item Update the speed of the riders, which is defined in the \texttt{Modelling} and \texttt{RungeKutta} modules that describe the physical model.
 \item Update their position from their speed. Here we also check for collisions between packs, in which case the colliding packs are merged into one.
-\item Update their energy, from their current energy and $P_{ped}$ in \texttt{Modeling}.
+\item Update their energy, from their current energy and $P_{ped}$ in \texttt{Modelling}.
 \end{enumerate}
 
-\subsubsection{Modeling}
+\subsubsection{Modelling}
 
-The Modeling module of this simulation contains all the function necessary to update the speed and pack structure of a cyclist either in the normal part of the race (breakaway group or pack) and that for updating the speeds of the sprinters. \newline \par
-
-For cyclists that are in a breakaway group or in a pack, we compute the average power of the cyclists in the grouping and set their speed to 80\% or 90\% of the speed achievable at this power output. For sprinters, the speed is set to that possible with 95\% of their \texttt{pmax}. This module calls the \texttt{RungeKutta} module below for computing the speed of each cyclist depending on his power output and his previous speed. \newline \par
+The Modelling module of this simulation contains all the function necessary to update the speed and pack structure of a cyclist either in the normal part of the race (breakaway group or pack) and that for updating the speeds of the sprinters. \\\\
+For cyclists that are in a breakaway group or in a pack, we compute the average power of the cyclists in the grouping and set their speed to 80\% or 90\% of the speed achievable at this power output. For sprinters, the speed is set to that possible with 95\% of their \texttt{pmax}. This module calls the \texttt{RungeKutta} module below for computing the speed of each cyclist depending on his power output and his previous speed.
 
 \subsubsection{RungeKutta}
 
@@ -311,36 +301,23 @@ For cyclists that are in a breakaway group or in a pack, we compute the average 
 To model the we have of the motion of cyclists requires us to solve the differential equation:
 
 $$ 75.7664 *(x'(t))^{3} + 14844.025288499999 * x'(t) * x''(t) = P_{ped}$$
-
-\noindent for x'(t), the speed of the cyclist. \newline \par
-
-Unfortunately, this is a non-linear differential equation, which in general has no analytic equation (i.e. in general, no equation can be found in terms of the variables in the equation which gives a solution to $x'$) \newline \par
-
-So we decided to use a numerical solving algorithm to solve for x'(t) so we could compute the change in velocity of our cyclists over time. \newline \par
-
-Runge-Kutta is a standard numerical method that allows one to estimate a function based on an initial value and the function's differential. It is similar to the standard ``newton method" ($f(x + h) \approx f(x) + h*f'(x)$), but it uses several points inside a trapezium to trace the function significantly better. \\
-\newline
-This allows approximations to be made for functions for which we have a first order differential equation. It can also be used to approximate $n$ interdependent functions if it has an initial value for each and a differential that depends on the $n - 1$ other functions' values at $x$ and on $x$ itself.\\
-
-So as above we have the differentials of $n$ functions denoted $y_1'(t),..,y_n'(t)$, which can each be written as: \\
-
-{\centering $y_k'(t) = f_k(t,y_1(t),y_2(t),..,y_{(k-1)}(t),y_{(k+1)},..,y_n(t))$ \newline \par}
-
-The each of the differentials can be given the current value of t and the $n - 1$ previous estimated values (initially the initial values) of the other function and then running Runge-Kutta with respect to t on each of them with a small h. \newline \par
-
-This means that if we can transform our second order differential equation into a system of two first order coupled differential equations from which the information we want can be analytically derived, we can use the Runge-Kutta method to solve it numerically and then derive any necessary values from the result. \newline \par
-
+for x'(t), the speed of the cyclist. \\\\
+Unfortunately, this is a non-linear differential equation, which in general has no analytic equation (i.e. in general, no equation can be found in terms of the variables in the equation which gives a solution to $x'$).\\\\
+So we decided to use a numerical solving algorithm to solve for x'(t) so we could compute the change in velocity of our cyclists over time.\\\\
+Runge-Kutta is a standard numerical method that allows one to estimate a function based on an initial value and the function's differential. It is similar to the standard ``newton method" ($f(x + h) \approx f(x) + h*f'(x)$), but it uses several points inside a trapezium to trace the function significantly better. \\\\
+This allows approximations to be made for functions for which we have a first order differential equation. It can also be used to approximate $n$ interdependent functions if it has an initial value for each and a differential that depends on the $n - 1$ other functions' values at $x$ and on $x$ itself.\\\\
+So as above we have the differentials of $n$ functions denoted $y_1'(t),..,y_n'(t)$, which can each be written as: 
+$$y_k'(t) = f_k(t,y_1(t),y_2(t),..,y_{(k-1)}(t),y_{(k+1)},..,y_n(t))$$
+The each of the differentials can be given the current value of t and the $n - 1$ previous estimated values (initially the initial values) of the other function and then running Runge-Kutta with respect to t on each of them with a small h. \\\\
+This means that if we can transform our second order differential equation into a system of two first order coupled differential equations from which the information we want can be analytically derived, we can use the Runge-Kutta method to solve it numerically and then derive any necessary values from the result. \\\\
 In order to apply the Runge-Kutta algorithm, we need to transform it into two linear differential equations. We will define 2 independent variables, $y_1$ and $y_2$ such that their differentials $y_1'$ and $y_2'$ must depend on the variables t, $y_1$ and $y_2$. Let
 $$ y_1' = f( t, y_1, y_2 )$$ and $$y_2' = g( t, y_1, y_2 )$$
-
 In order to get x'(t) we want to set one of the equations to contain it: $y_1 = x'(t)$ and because we want one of the equations to contain $x'(t) * x''(t) $ so set: $y_2' = x'( t ) * x''( t )$ .
 This gives us $$ y_{2} = \frac{1}{2} * x'(t)^2 $$
 By rearranging the differential equation to have only $ x'( t ) * x''( t )$ on the left hand side, we get
 $$ x'( t ) * x''( t ) = \frac{P_{ped} - 75.7665 * x'( t ) ^ 3}{14844.025288499999}$$
 $$ y_2' = \frac{P_{ped} - 75.7665 * y_1 ^ 3}{14844.025288499999}$$
-
 Now we have only $y_2'$ in terms of only t, $y_1$ and $y_2$ so we can set $$ g( t, y_1, y_2 ) = \frac{P_{ped} - 75.7665 * y_1 ^ 3}{14844.025288499999}$$
-
 Writing $y_1$ in terms of t, $y_1$ and $y_2$: $$y_2 = \frac{1}{2} * x'(t)^2$$ yields $$y_2 = \frac{1}{2} * y_1^2$$
 And by rearranging the left hand side we get:
 $$y_1 = \sqrt{2 * y_2}$$
@@ -351,21 +328,17 @@ y_1' & = \frac{y_2'}{\sqrt{2 * y_2}}\\
 \end{align*}
 This gives us the final form for function f:
 $$ f(t, y_1, y_2) = \frac{P_{ped} - 75.7665 * y_1 ^ 3}{14844.025288499999 * \sqrt{2 * y_2}}$$
-
 To take the slipstream effect into account, we only have to make a relatively small modification (only the movement to the left hand side changes for $y_2'$ changes, adding a dependence on $d_w$):
 $$ f(t, y_1, y_2) = \frac{P_{ped} - 75.7665 * (0.62 - 0.0104*d_w + 0.0452*d_w^2) * y_1 ^ 3}{14844.025288499999 * \sqrt{2 * y_2}}$$
-
-$$ g( t, y_1, y_2 ) = \frac{P_{ped} - 75.7665 * (0.62 - 0.0104*d_w + 0.0452*d_w^2) * y_1 ^ 3}{14844.025288499999}$$ \\
-
-$d_w$ can either be set to the initial value at the beginning of the minute or changed dynamically, but this requires a simultaneous simulation of all the cyclists to see how they change in real time, which is quite complex.
-
-The solution of these coupled differential equations via the Runge-Kutta algorithm is implemented in the RungeKutta module using haskell 'prim-ops', to make it extremely fast.
+$$ g( t, y_1, y_2 ) = \frac{P_{ped} - 75.7665 * (0.62 - 0.0104*d_w + 0.0452*d_w^2) * y_1 ^ 3}{14844.025288499999}$$
+$d_w$ can either be set to the initial value at the beginning of the minute or changed dynamically, but this requires a simultaneous simulation of all the cyclists to see how they change in real time, which is quite complex.\\\\
+The solution of these coupled differential equations via the Runge-Kutta algorithm is implemented in the RungeKutta module using Haskell 'prim-ops', to make it extremely fast.
 
 \subsubsection{Parser}
 
-This module is used to parse an input file to generate a race. The syntax of the input file is as follows :
+This module is used to parse an input file to generate a race. The syntax of the input file is as follows:
 \begin{itemize}
-\item The first line contains only one number : the length of the race.
+\item The first line contains only one number: the length of the race.
 
 \item Each of the following lines contains the description of one type of cyclist, and the number of that type of cyclist you want to assign to a number of teams.
 \begin{itemize}
@@ -377,30 +350,25 @@ This module is used to parse an input file to generate a race. The syntax of the
 \end{itemize}
 An example of such a line could be : \\ \texttt{1:20 5:10 | standardCoop avg | pcp:1.28}
 \end{itemize}
-
 The module works by parsing a \texttt{String} then calling the generating functions of the \texttt{Cyclist} module and creates a \texttt{Race} with the generated cyclists.
 
 \subsubsection{Main}
 
 The \texttt{Main} module of this program contains the \texttt{main} function.
-The main function parses the arguments to the program and loads any required input file.
-
+The main function parses the arguments to the program and loads any required input file.\\\\
 The arguments that can be passed to the program are:
 \begin{itemize}
 \item ``-X'': Activates the graphical interface that shows an accelerated rendering of the race.
 \item ``-P'': Outputs a plot that is defined in the code (This could be extended to having a configurable plotting feature).
 \end{itemize}
-
 The main function then loads the input file and generates the corresponding race by using the parser. It then calls turn repeatedly until the Race has finished, giving a graphical representation if the ``-X'' option is given. It then outputs the results of the race and a plot if the ``-P'' option is given.
 
 % Game theoretical model introduction
 
 \section{Game Theory Model}\label{sec:gameth}
 
-In order to create a thorough mathematical model, we aim to construct a game theoretical model. This model will help racers to change their strategies and choose the optimal one as the race unfolds.\\
-
-Modeling bike races can be quite challenging, hence we will begin with the simplest case in order to introduce our methodology and explain the simplifying assumptions we are making. When participating in a race we can argue that racers are at each point faced with three possible options: either break away from their current group or fall back to the group preceding the current one or cooperate with the other members of the group (which essentially implies copying the strategy of the other players in their group - which will be discussed later). Each of the racers can change his mind as often as he wants, however, changes in strategy will likely incur penalties on their performance. In this section we try to determine whether there is dominant strategy and try to find at which point in race it is beneficial for racer to change his strategy. We can easily see that strategy chosen by players will depend on their skills and fitness, i.e. better racers can afford more aggressive, less cooperative strategy in hope of being able to outdistance opponents. On the other hand weaker players will tend to cooperate more. The difficulty of this part is not the actual solution to the model since it might happen there will not be a general solution but fitting the model to the actual situation. It is fairly easy to construct arbitrary game theoretical games, however, when the games have to even remotely represent reality they get complicated very quickly.\\
-
+In order to create a thorough mathematical model, we aim to construct a game theoretical model. This model will help racers to change their strategies and choose the optimal one as the race unfolds.\\\\
+Modelling bike races can be quite challenging, hence we will begin with the simplest case in order to introduce our methodology and explain the simplifying assumptions we are making. When participating in a race we can argue that racers are at each point faced with three possible options: either break away from their current group or fall back to the group preceding the current one or cooperate with the other members of the group (which essentially implies copying the strategy of the other players in their group - which will be discussed later). Each of the racers can change his mind as often as he wants, however, changes in strategy will likely incur penalties on their performance. In this section we try to determine whether there is dominant strategy and try to find at which point in race it is beneficial for racer to change his strategy. We can easily see that strategy chosen by players will depend on their skills and fitness, i.e. better racers can afford more aggressive, less cooperative strategy in hope of being able to outdistance opponents. On the other hand weaker players will tend to cooperate more. The difficulty of this part is not the actual solution to the model since it might happen there will not be a general solution but fitting the model to the actual situation. It is fairly easy to construct arbitrary game theoretical games, however, when the games have to even remotely represent reality they get complicated very quickly.\\\\
 Before we can dive into discussion of game theoretical models we have created we aim to present short introduction to game theoretical concepts we are using. Also short summary of core principles of game theory is included with references to further reading. We then continue to consideration of case with two racers when the group chasing them is very far from them and does not affect the strategies. Thus, they are guaranteed to come first and second.
 
 \subsection{Definitions}\label{subsec:defs}
@@ -409,7 +377,7 @@ Before we can indulge ourselves in discussion of game theory can be used to appr
 
 \paragraph{2-person Zero-sum Game} ~\\
 Two-person zero-sum game describes conflict of interest between two players with strictly opposite interests. Formally this means that any change in the pay-off of one player has to be offset with equal decrease in amount of payout to the second player. These types of games can be divided into three subsections depending on the achievable results to the game. We can have a dominant strategy equilibrium, pure strategy Nash equilibrium and mixed strategy Nash equilibrium each with less strictness imposed on the result.
-\subparagraph{Dominant Strategy Equilibrium}
+\paragraph{Dominant Strategy Equilibrium}
 is represented by table below. Ease of analysing such games stems from the fact that there is always a clear strategy that a player has to follow in order to achieve maximum payout.
 
 % Dominant strategy equilibrium derivation %
@@ -427,8 +395,8 @@ is represented by table below. Ease of analysing such games stems from the fact 
 	\caption{2-person zero-sum game\\ dominant strategy equilibrium}
 \end{table}
 In order to find dominant strategy equilibrium we need to find dominant strategy.
-\subparagraph{Row player} strategy $i$ dominates strategy $j$ (for row player) if $\forall k. a_{ik} \ge a_{jk}$ and $\exists k.a_{ik} > a_{jk}$.
-\subparagraph{Column player} strategy $i$ dominates strategy $j$ if $\forall k. a_{ki} \le a_{kj}$ and $\exists k.a_{ki} < a_{kj}$.
+\paragraph{Row player} strategy $i$ dominates strategy $j$ (for row player) if $\forall k. a_{ik} \ge a_{jk}$ and $\exists k.a_{ik} > a_{jk}$.
+\paragraph{Column player} strategy $i$ dominates strategy $j$ if $\forall k. a_{ki} \le a_{kj}$ and $\exists k.a_{ki} < a_{kj}$.
 \\\\
 Using these rules we can reduce pay-off matrix. It is clear that strategy $C$ is dominated by either $A$ and $B$. Hence, the matrix is reduced to:
 \begin{table}[ht!]
@@ -472,7 +440,7 @@ Hence the final and dominant strategy pair is $(A,b)$.
 
 % Pure Nash equilibrium derivation
 
-\subparagraph{Pure Nash Strategy Equilibrium} represents a situation when no player has an incentive to deviate from the strategy chosen, since no player can choose a better strategy given the choices of the other players. Consider following table.
+\paragraph{Pure Nash Strategy Equilibrium} represents a situation when no player has an incentive to deviate from the strategy chosen, since no player can choose a better strategy given the choices of the other players. Consider following table.
 \begin{table}[ht!]
 	\hspace{-4em}
 	\centering
@@ -503,7 +471,7 @@ One can put Nash strategy equilibria in simpler words the row player (Player 2) 
 \\
 The resulting table allows to easily point the Nash equilibrium. Other way of looking at this solution is to realise that it is a saddle point in the graph of strategy space. Hence, neither of the players has incentive to deviate from it. In case of above matrix one can deduce that Nash equilibrium is at $(B,b)$.
 
-\subparagraph{Mixed Strategy Nash Equilibrium} is a situation when there is no pure strategy, hence we cannot state that one strategy is better than the other always. However, we can still obtain a solution to this game by assigning probabilities to strategies. By playing strategies according to their corresponding probabilities one can achieve optimal expected output of the game. Following table show situation like this
+\paragraph{Mixed Strategy Nash Equilibrium} is a situation when there is no pure strategy, hence we cannot state that one strategy is better than the other always. However, we can still obtain a solution to this game by assigning probabilities to strategies. By playing strategies according to their corresponding probabilities one can achieve optimal expected output of the game. Following table show situation like this
 \begin{table}[ht!]
 	\hspace{-2em}
 	\centering
