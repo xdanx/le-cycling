@@ -229,7 +229,7 @@ The differential of $e_{an}$ depends on the difference between the cyclist maxim
 $$ e_{an}' = P_{ped} - P_{CP} $$
 The values of $e_{an}$ are truncated such that $0 < e_{an} < E_{an}$.
 
-\subsection{The implementation}\label{subsec:impl}
+\subsection{The Implementation}\label{subsec:impl}
 
 We decided to implement the above model in Haskell as it allows for highly polymorphic modular code. This allowed us to make the code highly extensible. For example each cyclist can have an independent strategy that can be easily be added to the code. It takes some 'reasonable' amount of information about the surroundings of the cyclist and returns a decision inside the IO Monad allowing for arbitrary side effecting computations to occur. This could allow us to potentially extend it to perform user interaction. \\\\
 We split our implementation into these primary modules:
@@ -597,7 +597,7 @@ Now, we can trivially build a pay-off matrix containing the values we deduced ab
 Pay-off of the game theoretical model resembles the rules outlined in [mention papers] after which our simulation has been created. We identified independent variables and made them influence pay-off values since this way we can generalise it to all types of players. Also it gives us basis for comparison which results will be shown later.\\\\
 \textit{Note.} The reader may notice that we didn't specify the distance $d_w$. This should be varied in the simulation such that we can see which distance between the players is the optimal one for choosing certain strategies.
 
-\subsection{Getting caught}\label{subsec:getcaught}
+\subsection{Getting Caught}\label{subsec:getcaught}
 Everything seems fairly simple when there are only two racers competing. Entering realm of n-player games leaves us with few definite results as more interpersonal qualities come into play. It is an important to know that communication, players attitude towards each other and perceived strength of a player in a game can influence strategies chosen. However, we separate on case where we can get some results.
 \\\\
 For a case when two racers have escaped and are being chased by peloton we can consider scenarios when there exists a possibility of them being caught. It is no longer a zero-sum game since players can drop below $2^{nd}$ place and one can lose without other gain. However, we are not considering the chasing peloton as players. We are merely treating them as moving group of people that has a potential of catching up with the escape.
