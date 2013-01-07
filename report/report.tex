@@ -104,11 +104,11 @@ What we have created during this project could become invaluable decision making
 
 \chapter{Introduction}\label{ch:intro}
 
-The first cycling race is assumed to be held on the $31^{th}$ of May 1868 in Paris. Nowadays, after roughly 145 years, cycling is one of the top 10 most popular sports during the Summer Olympics \cite{TopEndSportsUrl} and attracts millions of fans worldwide. Cycling competitions are divided into three main categories: \textit{road, track and off-road events}. Like in any popular sports, researchers showed their interest in strategies that could simulate the outcome of races. Efforts have been made to characterize as accuratelly as possible cycling races, and led to formulas taking into consideration almost all the ( mathematical and physical factors in a race - needs rephrase? ). Some examples can be seen in \cite{AgentModel} or \cite{SlipStream} .
+The first cycling race is assumed to be held on the $31^{th}$ of May 1868 in Paris. Nowadays, after roughly 145 years, cycling is one of the top 10 most popular sports during the Summer Olympics \cite{TopEndSportsUrl} and attracts millions of fans worldwide. Cycling competitions are divided into three main categories: \textit{road, track and off-road events}. Like in any popular sports, researchers showed their interest in strategies that could simulate the outcome of races. Efforts have been made to characterize as accurately as possible cycling races, and led to formulas taking into consideration almost all the ( mathematical and physical factors in a race - needs rephrase? ). Some examples can be seen in \cite{AgentModel} or \cite{SlipStream} .
 
-During our project, we have focused mainly on \textit{road events}: \textbf{road race, criterium, hill climbing and stage races} and Sprint \textit{track events}. For a novice watching those competitions, it might seem peculiar the way athletes compete with each other. Even though they are racing against each other, their only chance of success is teaming up with their competitors. Unfortunately, as more members join the break-away grup, the rider's chances of crossing the finish line first decrease. This behaviour is mostly noted in the Stage Races like Tour de France or Tour de Faso in Africa where even entire teams with no chance of winning are teaming up with top teams in order to help them out. Also, riders can be taken by surprise by their break away companions who start sprinting towards the finish line.
+During our project, we have focused mainly on \textit{road events}: \textbf{road race, criterium, hill climbing and stage races} and Sprint \textit{track events}. For a novice watching those competitions, it might seem peculiar the way athletes compete with each other. Even though they are racing against each other, their only chance of success is teaming up with their competitors. Unfortunately, as more members join the break-away group, the rider's chances of crossing the finish line first decrease. This behaviour is mostly noted in the Stage Races like Tour de France or Tour de Faso in Africa where even entire teams with no chance of winning are teaming up with top teams in order to help them out. Also, riders can be taken by surprise by their break away companions who start sprinting towards the finish line.
 
-In the following report we will focus on races where players are forced to cooperate and ask ourself  whether we can derive a game theory model that can model the optimal behaviour for a cyclist. The aims we set ourselves at the beginning of this project was first to create a cycling race simulation that could realistically reproduce the progress of a race. Then to create a game theoretical framework to be able to determine the optimal strategy for a cyclist in a certain situation. Ultimately it would be possible to join these together and develop the game theory using data collected from the simulation, and include strategies designed from the game theory framework in the simulation.
+In the following report we will focus on races where players are forced to cooperate and ask ours-elf  whether we can derive a game theory model that can model the optimal behaviour for a cyclist. The aims we set ourselves at the beginning of this project was first to create a cycling race simulation that could realistically reproduce the progress of a race. Then to create a game theoretical framework to be able to determine the optimal strategy for a cyclist in a certain situation. Ultimately it would be possible to join these together and develop the game theory using data collected from the simulation, and include strategies designed from the game theory framework in the simulation.
 
 We have managed to create a simulation of road races and aimed to make it as realistic as possible, even if we had to make a number of assumptions, this is described in section \ref{sec:softmodel}. We have also proposed a game theoretical model that should cover the possible outcomes of a race in several type of situations, this is described in section \ref{sec:gameth}. We are also using the model in order to validate the results from the simulation.
 
@@ -142,7 +142,7 @@ The issue with this model however was with the description of how the cyclists g
 
 We used the description of the physical model provided in \cite{MathModel} to update our previous simulation. It has a more precise description of the physical abilities of a cyclist, the motion being based on power output instead of speed, and of the effects of exhaustion. These are described bellow.
 
-\subsubsection{Derivation of the differential equation for modelling the motion of a cyclist}
+\subsubsection{Derivation of the differential equation for modeling the motion of a cyclist}
 
 For the following equations we will use the next symbols: \\
 
@@ -218,11 +218,11 @@ which is a second order non-linear differential equation.\\\\
 
 However this differential equation does not take into account the ``slipstream'' effect.
 
-\subsubsection{Integrating the slipstream effect into the differential equation for modelling the motion of a cyclist.}
+\subsubsection{Integrating the slipstream effect into the differential equation for modeling the motion of a cyclist.}
 
 The slipstream effect is the effect by which the drag on an object moving through a fluid is diminished by the fact that the fluid it is moving through is already moving at a certain speed due to it being in the wake of another object in motion. \newline \par
 
-This can be modelled for cyclists by applying a correction factor ($CF_{draft}$) to $P_{air}$ (which creates the same change in $F_{air}$) in the derivation of the differential equation that depends on the distance between a cyclist and the cyclist in front of him ($d_w$). \newline \par
+This can be modeled for cyclists by applying a correction factor ($CF_{draft}$) to $P_{air}$ (which creates the same change in $F_{air}$) in the derivation of the differential equation that depends on the distance between a cyclist and the cyclist in front of him ($d_w$). \newline \par
 
 If $d_w \ge 3$, then $C_{draft} = 1$ as the slipstream effect makes no difference over greater distances (the fluid in the wake of the object in front has the time to stop moving). \\
 If $d_w < 3$, then $C_{draft} = 0.62 - 0.0104*d_w + 0.0452*d_w^2$ . $^{\cite{SlipStream}}$ \\
@@ -254,7 +254,7 @@ The new variable is $e_{an}$ : the amount of the anaerobic energy capacity that 
 The differential of $e_{an}$ depends on the difference between the cyclist maximum aerobic power output ($P_{CP}$) and his current power output ($P_{ped}$, set according to the psychological model), giving :
 $$ e_{an}' = P_{ped} - P_{CP} $$
 
-The values of $e_{an}$ are truncated such that $0 < e_{an} < E_{an}$. If at some point $e_{an}$ reaches $E_{an}$ the cyclist has to stop [add issues].
+The values of $e_{an}$ are truncated such that $0 < e_{an} < E_{an}$.
 
 \subsection{The implementation}\label{subsec:impl}
 
@@ -283,8 +283,8 @@ The type cyclist contains the following variables :
 \item \texttt{uid :: Int} \\ A unique id for the cyclist (constant).
 \item \texttt{pmax :: Double} \\ The maximum power output (constant).
 \item \texttt{pcp :: Double} \\ The maximum anaerobic power output (constant).
-\item \texttt{usedEnergy :: Double} \\ Used aneorobic energy, correspond to $e_{an}$ above.
-\item \texttt{energyLim :: Double} \\ Maximum aneorobic energy, correspond to $E_{an}$ above (constant).
+\item \texttt{usedEnergy :: Double} \\ Used anaerobic energy, correspond to $e_{an}$ above.
+\item \texttt{energyLim :: Double} \\ Maximum anaerobic energy, correspond to $E_{an}$ above (constant).
 \item \texttt{packCoop :: RandT StdGen IO Bool} \\ The general cooperation decision function.
 \item \texttt{teamCoop :: RandT StdGen IO Bool} \\ The team cooperation decision function.
 \item \texttt{groupProb :: Double} and \texttt{teamProb :: Double} \\ If the default cooperation function is used, these stores the probabilities.
@@ -300,8 +300,8 @@ The types \texttt{Speed} and \texttt{Meters} are defined in \texttt{Units.hs} ju
 The type \texttt{Pack} is defined here. It has two different constructor : 
 
 \begin{itemize}
-\item \texttt{Pack Int Cyclist (Seq Cyclist) Int} \\ Which correspond to a normal pack. The parameters are respectivelly : The type the leader spent in this position, the cyclist that is leading, a sequence of the other cyclists in the Pack and an unique pack id.
-\item \texttt{Breakaway (Seq Cyclist) Int Int} \\ Which correspond to a breakaway pack. The parameters are respectivelly : The sequence of cyclists in the pack, the number of turns before the pack becomes a normal pack, and an unique pack id.
+\item \texttt{Pack Int Cyclist (Seq Cyclist) Int} \\ Which correspond to a normal pack. The parameters are respectively : The type the leader spent in this position, the cyclist that is leading, a sequence of the other cyclists in the Pack and an unique pack id.
+\item \texttt{Breakaway (Seq Cyclist) Int Int} \\ Which correspond to a breakaway pack. The parameters are respectively : The sequence of cyclists in the pack, the number of turns before the pack becomes a normal pack, and an unique pack id.
 \end{itemize}
 
 The module also contains the functions \texttt{defLeader} and \texttt{rotate} which are used to enforce the rotation of the cyclist in the leading position. The \texttt{defLeader} function will start a rotation if the current leader has been in this position for five turns or if he decides to act as a defector and not finish his share. \\
@@ -312,16 +312,16 @@ The rest of the module is composed of utility functions to facilitate the use of
 
 This is the core of the software. It defines the type \texttt{Race} like this : 
 \begin{itemize}
-\item \texttt{Race Int Meters [Pack] [Cyclist] [(Cyclist, Double)]} \\ where the parameters are : the current turn number, the total length of the race, a list of the packs in the main part of the race, a list of the cyclists that are in the sprinting phase in the last five kilometers of the race, and a list of the cyclists that have finished the race, coupled with their finish time.
+\item \texttt{Race Int Meters [Pack] [Cyclist] [(Cyclist, Double)]} \\ where the parameters are : the current turn number, the total length of the race, a list of the packs in the main part of the race, a list of the cyclists that are in the sprinting phase in the last five kilometres of the race, and a list of the cyclists that have finished the race, coupled with their finish time.
 \end{itemize}
 
 The principal function is \texttt{turn} which is called repeatedly to go from one state of the race to the next one. The algorithm it performs is as follows : 
 
 \begin{enumerate}
-\item Generate the new breakaway packs. We go throught every cyclist in each pack and call their strategy function to know if they will breakaway, or if a teammate breaks away, if they follow him and form the new breakaway packs.
+\item Generate the new breakaway packs. We go through every cyclist in each pack and call their strategy function to know if they will breakaway, or if a teammate breaks away, if they follow him and form the new breakaway packs.
 \item Update the leaders of each pack if needed, by calling \texttt{defLeader} of the \texttt{Pack} module on each of them.
 \item Update the speed of the riders, which is defined in the \texttt{Modeling} and \texttt{RungeKutta} modules that describe the physical model.
-\item Update their position from their speed. Here we also check for colisions between packs, in which case the coliding packs are merged into one. 
+\item Update their position from their speed. Here we also check for collisions between packs, in which case the colliding packs are merged into one. 
 \item Update their energy, from their current energy and $P_{ped}$ in \texttt{Modeling}.
 \end{enumerate}
 
@@ -334,13 +334,13 @@ For cyclists that are in a breakaway group or in a pack, we compute the average 
 \subsubsection{RungeKutta}
 
 % Initial equations
-To model the we have of the motion of cyclists requiers us to solve the differential equation:
+To model the we have of the motion of cyclists requires us to solve the differential equation:
 
 $$ 75.7664 *(x'(t))^{3} + 14844.025288499999 * x'(t) * x''(t) = P_{ped}$$
 
 \noindent for x'(t), the speed of the cyclist. \newline \par
 
-Unfortunatly, this is a non-linear differential equation, which in general has no analytic equation (i.e. in general, no equation can be found in terms of the variables in the equation which gives a solution to $x'$) \newline \par
+Unfortunately, this is a non-linear differential equation, which in general has no analytic equation (i.e. in general, no equation can be found in terms of the variables in the equation which gives a solution to $x'$) \newline \par
 
 So we decided to use a numerical solving algorithm to solve for x'(t) so we could compute the change in velocity of our cyclists over time. \newline \par
 
@@ -397,9 +397,9 @@ This module is used to parse an input file to generate a race. The syntax of the
 \begin{itemize}
 \item We first write a list of \texttt{team\_number:number\_of\_cyclists}
 \item then a $|$ to act as separator
-\item the name of the strategy function, possibly followed by arguments between bracets. (e.g. standardCoop takes a distribution as argument)
+\item the name of the strategy function, possibly followed by arguments between brackets. (e.g. standardCoop takes a distribution as argument)
 \item another $|$
-\item a list of \texttt{property:value} to define the properties of the cyclist, \texttt{property} must be one of the variable of the \texttt{Cyclist} type, execpt for the strategy variables. If a property is omited, a default value is assigned.
+\item a list of \texttt{property:value} to define the properties of the cyclist, \texttt{property} must be one of the variable of the \texttt{Cyclist} type, except for the strategy variables. If a property is omitted, a default value is assigned.
 \end{itemize}
 An example of such a line could be : \\ \texttt{1:20 5:10 | standardCoop avg | pcp:1.28}
 \end{itemize}
@@ -409,7 +409,7 @@ The module works by parsing a \texttt{String} then calling the generating functi
 \subsubsection{Main}
 
 The \texttt{Main} module of this program contains the \texttt{main} function.
-The main function parses the arguments to the program and loads any requiered input file.
+The main function parses the arguments to the program and loads any required input file.
 
 The arguments that can be passed to the program are:
 \begin{itemize}
@@ -425,7 +425,7 @@ The main function then loads the input file and generates the corresponding race
 
 In order to create a thorough mathematical model, we aim to construct a game theoretical model. This model will help racers to change their strategies and choose the optimal one as the race unfolds.\\
 
-Modelling bike races can be quite challenging, hence we will begin with the simplest case in order to introduce our methodology and explain the simplifying assumptions we are making. When participating in a race we can argue that racers are at each point faced with three possible options: either break away from their current group or fall back to the group preceding the current one or cooperate with the other members of the group (which essentially implies copying the strategy of the other players in their group - which will be discussed later). Each of the racers can change his mind as often as he wants, however, changes in strategy will likely incur penalties on their performance. In this section we try to determine whether there is dominant strategy and try to find at which point in race it is beneficial for racer to change his strategy. We can easily see that strategy chosen by players will depend on their skills and fitness, i.e. better racers can afford more aggressive, less cooperative strategy in hope of being able to outdistance opponents. On the other hand weaker players will tend to cooperate more. The difficulty of this part is not the actual solution to the model since it might happen there will not be a general solution but fitting the model to the actual situation. It is fairly easy to construct arbitrary game theoretical games, however, when the games have to even remotely represent reality they get complicated very quickly.\\
+Modeling bike races can be quite challenging, hence we will begin with the simplest case in order to introduce our methodology and explain the simplifying assumptions we are making. When participating in a race we can argue that racers are at each point faced with three possible options: either break away from their current group or fall back to the group preceding the current one or cooperate with the other members of the group (which essentially implies copying the strategy of the other players in their group - which will be discussed later). Each of the racers can change his mind as often as he wants, however, changes in strategy will likely incur penalties on their performance. In this section we try to determine whether there is dominant strategy and try to find at which point in race it is beneficial for racer to change his strategy. We can easily see that strategy chosen by players will depend on their skills and fitness, i.e. better racers can afford more aggressive, less cooperative strategy in hope of being able to outdistance opponents. On the other hand weaker players will tend to cooperate more. The difficulty of this part is not the actual solution to the model since it might happen there will not be a general solution but fitting the model to the actual situation. It is fairly easy to construct arbitrary game theoretical games, however, when the games have to even remotely represent reality they get complicated very quickly.\\
 
 Before we can dive into discussion of game theoretical models we have created we aim to present short introduction to game theoretical concepts we are using. Also short summary of core principles of game theory is included with references to further reading. We then continue to consideration of case with two racers when the group chasing them is very far from them and does not affect the strategies. Thus, they are guaranteed to come first and second.
 
@@ -702,7 +702,7 @@ The reader may notice that we need to apply N-player games when the front-runner
 
 This project presents a functional simulation of cycling races. It might be a simple one, but it captures the important elements of road cycling. It has been made with modularity in mind, the input format allows to describe easily a wide range of situation in details, and even if only one type of strategy has been implemented, we made sure it would be easy to add more advanced ones. Related to the front-end however, we believe that the project would benefit from a GUI extension, with a better representation of the race. The GUI could have the possibility to analyse the outcome more in depth: being able to generate plots to analyse the effect of different strategies or physical abilities. It could also be created such that you can have the option to pause the race and inspect various parameters and values. We believe that being able to pause a simulation and analyse that specific situation in-depth is a powerful feature for the GUI. 
 
-Another issue that this project could benefit from is a proper documentation. As we mentioned earlier above, we have separated our code into multiple small \textit{modules} in order to make the code more flexible. Because of this, you might find our simulation code reallu hard to undesrstand. Unfortunately we don't have a documentation describing the format of the input and how to add extensions to the simulation. This is also due to the various and multiple changes in our modules, as we were adjusting the code.\\
+Another issue that this project could benefit from is a proper documentation. As we mentioned earlier above, we have separated our code into multiple small \textit{modules} in order to make the code more flexible. Because of this, you might find our simulation code really hard to understand. Unfortunately we don't have a documentation describing the format of the input and how to add extensions to the simulation. This is also due to the various and multiple changes in our modules, as we were adjusting the code.\\
 
 [Stuff about group theory] \\
 
@@ -722,7 +722,7 @@ On the other hand, for the Game Theory initially we started our research individ
 
 [How the game theory worked] \\
 
-Despite our attempt to have a productive and dynnamic organisation, our different obligations for other courses and work applications made the communication between people working on different parts of the project difficult sometimes, resulting in problems being unresolved for an unnecessary amount of time and leading ultimatelly to not being able to achieve all the goals we set for our project. 
+Despite our attempt to have a productive and dynamic organisation, our different obligations for other courses and work applications made the communication between people working on different parts of the project difficult sometimes, resulting in problems being unresolved for an unnecessary amount of time and leading ultimately to not being able to achieve all the goals we set for our project. 
 There have been weeks during which we managed to make significant progress and others that were not very productive. This is due to coursework and the fact that three out of five members decided to take more optional courses than average. 
 
 
