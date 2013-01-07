@@ -93,7 +93,7 @@ Dr. Panos \textsc{Parpas} \\% Supervisor's Name
 
 \begin{abstract}
 
-During our Group Project we were challenged with analysing cycling races, in particular trying to provide theoretical foundations for predicting their outcomes. Cycling races are amongst one of the most popular sports worldwide. Their history dates back to the $18^{th}$ century when they have been adopted. Since then the number of types of races expanded substantially: from Track cycling on banks and velodromes, Cycle-cross, Mountain bike races, one-day road race, criterion or time trial to professional races such as Tour de France, Giro d'Italia or Vuelta a Espa\~na. Despite their large popularity and considerable financing attracted by large races there is no formal way of estimating outcome of a race not to mention choosing the right strategy. Even though racing does not seem like a sport involving . Cycling races are extremely exhaustive for organism and right timing of effort is of paramount importance for winning. One example might be Andy Schleck's victory during one of 2011 Tour de France stage races. His escape 60 km before finish line had been perceived unimportant by other racers, however, it granted him almost 4 minute lead at finish.
+During our Group Project we were challenged with analysing cycling races, in particular trying to provide theoretical foundations for predicting their outcomes. Cycling races are amongst one of the most popular sports worldwide. Their history dates back to the $18^{th}$ century when they have been adopted. Since then the number of types of races expanded substantially: from Track cycling on banks and velodromes, Cycle-cross, Mountain bike races, one-day road race, criterion or time trial to professional races such as Tour de France, Giro d'Italia or Vuelta a Espa\~na. Despite their large popularity and considerable financing attracted by large races there is no formal way of estimating outcome of a race not to mention choosing the right strategy. Even though racing does not seem like a sport involving strat. Cycling races are extremely exhaustive for organism and right timing of effort is of paramount importance for winning. One example might be Andy Schleck's victory during one of 2011 Tour de France stage races. His escape 60 km before finish line had been perceived unimportant by other racers, however, it granted him almost 4 minute lead at finish.
 
 Result of our work are two tools that can assist when analysing cycling races. First of them is agent based software model, based on work done in \cite{AgentModel}, \cite{MathModel} and \cite{SlipStream}, which aims to approximate real races and allows for simulation of arbitrary scenarios. It makes assumptions on some physical, psychological and biological conditions in order to make computations feasible from current technology and knowledge point of view. Hence, the model is limited with respect to accuracy. Although limited, with development in computational power and expansion of our understanding of human physiology the model could be extended and allow increasing accuracy of predictions, and it has therefore been developed with modularity and possibility of extension in mind. Even though the agent based model is quite versatile it doesn't allow to extract strategy from it. Hence, alongside the aforementioned model we have also derived a simple game theoretical framework which can be used not only to predict result but also compute optimal strategy for racer. Deriving game theoretical model from real life scenario is not an easy task which has been shown by \cite{GameTheoryApplications} and \cite{GameTheoryNonTechnical}. The game theoretical model would be of more use when one would want to make on the spot decisions regarding his strategy.
 
@@ -277,7 +277,7 @@ We will describe the implementation module by module
 
 This module contains the definition the type \texttt{Cyclist}, which represent a individual cyclist, and functions to edit the properties of a cyclists and to generate a certain number of cyclists with particular initial state. \\
 
-The type cyclist contains the following variables : 
+The type cyclist contains the following variables :
 
 \begin{itemize}
 \item \texttt{uid :: Int} \\ A unique id for the cyclist (constant).
@@ -297,7 +297,7 @@ The types \texttt{Speed} and \texttt{Meters} are defined in \texttt{Units.hs} ju
 
 \subsubsection{Pack}
 
-The type \texttt{Pack} is defined here. It has two different constructor : 
+The type \texttt{Pack} is defined here. It has two different constructor :
 
 \begin{itemize}
 \item \texttt{Pack Int Cyclist (Seq Cyclist) Int} \\ Which correspond to a normal pack. The parameters are respectively : The type the leader spent in this position, the cyclist that is leading, a sequence of the other cyclists in the Pack and an unique pack id.
@@ -310,18 +310,18 @@ The rest of the module is composed of utility functions to facilitate the use of
 
 \subsubsection{Simulation}
 
-This is the core of the software. It defines the type \texttt{Race} like this : 
+This is the core of the software. It defines the type \texttt{Race} like this :
 \begin{itemize}
 \item \texttt{Race Int Meters [Pack] [Cyclist] [(Cyclist, Double)]} \\ where the parameters are : the current turn number, the total length of the race, a list of the packs in the main part of the race, a list of the cyclists that are in the sprinting phase in the last five kilometres of the race, and a list of the cyclists that have finished the race, coupled with their finish time.
 \end{itemize}
 
-The principal function is \texttt{turn} which is called repeatedly to go from one state of the race to the next one. The algorithm it performs is as follows : 
+The principal function is \texttt{turn} which is called repeatedly to go from one state of the race to the next one. The algorithm it performs is as follows :
 
 \begin{enumerate}
 \item Generate the new breakaway packs. We go through every cyclist in each pack and call their strategy function to know if they will breakaway, or if a teammate breaks away, if they follow him and form the new breakaway packs.
 \item Update the leaders of each pack if needed, by calling \texttt{defLeader} of the \texttt{Pack} module on each of them.
 \item Update the speed of the riders, which is defined in the \texttt{Modeling} and \texttt{RungeKutta} modules that describe the physical model.
-\item Update their position from their speed. Here we also check for collisions between packs, in which case the colliding packs are merged into one. 
+\item Update their position from their speed. Here we also check for collisions between packs, in which case the colliding packs are merged into one.
 \item Update their energy, from their current energy and $P_{ped}$ in \texttt{Modeling}.
 \end{enumerate}
 
@@ -391,9 +391,9 @@ The solution of these coupled differential equations via the Runge-Kutta algorit
 
 This module is used to parse an input file to generate a race. The syntax of the input file is as follows :
 \begin{itemize}
-\item The first line contains only one number : the length of the race. 
+\item The first line contains only one number : the length of the race.
 
-\item Each of the following lines contains the description of one type of cyclist, and the number of that type of cyclist you want to assign to a number of teams. 
+\item Each of the following lines contains the description of one type of cyclist, and the number of that type of cyclist you want to assign to a number of teams.
 \begin{itemize}
 \item We first write a list of \texttt{team\_number:number\_of\_cyclists}
 \item then a $|$ to act as separator
@@ -557,7 +557,7 @@ There is no pure equilibrium strategy, however, on can be found using Linear Pro
 \end{table}
 
 \paragraph{2-person Non-Zero-sum Game} ~\\
-Non-zero-sum game turn out to be considerably more difficult to analyse properly. Even tough we are usually able to find optimal strategy it might not be the best strategy. Furthermore when game is played more than once, strategy presumed to be optimal in single case might not be the most effective one. The most famous example of such game is the Prisoner's Dilemma. Albert W. Tucker formalised this problem giving it its name:
+Non-zero-sum game turn out to be considerably more difficult to analyse properly. Even though we are usually able to find optimal strategy it might not be the best strategy. Furthermore when game is played more than once, strategy presumed to be optimal in single case might not be the most effective one. The most famous example of such game is the Prisoner's Dilemma. Albert W. Tucker formalised this problem giving it its name:
 \begin{quotation}
 \textit{
     Two members of a criminal gang are arrested and imprisoned. Each prisoner is in solitary confinement with no means of speaking to or exchanging messages with the other. The police admit they don't have enough evidence to convict the pair on the principal charge. They plan to sentence both to a year in prison on a lesser charge. Simultaneously, the police offer each prisoner a Faustian bargain. If he testifies against his partner, he will go free while the partner will get three years in prison on the main charge. Oh, yes, there is a catch ... If both prisoners testify against each other, both will be sentenced to two years in jail.}
@@ -685,10 +685,6 @@ In order to evaluate the games presented above, we reduced everything to solving
 This is the field we have touched least on since Game Theory offers very little with respect to identification methodology of solving this cases. When there are more than 2 players most of the rationality taken for granted in 2 player zero-sum games no longer applies. However, we could try and reduce everything to 2 player games, even though the results might not be as exact. The idea is to average the performance of $N-1$ players in order to create a new player. We will make this new player compete with the $N$th player. Thus, we reduce this to a 2 player game.\\\\
 The reader may notice that we need to apply N-player games when the front-runners from the previous sections get caught by the chasing group. Here would be a place where we can apply the aforementioned reasoning. Another idea is to transform this game into an LP problem and solve it using classic algorithms.
 \\\\
-%\cite{GameTheoryNonTechnical} is good
-%\cite{GameTheoryApplications} is also good
-%\cite{TheoryOfGames} is awesome
-
 
 \chapter{Conclusion and evaluation}\label{ch:concl}
 
@@ -700,7 +696,7 @@ The reader may notice that we need to apply N-player games when the front-runner
 
 % What could we do next ? \\
 
-This project presents a functional simulation of cycling races. It might be a simple one, but it captures the important elements of road cycling. It has been made with modularity in mind, the input format allows to describe easily a wide range of situation in details, and even if only one type of strategy has been implemented, we made sure it would be easy to add more advanced ones. Related to the front-end however, we believe that the project would benefit from a GUI extension, with a better representation of the race. The GUI could have the possibility to analyse the outcome more in depth: being able to generate plots to analyse the effect of different strategies or physical abilities. It could also be created such that you can have the option to pause the race and inspect various parameters and values. We believe that being able to pause a simulation and analyse that specific situation in-depth is a powerful feature for the GUI. 
+This project presents a functional simulation of cycling races. It might be a simple one, but it captures the important elements of road cycling. It has been made with modularity in mind, the input format allows to describe easily a wide range of situation in details, and even if only one type of strategy has been implemented, we made sure it would be easy to add more advanced ones. Related to the front-end however, we believe that the project would benefit from a GUI extension, with a better representation of the race. The GUI could have the possibility to analyse the outcome more in depth: being able to generate plots to analyse the effect of different strategies or physical abilities. It could also be created such that you can have the option to pause the race and inspect various parameters and values. We believe that being able to pause a simulation and analyse that specific situation in-depth is a powerful feature for the GUI.
 
 Another issue that this project could benefit from is a proper documentation. As we mentioned earlier above, we have separated our code into multiple small \textit{modules} in order to make the code more flexible. Because of this, you might find our simulation code really hard to understand. Unfortunately we don't have a documentation describing the format of the input and how to add extensions to the simulation. This is also due to the various and multiple changes in our modules, as we were adjusting the code.\\
 
@@ -708,25 +704,30 @@ Another issue that this project could benefit from is a proper documentation. As
 
 A future extension could look into trying to make the simulation and the group theoretical framework work together to produce new results. We could be able to analyse more complex games with information gained from tests on the simulation, for example to determine the pay-off of different strategies. It would also be possible to implement very complex strategies, based on game theory and add them the the simulation. \\
 
-Overall, it was a great experience working collaboratively on a project with no fixed boundaries, where we had to research and create our objectives. To achieve more  results however, we would have to work on a better time management and organisation. Also, in order to test our Game Theory strategy, we could have run our simulation in a distributed fashion instead of just running it multiple times on our machines. We could have implemented this by using Condor which is already installed on our lab machines.  
+Overall, it was a great experience working collaboratively on a project with no fixed boundaries, where we had to research and create our objectives. To achieve more  results however, we would have to work on a better time management and organisation. Also, in order to test our Game Theory strategy, we could have run our simulation in a distributed fashion instead of just running it multiple times on our machines. We could have implemented this by using Condor which is already installed on our lab machines.
 
 
 \chapter{Project Management}\label{ch:projmanag}
 
-As our project consisted of two parts very different in nature, we divided the work between two subgroups. Julian Sutherland and C\'{e}sar Prout\'{e} worked on creating the software simulation, and Alexandru P\u{a}unoiu, Dan Demeter and Robert Kruszewski worked on the game theoretical model. We held weekly meetings with our supervisors, to asses the work of the previous week and fix the goals for the next one. We also met together regularly to keep everyone updated on the general progress of the work and to make decisions. \\
+\section{Overview}\label{sec:pmoverview}
+As our project consisted of two parts very different in nature, we divided the work between two subgroups. Julian Sutherland and C\'{e}sar Prout\'{e} worked on creating the software simulation, and Alexandru P\u{a}unoiu, Dan Demeter and Robert Kruszewski worked on the game theoretical model. We held weekly meetings with our supervisors, to asses the work of the previous week and fix the goals for the next one. We also met together regularly to keep everyone updated on the general progress of the work and to make decisions.
+\\\\
+In the simulation team, we worked closely together during the whole duration of the project. We made sure both of us agreed on the design decisions before writing any code. We usually worked together on the same part of the code or divided the work into small individual tasks. However, we still faced difficulties. The biggest one being underspecification of models presented in the source material.
+\\\\
+On the other hand, for the Game Theory initially we started our research individually. After that, we have discussed the methodology with our supervisor and this led to a draft Game Theory model. Then we had weekly meetings where we would work towards getting closer to finding the final model. The biggest problem with agile methodologies and mathematical models is that everything goes smoothly as long as you know what you are doing. At times when you get stuck you can get seriously stuck and often finding answers was equally difficult challenge. Not to mention the fact that we wanted to make this work our own. All of us needed time to learn concepts of Game Theory which despite being simple requires change in the way we have been taught to reason about games. That has been the major problem with development of the model. All of us developing mathematical model took Operations Research course which our supervisor mentioned as a prerequisite, however, we have found the content of the course to be lacking with respect to actually setting up the game. Material available often is concerned with solving imaginary games, where the one closest resembling reality is the prisoner's dilemma. Our problem, however, was entirely different from the one considered by most authors in the field of Game Theory. Our task was to develop model that would give results to real situation. Every game considered by game theory resembles some aspect of reality, however, none of them is dependent on physiology of players, those games only consider mental effort that everyone is capable of. We think that biological conditions of players play great part in computing the results since, you can only go so fast on a bike.
+\\\\
+Due to nature of our courses we not always managed to solve issues when they arrived. Due to our different obligations for other modules and work applications made the communication between people working on different parts of the project difficult at times. Due to non deterministic nature of learning, there have been weeks during which we managed to make significant progress and others that were not very productive. Furthermore coursework and the fact that three out of five members decided to take more optional modules than average.
 
-In the simulation team, we worked closely together during the whole duration of the project. We made sure both of us agreed on the design decisions before writing any code. We usually worked together on the same part of the code or divided the work into small individual tasks. \\
+\section{Software Engineering Practices}\label{sec:softeng}
+What made the biggest difference in the way we had managed this project were software engineering practices - especially agile development. As our project was a mix of mathematical modelling and software development we had initially struggled to adapt these techniques to our needs. What we discovered in the process was that agile development was invented with software development and does not necessarily match well with learning mathematics, especially when the material is completely new and one does not know which parts will become useful later on. We managed to make the system work for us by making incremental changes to our understanding and work, however, these have been difficult to judge. At the point when all of us sufficiently understood background material we did not have problem with adjusting to weakly meetings schedule.
+\\\\
+The other aspect that was initially problematic was the group size. All of us have never before worked on software engineering project in a group larger than three and from our experience the difference of two members, even tough appears marginal, completely changes projects dynamics. When there is a possibility of two separate streams of development it is of paramount importance to keep everyone updated and resolve issues quickly. Furthermore synchronisation between the two is crucial so that one subgroup will not sit idly. We managed to achieve independence mainly due to the fact that the two parts of the project were separate. Even though we still experienced idle time due to sporadic misunderstanding of our role in project.
+\\\\
+Throughout the project we learned to greatly appreciate material taught during our courses as it has proven invaluable.
 
-On the other hand, for the Game Theory initially we started our research individually. After that, we have discussed the methodology with our supervisor and this led to a draft Game Theory model. Then we had weekly meetings where we would work towards getting closer to finding the final model. 
+\section{Acknowledgements}\label{sec:ack}
+We would like to express our greatest thanks to Dr. Panos Parpas our supervisor and his PhD student Michael Hadjiyiannis without whom we would not have made such progress and the project would have not reached the state it is in currently.
 
-
-[How the game theory worked] \\
-
-Despite our attempt to have a productive and dynamic organisation, our different obligations for other courses and work applications made the communication between people working on different parts of the project difficult sometimes, resulting in problems being unresolved for an unnecessary amount of time and leading ultimately to not being able to achieve all the goals we set for our project. 
-There have been weeks during which we managed to make significant progress and others that were not very productive. This is due to coursework and the fact that three out of five members decided to take more optional courses than average. 
-
-
- 
 % To add something to the bibliography, look for the "import into BibTex" thingy on google scholar, and add the stuff into refs.bib.
 \bibliographystyle{plain}
 \bibliography{refs}
