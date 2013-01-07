@@ -265,20 +265,20 @@ We decided to implement the above model in Haskell as it allows for highly polym
 
 We split our implementation into these primary modules:
 \begin{itemize}
-\item Cyclist
-\item Pack
-\item Simulation
-\item Modeling
-\item RungeKutta
-\item Parser
-\item Main
+\item \texttt{Cyclist}
+\item \texttt{Pack}
+\item \texttt{Simulation}
+\item \texttt{Modeling}
+\item \texttt{RungeKutta}
+\item \texttt{Parser}
+\item \texttt{Main}
 \end{itemize}
 
 We will describe the implementation module by module
 
 \subsubsection{Cyclist}
 
-This module contains the definition the type Cyclist, which represent a individual cyclist, and functions to edit the properties of a cyclists and to generate a certain number of cyclists with particular initial state. \\
+This module contains the definition the type \texttt{Cyclist}, which represent a individual cyclist, and functions to edit the properties of a cyclists and to generate a certain number of cyclists with particular initial state. \\
 
 The type cyclist contains the following variables : 
 
@@ -296,11 +296,11 @@ The type cyclist contains the following variables :
 \item \texttt{team :: Int} \\ Team number (constant).
 \end{itemize}
 
-The types Speed and Meters are defined in Units.hs just to make the code clearer and are synonymous of Double.
+The types \texttt{Speed} and \texttt{Meters} are defined in \texttt{Units.hs} just to make the code clearer and are synonymous of \texttt{Double}.
 
 \subsubsection{Pack}
 
-The type Pack is defined here. It has two different constructor : 
+The type \texttt{Pack} is defined here. It has two different constructor : 
 
 \begin{itemize}
 \item \texttt{Pack Int Cyclist (Seq Cyclist) Int} \\ Which correspond to a normal pack. The parameters are respectivelly : The type the leader spent in this position, the cyclist that is leading, a sequence of the other cyclists in the Pack and an unique pack id.
@@ -312,6 +312,21 @@ The module also contains the functions \texttt{defLeader} and \texttt{rotate} wh
 The rest of the module is composed of utility functions to facilitate the use of packs.
 
 \subsubsection{Simulation}
+
+This is the core of the software. It defines the type \texttt{Race} like this : 
+\begin{itemize}
+\item \texttt{Race Int Meters [Pack] [Cyclist] [(Cyclist, Double)]} \\ where the parameters are : the current turn number, the total lenght of the race, a list of the packs in the main part of the race, a list of the cyclists that are in the sprinting phase in the last five kilometers of the race, and a list of the cyclists that have finished the race, coupled with their finish time.
+\end{itemize}
+
+The principal function is \texttt{turn} which is called repeatedly to go from one state of the race to the next one. The algorithm it performs is as follows : 
+
+\begin{enumerate}
+\item Generate the new breakaway packs. [need description]
+\item Update the leaders of each pack if needed, by calling \texttt{defLeader} of the \texttt{Pack} module on each of them.
+\item Update the speed of the riders, which is defined in the \texttt{Modeling} and \texttt{RungeKutta} modules that describe the physical model.
+\item Update their position from their speed.
+\item Update their energy. [need description]
+\end{enumerate}
 
 \subsubsection{Modeling}
 
