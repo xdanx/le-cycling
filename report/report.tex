@@ -61,7 +61,8 @@ Julian Sutherland
 \begin{minipage}{0.4\textwidth}
 \begin{flushright} \large
 \emph{Supervisor:} \\
-Dr. Panos \textsc{Parpas} % Supervisor's Name
+Dr. Panos \textsc{Parpas} \\% Supervisor's Name
+%Michael \textsc{Hadjiyiannis}
 \end{flushright}
 \end{minipage}\\[5cm]
 
@@ -92,51 +93,39 @@ Dr. Panos \textsc{Parpas} % Supervisor's Name
 
 \begin{abstract}
 
-%TODO: needs improvement
-% César : I think it needs to be more about what we did rather than how cycling works.
-
-During our Group Project we were charged with analysing cycling races, in particular trying to provide theoretical foundations for analysing their outcomes. Cycling races are amongst one of the most popular sports worldwide. Their history dates back to the
+During our Group Project we were challanged with analysing cycling races, in particular trying to provide theoretical foundations for analysing their outcomes. Cycling races are amongst one of the most popular sports worldwide. Their history dates back to the
 $18^{th}$ century being adopted and since then the types of races spanned substantially: from Track cycling on banks and velodromes,
 Cycle-cross, Mountain bike races, one-day road race, criterion or time trial to professional races such as
 Tour de France, Giro d'Italia or Vuelta a Espa\~na. Despite their large popularity and considerable financing attracted by large races there is no formal way of estimating outcome of a race not to mention choosing the right strategy. Even though racing does not seem like a sport involving . Cycling racers are extremely exhaustive for organism and right timing of effort is of paramount importance for winning. One example might be Andy Schleck's victory during one of 2011 Tour de France stage races. His escape 60 km before finish line had been perceived unimportant by other racers, however, it granted him almost 4 minute lead at finish.
 
-Result of our work are two tools that can assist when analysing cycling races. First of them is agent based software model, based on work done in \cite{AgentModel}, \cite{MathModel} and \cite{SlipStream}, which aims to approximate real races and allows for simulation of arbitrary scenarios. It makes assumptions on some physical, psychological and biological conditions in order to make computations feasible from current technology and knowledge point of view. Hence, the model is limited with respect to accuracy. Although limited, with development in computational power and expansion of our understanding of human physiology the model could be extended and allow increasing accuracy of predictions, and it has therefore been developped with modularity and possibility of extensions in mind. Even though the agent based model is quite versatile it doesn't allow to extract strategy from it. Hence, alongside the aforementioned model we have also derived a simple game theoretical framework which can be used not only to predict result but also compute optimal strategy for racer. Deriving game theoretical model from real life scenario is not an easy task which has been shown by \cite{GameTheoryApplications} and \cite{GameTheoryNonTechnical}. The game theoretical model would be of more use when one would want to make on the spot decisions regarding his strategy.
+Result of our work are two tools that can assist when analysing cycling races. First of them is agent based software model, based on work done in \cite{AgentModel}, \cite{MathModel} and \cite{SlipStream}, which aims to approximate real races and allows for simulation of arbitrary scenarios. It makes assumptions on some physical, psychological and biological conditions in order to make computations feasible from current technology and knowledge point of view. Hence, the model is limited with respect to accuracy. Although limited, with development in computational power and expansion of our understanding of human physiology the model could be extended and allow increasing accuracy of predictions, and it has therefore been developed with modularity and possibility of extensions in mind. Even though the agent based model is quite versatile it doesn't allow to extract strategy from it. Hence, alongside the aforementioned model we have also derived a simple game theoretical framework which can be used not only to predict result but also compute optimal strategy for racer. Deriving game theoretical model from real life scenario is not an easy task which has been shown by \cite{GameTheoryApplications} and \cite{GameTheoryNonTechnical}. The game theoretical model would be of more use when one would want to make on the spot decisions regarding his strategy.
 
 What we have created during this project could invaluable decision making framework for coaches and racers equally. One could use game theoretical model to derive set of candidate strategies. Further the strategies can be evaluated using our agent based model to correct the inherent inaccuracy of game theory when approximating real life situations. We believe that with growth of computational power and better understanding of cycling races the results achieved from models similar to ours can become very accurate. However, better understanding of human psychology will be essential in order to solve general game theoretical model. Currently existing frameworks from Von Neumann–Morgenstern and Aumann-Maschler do not specify which coalition will dominate the others, they just specify conditions for dominating coalition to satisfy.
-
-% During those professional races it is expected that a group of riders break away
-% from the main group and cooperate with each other in order to gain advantage from the main group ( called peloton ). Riders in such a
-% group are forced to cooperate with each other, even though their chances of winning are decreasing as more members join the break away
-% group. Also, when a breakaway group is being formed, riders from the peloton have to decide whether to chase it down or remain where
-% they are.
-
-% From our point of view, all these decisions can be modelled by a Game Theory strategy. During our project, we have tried to find optimum strategies that can be applied to various cycling races. We have proposed a Game Theory model based on our research and an independent simulation used to verify our model. We continued the work of [ cite the papers here] and try to obtain a model that is as appropriate as real life cycling races. Using our simulation combined with the game theory model we believe that one should be able to simulate any Professional cycling race. Coaches and racers can use this data then to compare decisions taken  during the race. Our project aims to combine both Game Theory strategies with data from multiple simulated races in order to output 'optimal' decisions
 
 \end{abstract}
 
 
 \chapter{Introduction}\label{ch:intro}
 
-The first cycling race is assumed to be held on the $31^{th}$ of May 1868 in Paris. Nowadays, after roughly 145 years, Cycling is one of the top 10 most popular sports during the Summer Olympics \cite{TopEndSportsUrl} and attracts millions of fans worldwide. Cycling competitions are divided into three main categories: \textit{road, track and off-road events}. Like in any popular sports, researchers showed their interest in strategies that could simulate the outcome of races. Efforts have been made to characterize as accuratelly as possible cycling races, and led to mathematical formulas taking into consideration almost all the physical [ from physics, like gravity, etc etc.. - need rephrase ? ] factors in a race. Some examples can be seen in \cite{AgentModel} or \cite{SlipStream} .
+The first cycling race is assumed to be held on the $31^{th}$ of May 1868 in Paris. Nowadays, after roughly 145 years, cycling is one of the top 10 most popular sports during the Summer Olympics \cite{TopEndSportsUrl} and attracts millions of fans worldwide. Cycling competitions are divided into three main categories: \textit{road, track and off-road events}. Like in any popular sports, researchers showed their interest in strategies that could simulate the outcome of races. Efforts have been made to characterize as accuratelly as possible cycling races, and led to formulas taking into consideration almost all the ( mathematical and physical factors in a race - needs rephrase? ). Some examples can be seen in \cite{AgentModel} or \cite{SlipStream} .
 
-During our project, we have focused mainly on \textit{road events}: \textbf{road race, criterium, hill climbing and stage races} and Sprint \textit{track events}. For a novice watching those competitions, it might seem peculiar the way athletes compete with each other. Even though they are competing  with each other, their only chance of success is to team up with their competitors. This behaviour is mostly noted in the Stage Races like Tour de France or Tour de Faso.
+During our project, we have focused mainly on \textit{road events}: \textbf{road race, criterium, hill climbing and stage races} and Sprint \textit{track events}. For a novice watching those competitions, it might seem peculiar the way athletes compete with each other. Even though they are racing against each other, their only chance of success is teaming up with their competitors. Unfortunately, as more members join the break-away grup, the rider's chances of crossing the finish line first decrease. This behaviour is mostly noted in the Stage Races like Tour de France or Tour de Faso in Africa where even entire teams with no chance of winning are teaming up with top teams in order to help them out. Also, riders can be taken by surprise by their break away companions who start sprinting towards the finish line.
 
-In the following report we will focus on races where players are forced to cooperate and ask ourself  whether we can derive a game theory model that can model the optimal behaviour for a cyclist. The aims we set ourselves at the beginning of this project was first to create a cycling race simulation that could realisticly reproduce the progress of a race. Then to create a game theoretical framework to be able to determine the optimal strategy for a cyclist in a certain situation. Ultimately it would be possible to join these together and develop the game theory using data collected from the simulation, and include strategies designed from the game theory framework in the simulation.
+In the following report we will focus on races where players are forced to cooperate and ask ourself  whether we can derive a game theory model that can model the optimal behaviour for a cyclist. The aims we set ourselves at the beginning of this project was first to create a cycling race simulation that could realistically reproduce the progress of a race. Then to create a game theoretical framework to be able to determine the optimal strategy for a cyclist in a certain situation. Ultimately it would be possible to join these together and develop the game theory using data collected from the simulation, and include strategies designed from the game theory framework in the simulation.
 
 We have managed to create a simulation of road races and aimed to make it as realistic as possible, even if we had to make a number of assumptions, this is described in section \ref{sec:softmodel}. We have also proposed a game theoretical model that should cover the possible outcomes of a race in several type of situations, this is described in section \ref{sec:gameth}. We are also using the model in order to validate the results from the simulation.
-
 
 \chapter{Design and Implementation}\label{ch:design&impl}
 
 As you can see from the Introduction, our project is split into 2 parts that are described below:
 
 % Shouldn't that be in the Project Management section ?
-Being a research project, after our initial meetings, we have divided into two small teams, one focued on implementing the simulation, and the other focusing on the mathematics for the Game Theory model.
+Being a research project, after our initial meetings, we have divided into two small teams, one focused on implementing the simulation, and the other focusing on the mathematics for the Game Theory model.
 
 
 \section{The Software Model}\label{sec:softmodel}
 
-The first part of our project was to create a software simulation of cycling races. The goal was to be able to describe the setting of a race as accurately as possible, in term of physical properties (resistance of the wind, friction etc..), as well as physiological and psychological properties of the individuals; and then be able to determine the outcome of a race run in these conditions. For that we first considered reproducing a model described in \cite{AgentModel}. It seemed like a fairly easy task at first, but we ran into several complications.
+The first part of our project was to create a software simulation of cycling races. The goal was to be able to describe the setting of a race as accurately as possible, in term of physical properties (resistance of the wind, friction, etc.), as well as physiological and psychological properties of the individuals; and then be able to determine the outcome of a race run in these conditions. For that we first considered reproducing a model described in \cite{AgentModel}. It seemed like a fairly easy task at first, but we ran into several complications.
 
 \subsection{The First Model}\label{subsec:model1}
 
@@ -169,20 +158,20 @@ F is Force 	&  	\_bear is friction in the wheel bearings \\
 			& 	\_kin is kinetic energy \\
 			&	\_ped is cyclist's 'input' (e.g. $P_{ped}$ = power input into the system) \\
 \hline
-\multicolumn{2}{|c|}
-{
-	$l_{c}$  is the length of the cycling crank and
-	% maybe use a parbox here? http://tex.stackexchange.com/questions/485/how-to-break-a-line-in-a-table
-	$r_{w}$  is the radius of the wheel
-} \\
-\hline
 \end{tabularx}
-\vspace{1cm}
 
+\begin{tabularx}{\linewidth}{|X|}
+
+$l_{c}$  is the length of the cycling crank and \\
+% maybe use a parbox here? http://tex.stackexchange.com/questions/485/how-to-break-a-line-in-a-table
+$r_{w}$  is the radius of the wheel \\
 $\eta$ 		represents the frictional losses in the drive chain \\
 $\omega$ 	represents angular velocity.\\
 $\gamma$	is the step-up coefficient the bicycles gearing system.  \\
-\newpage
+\hline
+\end{tabularx}
+
+\vspace{1cm}
 So by conservation of energy:
 
 $$P_{pot} + P_{air} + P_{bear} + P_{roll} + P_{kin} = \eta * P_{ped}$$
@@ -203,6 +192,7 @@ This simplifies to: $$F_{air} + F_{kin} = \frac{l_{c} * P_{ped} }{ \omega * \gam
 where $$ F_{air} 	= \frac{1}{2} * c_{d} * \rho * A * ( x'(t) )^{2} $$
 and	  $$ F_{kin} 	= ( m + ( \frac{l_w}{r_w^{2}} ) * x''(t) $$
 
+% TODO : Julian, please can you link this to the results from the papers? Or discuss them here or in a later chapter
 Results from the Paper (...)\\
 
 We are using the following estimates:
@@ -271,7 +261,7 @@ The values of $e_{an}$ are truncated such that $0 < e_{an} < E_{an}$. If at some
 
 \subsection{The implementation}\label{subsec:impl}
 
-We decided to implement the above model in Haskell as it allows for highly polymorphic modular code. This allowed us to make the code highly extensible. For example each cyclist can have an independent strategy that can be easily be added to the code. It takes some 'reasonable' amount of information about the suroundings of the cyclist and returns a decision inside the IO Monad allowing for arbitrary side effecting computations to occur. This could allow us to potentially extend it to perform user interaction. \par
+We decided to implement the above model in Haskell as it allows for highly polymorphic modular code. This allowed us to make the code highly extensible. For example each cyclist can have an independent strategy that can be easily be added to the code. It takes some 'reasonable' amount of information about the surroundings of the cyclist and returns a decision inside the IO Monad allowing for arbitrary side effecting computations to occur. This could allow us to potentially extend it to perform user interaction. \par
 
 We split our implementation into these primary modules:
 \begin{itemize}
@@ -288,7 +278,38 @@ We will describe the implementation module by module
 
 \subsubsection{Cyclist}
 
+This module contains the definition the type Cyclist, which represent a individual cyclist, and functions to edit the properties of a cyclists and to generate a certain number of cyclists with particular initial state. \\
+
+The type cyclist contains the following variables : 
+
+\begin{itemize}
+\item \texttt{uid :: Int} \\ A unique id for the cyclist (constant).
+\item \texttt{pmax :: Double} \\ The maximum power output (constant).
+\item \texttt{pcp :: Double} \\ The maximum anaerobic power output (constant).
+\item \texttt{usedEnergy :: Double} \\ Used aneorobic energy, correspond to $e_{an}$ above.
+\item \texttt{energyLim :: Double} \\ Maximum aneorobic energy, correspond to $E_{an}$ above (constant).
+\item \texttt{packCoop :: RandT StdGen IO Bool} \\ The general cooperation decision function.
+\item \texttt{teamCoop :: RandT StdGen IO Bool} \\ The team cooperation decision function.
+\item \texttt{groupProb :: Double} and \texttt{teamProb :: Double} \\ If the default cooperation function is used, these stores the probabilities.
+\item \texttt{speed :: Speed} \\ Current speed.
+\item \texttt{distance :: Meters} \\ Current distance.
+\item \texttt{team :: Int} \\ Team number (constant).
+\end{itemize}
+
+The types Speed and Meters are defined in Units.hs just to make the code clearer and are synonymous of Double.
+
 \subsubsection{Pack}
+
+The type Pack is defined here. It has two different constructor : 
+
+\begin{itemize}
+\item \texttt{Pack Int Cyclist (Seq Cyclist) Int} \\ Which correspond to a normal pack. The parameters are respectivelly : The type the leader spent in this position, the cyclist that is leading, a sequence of the other cyclists in the Pack and an unique pack id.
+\item \texttt{Breakaway (Seq Cyclist) Int Int} \\ Which correspond to a breakaway pack. The parameters are repectivelly : The sequence of cyclists in the pack, the number of turns before the pack becomes a normal pack, and an unique pack id.
+\end{itemize}
+
+The module also contains the functions \texttt{defLeader} and \texttt{rotate} which are used to enforce the rotation of the cyclist in the leading position. The \texttt{defLeader} function will start a rotation if the current leader has been in this position for five turns or if he decides to act as a defector and not finish his share. \\
+
+The rest of the module is composed of utility functions to facilitate the use of packs.
 
 \subsubsection{Simulation}
 
@@ -330,7 +351,7 @@ $$ y_2' = \frac{P_{ped} - 75.7665 * y_1 ^ 3}{14844.025288499999}$$
 
 Now we have only $y_2'$ in terms of only t, $y_1$ and $y_2$ so we can set $$ g( t, y_1, y_2 ) = \frac{P_{ped} - 75.7665 * y_1 ^ 3}{14844.025288499999}$$
 
-Writing $y_1$ in terms of t, $y_1$ and $y_2$: $$y_2 = \frac{1}{2} * x'(t)^2$$ yelds $$y_2 = \frac{1}{2} * y_1^2$$
+Writing $y_1$ in terms of t, $y_1$ and $y_2$: $$y_2 = \frac{1}{2} * x'(t)^2$$ yields $$y_2 = \frac{1}{2} * y_1^2$$
 And by rearranging the left hand side we get:
 $$y_1 = \sqrt{2 * y_2}$$
 Now we differentiate with respect to $t$:
@@ -346,7 +367,7 @@ $$ f(t, y_1, y_2) = \frac{P_{ped} - 75.7665 * (0.62 - 0.0104*d_w + 0.0452*d_w^2)
 
 $$ g( t, y_1, y_2 ) = \frac{P_{ped} - 75.7665 * (0.62 - 0.0104*d_w + 0.0452*d_w^2) * y_1 ^ 3}{14844.025288499999}$$ \\
 
-$d_w$ can either be set to the initial value at the beginning of the minute or changed dynamically, but this requiers a simultaneous simulation of all the cyclists to see how they change in real time, which is quite complex.
+$d_w$ can either be set to the initial value at the beginning of the minute or changed dynamically, but this requires a simultaneous simulation of all the cyclists to see how they change in real time, which is quite complex.
 
 \subsubsection{Parser}
 
@@ -358,70 +379,139 @@ $d_w$ can either be set to the initial value at the beginning of the minute or c
 
 In order to create a thorough mathematical model, we aim to construct a game theoretical model. This model will help racers to change their strategies and choose the optimal one as the race unfolds.\\
 
-Modelling bike races can be quite challenging, hence we will begin with the simplest case in order to introduce our methodology and explain the simplifying assumptions we are making. When participating in a race we can argue that racers are at each point faced with three possible options: either break away from their current group or fall back to the group preceding the current one or cooperate with the other members of the group (which essentially implies copying the strategy of the other players in their group - which will be discussed later). Each of the racers can change his mind as often as he wants, however, changes in strategy will likely incur penalties on their performance. In this section we try to determine whether there is one dominant strategy and try to find at which point in race it is beneficial for racer to change his strategy. We can easily see that strategy chosen by players will depend on their skills and fitness, i.e. better racers can afford more aggressive, less cooperative strategy in hope of being able to outdistance opponents. On the other hand weaker players will tend to cooperate more. The difficulty of this part is not the actual solution to the model since it might happen there will not be a general solution but fitting the model to the actual situation. It is fairly easy to construct arbitrary game theoretical games, however, when the games have to even remotely represent reality they get complicated very quickly.\\
+Modelling bike races can be quite challenging, hence we will begin with the simplest case in order to introduce our methodology and explain the simplifying assumptions we are making. When participating in a race we can argue that racers are at each point faced with three possible options: either break away from their current group or fall back to the group preceding the current one or cooperate with the other members of the group (which essentially implies copying the strategy of the other players in their group - which will be discussed later). Each of the racers can change his mind as often as he wants, however, changes in strategy will likely incur penalties on their performance. In this section we try to determine whether there is dominant strategy and try to find at which point in race it is beneficial for racer to change his strategy. We can easily see that strategy chosen by players will depend on their skills and fitness, i.e. better racers can afford more aggressive, less cooperative strategy in hope of being able to outdistance opponents. On the other hand weaker players will tend to cooperate more. The difficulty of this part is not the actual solution to the model since it might happen there will not be a general solution but fitting the model to the actual situation. It is fairly easy to construct arbitrary game theoretical games, however, when the games have to even remotely represent reality they get complicated very quickly.\\
 
-We start by a discussion of case with two racers when the group chasing them is very far from them and does not affect the strategies. Thus, they are guaranteed to come first and second. We can clearly see that this is a zero-sum game since we can only gain place if our opponent loses one. We can argue that race is a zero-sum game in general regardless on number of players, however, we will leave discussion of this theory for later and we will see that the answer is not so obvious when we want to arrive at meaningful results. Since we have already concluded that this is the simplest of game theoretical models, we need to investigate actual pay off matrix for this game.
-
+Before we can dive into discussion of game theoretical models we have created we aim to present short introduction to game theoretical concepts we are using. Also short summary of core principles of game theory is included with references to further reading. We then continue to consideration of case with two racers when the group chasing them is very far from them and does not affect the strategies. Thus, they are guaranteed to come first and second.
 
 \subsection{Definitions}\label{subsec:defs}
 
-Before we can dive into discussion of game theory can be used to approach bicycle racing problem we must introduce the terms we are making use of.
+Before we can indulge ourselves in discussion of game theory can be used to approach bicycle racing problem we must introduce the terms we are making use of.
 
 \paragraph{2-person Zero-sum Game} ~\\
 Two-person zero-sum game describes conflict of interest between two players with strictly opposite interests. Formally this means that any change in the pay-off of one player has to be offset with equal decrease in amount of payout to the second player. These types of games can be divided into three subsections depending on the achievable results to the game. We can have a dominant strategy equilibrium, pure strategy Nash equilibrium and mixed strategy Nash equilibrium each with less strictness imposed on the result.
 \subparagraph{Dominant Strategy Equilibrium}
 is represented by table below. Ease of analysing such games stems from the fact that there is always a clear strategy that a player has to follow in order to achieve maximum payout.
+
+% Dominant strategy equilibrium derivation %
+
 \begin{table}[ht!]
 	\hspace{-4em}
 	\centering
 	\begin{tabular}{ccccc|}
-		& & \multicolumn{3}{c}{Player1}                                \\ \cline{3-5}
-		& & A & B & \multicolumn{1}{c}{C}                              \\ \cline{3-5}
-		\multirow{3}{*}{Player2} & \multicolumn{1}{|c|}{a} & 2 & 1 & 7 \\
-		& \multicolumn{1}{|c|}{b} & 4 & 5 & 6                          \\
-		& \multicolumn{1}{|c|}{c} & 3 & 1 & 7                          \\ \cline{3-5}
+		& & \multicolumn{3}{c}{Player 1}                                \\ \cline{3-5}
+		& & A & B & \multicolumn{1}{c}{C}                               \\ \cline{3-5}
+		\multirow{3}{*}{Player 2} & \multicolumn{1}{|c|}{a} & 2 & 1 & 7 \\
+		& \multicolumn{1}{|c|}{b} & 4 & 5 & 6                           \\
+		& \multicolumn{1}{|c|}{c} & 3 & 1 & 7                           \\ \cline{3-5}
+	\end{tabular}
+	\caption{2-person zero-sum game\\ dominant strategy equilibrium}
+\end{table}
+In order to find dominant strategy equilibrium we need to find dominant strategy.
+\subparagraph{Row player} strategy $i$ dominates strategy $j$ (for row player) if $\forall k. a_{ik} \ge a_{jk}$ and $\exists k.a_{ik} > a_{jk}$.
+\subparagraph{Column player} strategy $i$ dominates strategy $j$ if $\forall k. a_{ki} \le a_{kj}$ and $\exists k.a_{ki} < a_{kj}$.
+\\\\
+Using these rules we can reduce pay-off matrix. It is clear that strategy $C$ is dominated by either $A$ and $B$. Hence, the matrix is reduced to:
+\begin{table}[ht!]
+	\hspace{-4em}
+	\centering
+	\begin{tabular}{cccc|}
+		& & \multicolumn{2}{c}{Player 1}                            \\ \cline{3-4}
+		& & A & \multicolumn{1}{c}{B}                               \\ \cline{3-4}
+		\multirow{3}{*}{Player 2} & \multicolumn{1}{|c|}{a} & 2 & 1 \\
+		& \multicolumn{1}{|c|}{b} & 4 & 5                           \\
+		& \multicolumn{1}{|c|}{c} & 3 & 1                           \\ \cline{3-4}
+	\end{tabular}
+	\caption{2-person zero-sum game\\ dominant strategy equilibrium}
+\end{table}
+\\\\
+Furthermore one can spot that both strategy $a$ and $c$ are dominated by $b$
+\begin{table}[ht!]
+	\hspace{-4em}
+	\centering
+	\begin{tabular}{cccc|}
+		& & \multicolumn{2}{c}{Player 1}           \\ \cline{3-4}
+		& & A & \multicolumn{1}{c}{B}              \\ \cline{3-4}
+		Player 2 & \multicolumn{1}{|c|}{b} & 4 & 5 \\ \cline{3-4}
+	\end{tabular}
+	\caption{2-person zero-sum game\\ dominant strategy equilibrium}
+\end{table}
+\\\\
+Which comes down to the following.
+\begin{table}[ht!]
+	\hspace{-4em}
+	\centering
+	\begin{tabular}{ccc|}
+		& & \multicolumn{1}{c}{Player 1}       \\ \cline{3-3}
+		& & \multicolumn{1}{c}{A}              \\ \cline{3-3}
+		Player 2 & \multicolumn{1}{|c|}{b} & 4 \\ \cline{3-3}
 	\end{tabular}
 	\caption{2-person zero-sum game\\ dominant strategy equilibrium}
 \end{table}
 \\
-In case of above matrix one can deduce that dominant strategy is (A,b).
+Hence the final and dominant strategy pair is $(A,b)$.
+
+% Pure Nash equilibrium derivation
 
 \subparagraph{Pure Nash Strategy Equilibrium} represents a situation when no player has an incentive to deviate from the strategy chosen, since no player can choose a better strategy given the choices of the other players. Consider following table.
 \begin{table}[ht!]
 	\hspace{-4em}
 	\centering
+	\begin{tabular}{ccccc|}
+		& & \multicolumn{3}{c}{Player 1}                                  \\ \cline{3-5}
+		& & A & B & \multicolumn{1}{c}{C}                                 \\ \cline{3-5}
+		\multirow{3}{*}{Player 2} & \multicolumn{1}{|c|}{a} & 11 & -7 & 8 \\
+		& \multicolumn{1}{|c|}{b} & 1 & 1 & 2                             \\
+		& \multicolumn{1}{|c|}{c} & -10 & -7 & 21                         \\ \cline{3-5}
+	\end{tabular}
+	\caption{2-person zero-sum game\\ pure strategy Nash equilibrium}
+\end{table}
+\\
+One can put Nash strategy equilibria in simpler words the row player (Player 2) wants to maximise minimal gain from the game and column player (Player 1) wants to minimise maximal payout of the game. We can then easily derive Nash strategy equilibrium by looking at rows and following the rules. Consider the table below.
+\begin{table}[ht!]
+	\hspace{-4em}
+	\centering
 	\begin{tabular}{ccccc|c}
-		& & \multicolumn{3}{c}{Player1} &                                     \\ \cline{3-5}
-		& & A & B & \multicolumn{1}{c}{C} & min                               \\ \cline{3-5}
-		\multirow{3}{*}{Player2} & \multicolumn{1}{|c|}{a} & 11 & -7 & 8 & -7 \\
-		& \multicolumn{1}{|c|}{b} & 1 & 1 & 2 & 1                             \\
-		& \multicolumn{1}{|c|}{c} & -10 & -7 & 21 & -10                       \\ \cline{3-5}
+		& & \multicolumn{3}{c}{Player 1} &                                     \\ \cline{3-5}
+		& & A & B & \multicolumn{1}{c}{C} & min                                \\ \cline{3-5}
+		\multirow{3}{*}{Player 2} & \multicolumn{1}{|c|}{a} & 11 & -7 & 8 & -7 \\
+		& \multicolumn{1}{|c|}{b} & 1 & 1 & 2 & 1                              \\
+		& \multicolumn{1}{|c|}{c} & -10 & -7 & 21 & -10                        \\ \cline{3-5}
 		& max & 11 & 1 & \multicolumn{1}{c}{21} &
 	\end{tabular}
 	\caption{2-person zero-sum game\\ pure strategy Nash equilibrium}
 \end{table}
 \\
-In case of above matrix one can deduce that Nash equilibrium is at (B,b) since no player can do any better taking into account his opponents strategy.
+The resulting table allows to easily point the Nash equilibrium. Other way of looking at this solution is to realise that it is a saddle point in the graph of strategy space. Hence, neither of the players has incentive to deviate from it. In case of above matrix one can deduce that Nash equilibrium is at $(B,b)$.
 
 \subparagraph{Mixed Strategy Nash Equilibrium} is a situation when there is no pure strategy, hence we cannot state that one strategy is better than the other always. However, we can still obtain a solution to this game by assigning probabilities to strategies. By playing strategies according to their corresponding probabilities one can achieve optimal expected output of the game. Following table show situation like this
 \begin{table}[ht!]
 	\hspace{-2em}
 	\centering
-	\begin{tabular}{ccccc|c}
-		& & \multicolumn{3}{c}{Player1} &                                  \\ \cline{3-5}
-		& & A & B & \multicolumn{1}{c}{C} & min                            \\ \cline{3-5}
-		\multirow{3}{*}{Player2} & \multicolumn{1}{|c|}{a} & 0 & 0 & 8 & 0 \\
-		& \multicolumn{1}{|c|}{b} & -1 & 1 & 2 & -1                        \\
-		& \multicolumn{1}{|c|}{c} & -10 & -7 & 21 & -10                    \\ \cline{3-5}
-		& max & -1 & 1 & \multicolumn{1}{c}{21} &
+	\begin{tabular}{cccc|c}
+		& & \multicolumn{2}{c}{Player 1} &                                \\ \cline{3-4}
+		& & A & \multicolumn{1}{c}{B} & min                               \\ \cline{3-4}
+		\multirow{2}{*}{Player 2} & \multicolumn{1}{|c|}{a} & -1 & 5 & -1 \\
+		& \multicolumn{1}{|c|}{b} & 3 & -5 & -5                           \\ \cline{3-4}
+		& max & -3 & \multicolumn{1}{c}{5} &
 	\end{tabular}
 	\caption{2-person zero-sum game\\mixed strategy Nash equilibrium}
 \end{table}
 \\
-There is no equilibrium strategy, however, on can be found using Linear Programming techniques.
+There is no pure equilibrium strategy, however, on can be found using Linear Programming techniques. If we apply such technique to this problem we will find out following probabilities (given in brackets) for this game.
+\begin{table}[ht!]
+	\hspace{-2em}
+	\centering
+	\begin{tabular}{cccc|}
+		& & \multicolumn{2}{c}{Player 1}                                               \\ \cline{3-4}
+		& & A \textit{(0.7143)}& \multicolumn{1}{c}{B \textit{(0.2857)}}               \\ \cline{3-4}
+		\multirow{2}{*}{Player 2} & \multicolumn{1}{|c|}{a \textit{(0.5714)}} & -1 & 5 \\
+		& \multicolumn{1}{|c|}{b \textit{(0.4286)}} & 3 & -5                           \\ \cline{3-4}
+	\end{tabular}
+	\caption{2-person zero-sum game\\mixed strategy Nash equilibrium}
+\end{table}
 
-\paragraph{2-person Non Zero-sum Game} ~\\
-Non zero-sum game turn out to be considerably more difficult to analyse properly. Even tough we are usually able to find optimal strategy it might not be the best strategy. Furthermore when game is played more than once, strategy presumed to be optimal in single case might not be the most effective one. The most famous example of such game is the Prisoner's Dilemma. Albert W. Tucker formalised this problem giving it its name:
+\paragraph{2-person Non-Zero-sum Game} ~\\
+Non-zero-sum game turn out to be considerably more difficult to analyse properly. Even tough we are usually able to find optimal strategy it might not be the best strategy. Furthermore when game is played more than once, strategy presumed to be optimal in single case might not be the most effective one. The most famous example of such game is the Prisoner's Dilemma. Albert W. Tucker formalised this problem giving it its name:
 \begin{quotation}
     Two members of a criminal gang are arrested and imprisoned. Each prisoner is in solitary confinement with no means of speaking to or exchanging messages with the other. The police admit they don't have enough evidence to convict the pair on the principal charge. They plan to sentence both to a year in prison on a lesser charge. Simultaneously, the police offer each prisoner a Faustian bargain. If he testifies against his partner, he will go free while the partner will get three years in prison on the main charge. Oh, yes, there is a catch ... If both prisoners testify against each other, both will be sentenced to two years in jail.
 \end{quotation}
@@ -438,11 +528,11 @@ Above description can be represented by pay-off matrix like this:
 	\caption{Prisoner's Dilemma pay-off matrix}
 \end{table}
 \\
-We will leave it to the reader to find optimal strategy for this game as it turns out to be quite rewarding task. One can also consider whether his or hers strategy will be the same if the game was to be played more than once.
+We will leave it to the reader to find optimal strategy for this game as it turns out to be quite rewarding task. One can also consider whether his or hers strategy will change if the game is to be played more than once.
 
 \paragraph{N-person Game} ~\\
 Considering N-person games leaves much to be desired from. One of the problems is that possible strategies can grow exponentially with number of players, hence, these problems are at least more computationally difficult than 2-person games. Also when a player is faced with more than one equivalent, however, differing in terms of pay-off option will not always choose the strategy guaranteeing highest pay-off. Furthermore interpersonal factors come into play and are of great significance and players need to carefully consider what inducements they must offer and accept. In our work we do not consider pure N-person games, however, we present how with respect to cycling races such cases can be simplified with some level of accuracy.
-
+\\\\
 For deeper and more detailed explanation reader is encouraged to make himself familiar with contents of "Game theory : a nontechnical introduction"\cite{GameTheoryNonTechnical} or "Games, theory and applications"\cite{GameTheoryApplications}. Further in the work we assume that reader is at least familiar with the concepts presented above.
 
 \paragraph{Breaking away} ~\\
@@ -542,10 +632,10 @@ Thus, when one of the players falls back, then his pay-off becomes $\dfrac{CS_i}
 
 \subsection{Repeated Game}\label{subsec:repgame}
 We can consider our methodology of finding pay-off for the whole game with alteration allowing for change of strategy in order to allow optimal value of the game. Evaluating our model this way enables us to answer questions of optimal strategies at given points in time.\\\\
-In order to evaluate the games presented above, we reduced everything to solving 3 by 3 one-off games. After doing this, we plug the values into the recursive formula and we get the required value of the game.
+In order to evaluate the games presented above, we reduced everything to solving 3 by 3 one-off games. After doing this, we plug the values into the recursive formula and we get the required value of the game. Furthermore once we store the pay-off matrices at given $\delta^{(n)}$ moments we can find and optimal strategy trail from beginning to the end. Using search algorithms we could then attempt finding optimal strategies for given scenario. However, such computation would be very computationally intensive since search space grows exponentially with number of moments.
 
 \subsection{N-player Cooperative Game}\label{subsec:nplaycoopgame}
-This is the field we have touched least on since Game Theory offers very little with respect to identification methodology of solving this cases. When there are more than 2 players most of the rationality taken from granted in 2 player zero-sum games no longer applies. However, we could try and reduce everything to 2 players games, even though the results might not be as exact. The idea is to average the performance of $N-1$ players in order to create a new player. We will make this new player compete with the $N$th player. Thus, we reduce this to a 2 player game.\\\\
+This is the field we have touched least on since Game Theory offers very little with respect to identification methodology of solving this cases. When there are more than 2 players most of the rationality taken for granted in 2 player zero-sum games no longer applies. However, we could try and reduce everything to 2 player games, even though the results might not be as exact. The idea is to average the performance of $N-1$ players in order to create a new player. We will make this new player compete with the $N$th player. Thus, we reduce this to a 2 player game.\\\\
 The reader may notice that we need to apply N-player games when the front-runners from the previous sections get caught by the chasing group. Here would be a place where we can apply the aforementioned reasoning. Another idea is to transform this game into an LP problem and solve it using classic algorithms.
 \\\\
 %\cite{GameTheoryNonTechnical} is good
@@ -563,15 +653,15 @@ The reader may notice that we need to apply N-player games when the front-runner
 
 -- What could we do next ? \\
 
-In this project we managed to create a functional simulation of cycling races. It is a simple simulation, but it captures the important elements of road cycling. It has been made with modularity in mind, the input format allows to descrbe easily a wide range of situation in details, and even if only one type of strategy has been implemented, we made sure it would be easy to add more advanced ones. However it would benefit from a GUI extention, with a better representation of the race, and possibilities to analyse the outcome more in deepth (being able to generate plots to analyse the effect of different strategies or physical abilites for example). It also lacks a documentation to describe the format of the input and how to add extentions. \\
+In this project we managed to create a functional simulation of cycling races. It is a simple simulation, but it captures the important elements of road cycling. It has been made with modularity in mind, the input format allows to describe easily a wide range of situation in details, and even if only one type of strategy has been implemented, we made sure it would be easy to add more advanced ones. However it would benefit from a GUI extension, with a better representation of the race, and possibilities to analyse the outcome more in depth (being able to generate plots to analyse the effect of different strategies or physical abilities for example). It also lacks a documentation to describe the format of the input and how to add extensions. \\
 
 [Stuff about group theory] \\
 
-A future extention could look into trying to make the simulation and the group theoretical framework work together to produce new result. We could be able to analyse more complex games with information gained from tests on the simulation, for example to determine the payoff of different strategies. 
+A future extension could look into trying to make the simulation and the group theoretical framework work together to produce new result. We could be able to analyse more complex games with information gained from tests on the simulation, for example to determine the pay-off of different strategies.
 
 It would also be possible to implement very complex strategies, based on game theory, to add the the simulation. \\
 
-It was a very interesting experience to work collaborativelly on a project with no fixed boundaries, where we add to research and create our objectives. To achieve better results however, we would have to work on a better time management and organisation.
+It was a very interesting experience to work collaboratively on a project with no fixed boundaries, where we add to research and create our objectives. To achieve better results however, we would have to work on a better time management and organisation.
 
 
 \chapter{Project Management}\label{ch:projmanag}
@@ -580,9 +670,14 @@ As our project consisted of two parts very different in nature, we divided the w
 
 In the simulation team, we worked closely together during the whole duration of the project. We made sure both of us agreed on the design decisions before writing any code. We usually worked together on the same part of the code or divided the work into small individual tasks. \\
 
+On the other hand, for the Game Theory initially we started our research individually. After that, we have discussed the methodology with our supervisor and this led to a draft Game Theory model. Then we had weekly meetings where we would work towards getting closer to finding the final model. 
+
+
 [How the game theory worked] \\
 
-Despite our attempt to have a productive and dynnamic organisation, our different obligations for other courses and work applications made the communication between people working on different parts of the project difficult sometimes, resulting in problems being unresolved for an unnecessary amount of time and leading ultimatelly to not being able to achieve all the goals we set for our project. \\
+Despite our attempt to have a productive and dynnamic organisation, our different obligations for other courses and work applications made the communication between people working on different parts of the project difficult sometimes, resulting in problems being unresolved for an unnecessary amount of time and leading ultimatelly to not being able to achieve all the goals we set for our project. 
+There have been weeks during which we managed to make significant progress and others that were not very productive. This is due to coursework and the fact that three out of five members decided to take more optional courses than average. 
+
 
 
 % To add something to the bibliography, look for the "import into BibTex" thingy on google scholar, and add the stuff into refs.bib.
