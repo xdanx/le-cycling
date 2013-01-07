@@ -318,11 +318,11 @@ This is the core of the software. It defines the type \texttt{Race} like this :
 The principal function is \texttt{turn} which is called repeatedly to go from one state of the race to the next one. The algorithm it performs is as follows : 
 
 \begin{enumerate}
-\item Generate the new breakaway packs. [need description]
+\item Generate the new breakaway packs. We go throught every cyclist in each pack and call their strategy function to know if they will breakaway, or if a teammate breaks away, if they follow him and form the new breakaway packs.
 \item Update the leaders of each pack if needed, by calling \texttt{defLeader} of the \texttt{Pack} module on each of them.
 \item Update the speed of the riders, which is defined in the \texttt{Modeling} and \texttt{RungeKutta} modules that describe the physical model.
-\item Update their position from their speed.
-\item Update their energy. [need description]
+\item Update their position from their speed. Here we also check for colisions between packs, in which case the coliding packs are merged into one. 
+\item Update their energy, from their current energy and $P_{ped}$ in \texttt{Modeling}.
 \end{enumerate}
 
 \subsubsection{Modeling}
