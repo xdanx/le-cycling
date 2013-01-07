@@ -383,6 +383,23 @@ $d_w$ can either be set to the initial value at the beginning of the minute or c
 
 \subsubsection{Parser}
 
+This module is used to parse an input file to generate a race. The syntax of the input file is as follows :
+\begin{itemize}
+\item The first line contains only one number : the length of the race. 
+
+\item Each of the following lines contains the description of one type of cyclist, and the number of that type of cyclist you want to assign to a number of teams. 
+\begin{itemize}
+\item We first write a list of \texttt{team\_number:number\_of\_cyclists}
+\item then a $|$ to act as separator
+\item the name of the strategy function, possibly followed by arguments between bracets. (e.g. standardCoop takes a distribution as argument)
+\item another $|$
+\item a list of \texttt{property:value} to define the properties of the cyclist, \texttt{property} must be one of the variable of the \texttt{Cyclist} type, execpt for the strategy variables. If a property is omited, a default value is assigned.
+\end{itemize}
+An example of such a line could be : \\ \texttt{1:20 5:10 | standardCoop avg | pcp:1.28}
+\end{itemize}
+
+The module works by parsing a \texttt{String} then calling the generating functions of the \texttt{Cyclist} module and creates a \texttt{Race} with the generated cyclists.
+
 \subsubsection{Main}
 
 % Game theoretical model introduction
