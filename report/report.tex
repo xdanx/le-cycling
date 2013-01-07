@@ -300,6 +300,17 @@ The types Speed and Meters are defined in Units.hs just to make the code clearer
 
 \subsubsection{Pack}
 
+The type Pack is defined here. It has two different constructor : 
+
+\begin{itemize}
+\item \texttt{Pack Int Cyclist (Seq Cyclist) Int} \\ Which correspond to a normal pack. The parameters are respectivelly : The type the leader spent in this position, the cyclist that is leading, a sequence of the other cyclists in the Pack and an unique pack id.
+\item \texttt{Breakaway (Seq Cyclist) Int Int} \\ Which correspond to a breakaway pack. The parameters are repectivelly : The sequence of cyclists in the pack, the number of turns before the pack becomes a normal pack, and an unique pack id.
+\end{itemize}
+
+The module also contains the functions \texttt{defLeader} and \texttt{rotate} which are used to enforce the rotation of the cyclist in the leading position. The \texttt{defLeader} function will start a rotation if the current leader has been in this position for five turns or if he decides to act as a defector and not finish his share. \\
+
+The rest of the module is composed of utility functions to facilitate the use of packs.
+
 \subsubsection{Simulation}
 
 \subsubsection{Modeling}
