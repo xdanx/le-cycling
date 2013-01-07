@@ -92,11 +92,8 @@ Dr. Panos \textsc{Parpas} \\% Supervisor's Name
 \tableofcontents
 
 \begin{abstract}
-
-During our Group Project we were challenged with analysing cycling races, in particular trying to provide theoretical foundations for predicting their outcomes. Cycling races are amongst one of the most popular sports worldwide. Their history dates back to the $18^{th}$ century when they have been adopted. Since then the number of types of races expanded substantially: from Track cycling on banks and velodromes, Cycle-cross, Mountain bike races, one-day road race, criterion or time trial to professional races such as Tour de France, Giro d'Italia or Vuelta a Espa\~na. Despite their large popularity and considerable financing attracted by large races there is no formal way of estimating outcome of a race not to mention choosing the right strategy. Even though racing does not seem like a sport involving strat. Cycling races are extremely exhaustive for organism and right timing of effort is of paramount importance for winning. One example might be Andy Schleck's victory during one of 2011 Tour de France stage races. His escape 60 km before finish line had been perceived unimportant by other racers, however, it granted him almost 4 minute lead at finish.
-
-Result of our work are two tools that can assist when analysing cycling races. First of them is agent based software model, based on work done in \cite{AgentModel}, \cite{MathModel} and \cite{SlipStream}, which aims to approximate real races and allows for simulation of arbitrary scenarios. It makes assumptions on some physical, psychological and biological conditions in order to make computations feasible from current technology and knowledge point of view. Hence, the model is limited with respect to accuracy. Although limited, with development in computational power and expansion of our understanding of human physiology the model could be extended and allow increasing accuracy of predictions, and it has therefore been developed with modularity and possibility of extension in mind. Even though the agent based model is quite versatile it doesn't allow to extract strategy from it. Hence, alongside the aforementioned model we have also derived a simple game theoretical framework which can be used not only to predict result but also compute optimal strategy for racer. Deriving game theoretical model from real life scenario is not an easy task which has been shown by \cite{GameTheoryApplications} and \cite{GameTheoryNonTechnical}. The game theoretical model would be of more use when one would want to make on the spot decisions regarding his strategy.
-
+During our Group Project we were challenged with analysing cycling races, in particular trying to provide theoretical foundations for predicting their outcomes. Cycling races are amongst one of the most popular sports worldwide. Their history dates back to the $18^{th}$ century when they have been adopted. Since then the number of types of races expanded substantially: from Track cycling on banks and velodromes, Cycle-cross, Mountain bike races, one-day road race, criterion or time trial to professional races such as Tour de France, Giro d'Italia or Vuelta a Espa\~na. Despite their large popularity and considerable financing attracted by large races there is no formal way of estimating outcome of a race not to mention choosing the right strategy. Even though racing does not seem like a sport involving strat. Cycling races are extremely exhaustive for organism and right timing of effort is of paramount importance for winning. One example might be Andy Schleck's victory during one of 2011 Tour de France stage races. His escape 60 km before finish line had been perceived unimportant by other racers, however, it granted him almost 4 minute lead at finish.\\\\
+Result of our work are two tools that can assist when analysing cycling races. First of them is agent based software model, based on work done in \cite{AgentModel}, \cite{MathModel} and \cite{SlipStream}, which aims to approximate real races and allows for simulation of arbitrary scenarios. It makes assumptions on some physical, psychological and biological conditions in order to make computations feasible from current technology and knowledge point of view. Hence, the model is limited with respect to accuracy. Although limited, with development in computational power and expansion of our understanding of human physiology the model could be extended and allow increasing accuracy of predictions, and it has therefore been developed with modularity and possibility of extension in mind. Even though the agent based model is quite versatile it doesn't allow to extract strategy from it. Hence, alongside the aforementioned model we have also derived a simple game theoretical framework which can be used not only to predict result but also compute optimal strategy for racer. Deriving game theoretical model from real life scenario is not an easy task which has been shown by \cite{GameTheoryApplications} and \cite{GameTheoryNonTechnical}. The game theoretical model would be of more use when one would want to make on the spot decisions regarding his strategy.\\\\
 What we have created during this project could become invaluable decision making framework for coaches and racers equally. One could use game theoretical model to derive set of candidate strategies. Further the strategies can be evaluated using our agent based model to correct the inherent inaccuracy of game theory when approximating real life situations. We believe that with growth of computational power and better understanding of cycling races the results achieved from models similar to ours can become very accurate. However, better understanding of human psychology will be essential in order to solve general game theoretical model. Currently existing frameworks from Von Neumann-Morgenstern and Aumann-Maschler do not specify which coalition will dominate the others, they just specify conditions for dominating coalition to satisfy.
 
 \end{abstract}
@@ -105,17 +102,16 @@ What we have created during this project could become invaluable decision making
 \chapter{Introduction}\label{ch:intro}
 
 The first cycling race is assumed to be held on the $31^{th}$ of May 1868 in Paris. Nowadays, after roughly 145 years, cycling is one of the top 10 most popular sports during the Summer Olympics \cite{TopEndSportsUrl} and attracts millions of fans worldwide. Cycling competitions are divided into three main categories: \textit{road, track and off-road events}. Like in any popular sports, researchers showed their interest in strategies that could simulate the outcome of races. Efforts have been made to characterize as accurately as possible cycling races, and led to formulas taking into consideration almost all the ( mathematical and physical factors in a race - needs rephrase? ). Some examples can be seen in \cite{AgentModel} or \cite{SlipStream} .
-
+\\\\
 During our project, we have focused mainly on \textit{road events}: \textbf{road race, criterium, hill climbing and stage races} and Sprint \textit{track events}. For a novice watching those competitions, it might seem peculiar the way athletes compete with each other. Even though they are racing against each other, their only chance of success is teaming up with their competitors. Unfortunately, as more members join the break-away group, the rider's chances of crossing the finish line first decrease. This behaviour is mostly noted in the Stage Races like Tour de France or Tour de Faso in Africa where even entire teams with no chance of winning are teaming up with top teams in order to help them out. Also, riders can be taken by surprise by their break away companions who start sprinting towards the finish line.
-
+\\\\
 In the following report we will focus on races where players are forced to cooperate and ask ours-elf  whether we can derive a game theory model that can model the optimal behaviour for a cyclist. The aims we set ourselves at the beginning of this project was first to create a cycling race simulation that could realistically reproduce the progress of a race. Then to create a game theoretical framework to be able to determine the optimal strategy for a cyclist in a certain situation. Ultimately it would be possible to join these together and develop the game theory using data collected from the simulation, and include strategies designed from the game theory framework in the simulation.
-
+\\\\
 We have managed to create a simulation of road races and aimed to make it as realistic as possible, even if we had to make a number of assumptions, this is described in section \ref{sec:softmodel}. We have also proposed a game theoretical model that should cover the possible outcomes of a race in several type of situations, this is described in section \ref{sec:gameth}. We are also using the model in order to validate the results from the simulation.
 
 \chapter{Design and Implementation}\label{ch:design&impl}
 
 As you can see from the Introduction, our project is split into 2 parts that are described below:
-
 % Shouldn't that be in the Project Management section ?
 Being a research project, after our initial meetings, we have divided into two small teams, one focused on implementing the simulation, and the other focusing on the mathematics for the Game Theory model.
 
@@ -126,16 +122,12 @@ The first part of our project was to create a software simulation of cycling rac
 
 \subsection{The First Model}\label{subsec:model1}
 
-In section 2 of \cite{AgentModel} is described an agent based model for cycling races. Each individual cyclist is represented by its physical and strategic attributes. The cyclists are themselves grouped into packs, any two cyclists that are within three meters of each others are in the same pack. To keep the model manageable, simplifications of the real world had to be made (physical as well as behavioural). In spite of those simplifications, the model still captures the principal elements of professional cycling. \\
-
-The goal of packs is to use the slipstream effect cooperatively, taking turns in breaking the wind. Therefore in a pack cyclists rotate to the position of leader (which is more physically demanding), ideally each cyclist in the pack spend the same amount of time being the leader.
-
-The strategies are defined probabilistically, each cyclist depends on two probabilities to make his decisions. These are distributed normally with mean 0.48 and distribution 0.21 with truncation at 0 and 1. The fist of these probability is the probability of the cyclist acting cooperatively towards his pack, i.e. whether or not he will breakaway and if he is the leader whether or not he will do his share in full. The second one is the probability of acting cooperatively towards your team, i.e. if one of his team mate breaks away, will he follow him. \\
-
+In section 2 of \cite{AgentModel} is described an agent based model for cycling races. Each individual cyclist is represented by its physical and strategic attributes. The cyclists are themselves grouped into packs, any two cyclists that are within three meters of each others are in the same pack. To keep the model manageable, simplifications of the real world had to be made (physical as well as behavioural). In spite of those simplifications, the model still captures the principal elements of professional cycling. \\\\
+The goal of packs is to use the slipstream effect cooperatively, taking turns in breaking the wind. Therefore in a pack cyclists rotate to the position of leader (which is more physically demanding), ideally each cyclist in the pack spend the same amount of time being the leader.\\\\
+The strategies are defined probabilistically, each cyclist depends on two probabilities to make his decisions. These are distributed normally with mean 0.48 and distribution 0.21 with truncation at 0 and 1. The fist of these probability is the probability of the cyclist acting cooperatively towards his pack, i.e. whether or not he will breakaway and if he is the leader whether or not he will do his share in full. The second one is the probability of acting cooperatively towards your team, i.e. if one of his team mate breaks away, will he follow him. \\\\
 During the race, the cyclists can therefore be in two different states, they are either part of a pack, or breaking away. When they are breaking away, they will stay in a breakaway state for three minutes before forming a new pack or joining an existing one.
-
-In the last 5 kilometres of the race, the packs dissolves and each cyclists acts individually and starts sprinting. \\
-
+\\\\
+In the last 5 kilometres of the race, the packs dissolves and each cyclists acts individually and starts sprinting. \\\\
 The issue with this model however was with the description of how the cyclists get tired. It was unclear in the paper exactly how it was done, and there was no way of cumulating the energy used. We therefore looked at the description of a better exhaustion and performance model in another paper.
 
 \subsection{The Updated Model}\label{subsec:updmodel}
@@ -167,31 +159,24 @@ $\omega$ 	represents angular velocity.\\
 $\gamma$	is the step-up coefficient of the bicycle gearing system.  \\
 \hline
 \end{tabularx}
-
-\vspace{1cm}
+\\\\
 So by conservation of energy:
 
 $$P_{pot} + P_{air} + P_{bear} + P_{roll} + P_{kin} = \eta * P_{ped}$$
-
 As $Power = Torque * \omega$ , by dividing with $\omega$ we get
 
 $$ T_{pot} + T_{air} + T_{bear} + T_{roll} + T_{kin} = \frac{ \eta * T_{ped} }{ \gamma }  = \frac{\eta * P_{ped}}{\omega * \gamma} $$
-
-From the above notations have $T_{ped}$ = $F_{ped} * l_{c}$ (due to mechanical advantage) and $T = \frac{F * l_{c}}{r_{w}}$ for all the other forces (as there is a dual mechanical advantage between the crank and the wheel)
-
+From the above notations have $T_{ped}$ = $F_{ped} * l_{c}$ (due to mechanical advantage) and $T = \frac{F * l_{c}}{r_{w}}$ for all the other forces (as there is a dual mechanical advantage between the crank and the wheel).\\\\
 This gives us: $$ F_{pot} + F_{air} + F_{bear} + F_{roll} + F_{kin}
 	= \frac{ \eta * l_{c} * T_{ped} }{ \gamma }
 	= \frac{ \eta * l_{c} * P_{ped} }{ r_{w} * (\omega * \gamma)} $$
-
 As we assume the race is on a perfectly flat surface, then $F_{pot} = 0$. We also assume that the bicycle is 'perfect', so $F_{bear} = 0$. \\\\
 This simplifies to: $$F_{air} + F_{kin} = \frac{l_{c} * P_{ped} }{ \omega * \gamma } $$
-
 where $$ F_{air} 	= \frac{1}{2} * c_{d} * \rho * A * ( x'(t) )^{2} $$
 and	  $$ F_{kin} 	= ( m + ( \frac{l_w}{r_w^{2}} ) * x''(t) $$
 
 % TODO : Julian, please can you link this to the results from the papers? Or discuss them here or in a later chapter
 Results from the Paper (...)\\
-
 We are using the following estimates:
 
 \begin{alltt}
@@ -205,40 +190,31 @@ radius of wheel (\(r_w\)) = 0.35
 step-up coefficient of gearing (\(\gamma\)) = 7.5
 angular velocity of wheels (\(\omega\)) = \(2 * \pi * speed / {r_{w}} \)
 \end{alltt}
-
 Therefore the differential equation simplifies to:
 $$ 0.3215625 * (x'(t))^{2} + 63 * x''(t)
 	= \frac{\eta * l_{c} * P_{ped}} {2 * \pi * x'(t) * \gamma }
 	= \frac {0.2 * P_{ped}} {15 * \pi} $$
-
 Which gives approximation of:
 $$ 75.7664 *(x'(t))^{3} + 14844.025288499999 * x'(t) * x''(t) = P_{ped}$$
-
 which is a second order non-linear differential equation.\\\\
-
 However this differential equation does not take into account the ``slipstream'' effect.
 
 \subsubsection{Integrating the slipstream effect into the differential equation for modeling the motion of a cyclist.}
 
-The slipstream effect is the effect by which the drag on an object moving through a fluid is diminished by the fact that the fluid it is moving through is already moving at a certain speed due to it being in the wake of another object in motion. \newline \par
-
-This can be modeled for cyclists by applying a correction factor ($CF_{draft}$) to $P_{air}$ (which creates the same change in $F_{air}$) in the derivation of the differential equation that depends on the distance between a cyclist and the cyclist in front of him ($d_w$). \newline \par
-
-If $d_w \ge 3$, then $C_{draft} = 1$ as the slipstream effect makes no difference over greater distances (the fluid in the wake of the object in front has the time to stop moving). \\
-If $d_w < 3$, then $C_{draft} = 0.62 - 0.0104*d_w + 0.0452*d_w^2$ . $^{\cite{SlipStream}}$ \\
+The slipstream effect is the effect by which the drag on an object moving through a fluid is diminished by the fact that the fluid it is moving through is already moving at a certain speed due to it being in the wake of another object in motion. \\\\
+This can be modelled for cyclists by applying a correction factor ($CF_{draft}$) to $P_{air}$ (which creates the same change in $F_{air}$) in the derivation of the differential equation that depends on the distance between a cyclist and the cyclist in front of him ($d_w$). \\\\\
+If $d_w \ge 3$, then $C_{draft} = 1$ as the slipstream effect makes no difference over greater distances (the fluid in the wake of the object in front has the time to stop moving). \\\\
+If $d_w < 3$, then $C_{draft} = 0.62 - 0.0104*d_w + 0.0452*d_w^2$ . $^{\cite{SlipStream}}$ \\\\
 As in this figure:
-
 \begin{figure}[!ht]
   \centering
     \input{plot.tex}
   \caption{plot of $CF_{draft}$ against $d_w$}
 \end{figure}
-
-Note that $CF_{draft} \approx 1$ at $d_w = 3$ on this graph. \\
-
+\\
+Note that $CF_{draft} \approx 1$ at $d_w = 3$ on this graph. \\\\
 Multiplying $F_{draft}$ by this correction factor gives the new differential equation:
 $$ (0.62 - 0.0104*d_w + 0.0452*d_w^2) * 75.7664 *(x'(t))^{3} + 14844.025288499999 * x'(t) * x''(t) = P_{ped}$$
-
 A second order differential equation that models our systems and takes into account the slipstream effect.
 
 \subsubsection{An exhaustion model for cycling}
@@ -249,11 +225,9 @@ We add three new constants (all normally distributed) and one new variable to th
 \item $P_{CP}$ : the maximum aerobic power output of a cyclist. (The highest speed at which the can cycle without ever getting tired)
 \item $E_{an}$ : the maximum energy output from the cyclist anaerobic system before it must rest.
 \end{itemize}
-The new variable is $e_{an}$ : the amount of the anaerobic energy capacity that has already been consumed (initially $e_{an} = 0$). \\
-
+The new variable is $e_{an}$ : the amount of the anaerobic energy capacity that has already been consumed (initially $e_{an} = 0$). \\\\
 The differential of $e_{an}$ depends on the difference between the cyclist maximum aerobic power output ($P_{CP}$) and his current power output ($P_{ped}$, set according to the psychological model), giving :
 $$ e_{an}' = P_{ped} - P_{CP} $$
-
 The values of $e_{an}$ are truncated such that $0 < e_{an} < E_{an}$.
 
 \subsection{The implementation}\label{subsec:impl}
@@ -580,7 +554,7 @@ We will leave it to the reader to find optimal strategy for this game as it turn
 \paragraph{N-person Game} ~\\
 Considering N-person games leaves much to be desired from. One of the problems is that possible strategies can grow exponentially with number of players, hence, these problems are at least more computationally difficult than 2-person games. Also when a player is faced with more than one equivalent, however, differing in terms of pay-off option will not always choose the strategy guaranteeing highest pay-off. Furthermore interpersonal factors come into play and are of great significance and players need to carefully consider what inducements they must offer and accept. In our work we do not consider pure N-person games, however, we present how with respect to cycling races such cases can be simplified with some level of accuracy.
 \\\\
-For deeper and more detailed explanation reader is encouraged to make himself familiar with contents of "Game theory : a nontechnical introduction"\cite{GameTheoryNonTechnical} or "Games, theory and applications"\cite{GameTheoryApplications}. Further in the work we assume that reader is at least familiar with the concepts presented above.
+For deeper and more detailed explanation reader is encouraged to make himself familiar with contents of "Game theory : a non=technical introduction"\cite{GameTheoryNonTechnical} or "Games, theory and applications"\cite{GameTheoryApplications}. Further in the work we assume that reader is at least familiar with the concepts presented above.
 
 \paragraph{Breaking away} ~\\
 We assume that when cyclist breaks away he does so with maximum possible speed. Hence, he is expending as much energy as possible.
@@ -684,7 +658,15 @@ In order to evaluate the games presented above, we reduced everything to solving
 \subsection{N-player Cooperative Game}\label{subsec:nplaycoopgame}
 This is the field we have touched least on since Game Theory offers very little with respect to identification methodology of solving this cases. When there are more than 2 players most of the rationality taken for granted in 2 player zero-sum games no longer applies. However, we could try and reduce everything to 2 player games, even though the results might not be as exact. The idea is to average the performance of $N-1$ players in order to create a new player. We will make this new player compete with the $N$th player. Thus, we reduce this to a 2 player game.\\\\
 The reader may notice that we need to apply N-player games when the front-runners from the previous sections get caught by the chasing group. Here would be a place where we can apply the aforementioned reasoning. Another idea is to transform this game into an LP problem and solve it using classic algorithms.
-\\\\
+
+\subsection{Solving a 3 x 3 matrix game}
+In this section we will present an idea (due to \cite{TheoryOfGames}) to solve 3 x 3 matrix games, which can then be easily applied to the pay-off matrices we created before. As described in the next chapter, this will be of an important practical usage provided it will be implemented in the simulation.\\\\
+At this moment, we do not know, without having any values as input, which strategies are dominant at a moment in time. Thus, we would like to solve this game in a mixed strategies fashion. Let us try to find the solution for Player 1 and take $X=(x_1,x_2,x_3)$ such that he will choose strategy $i$ with probability $x_i$. Our goal is to find the optimal $X$, denoted by $X^*$. Consider the pay-off matrix to be $A = (a_{ij})$ and let us define its columns as $\bar{a}_j$.\\\\
+We can write the following equations:
+$$x_1\ge 0,\ x_2\ge 0,\ x_3\ge 0$$
+$$x_1+x_2+x_3=1.$$
+Hence, in order to find the optimal $X^*$ it is sufficient to look what happens inside the triangle $\triangle$ with vertex coordinates $(1,0,0)$, $(0,1,0)$, $(0,0,1)$. We note that all of the points $X$ are inside $\triangle$ and that the value of our game is $v = \max\limits_{X\in \triangle}\min\limits_{j} X\bar{a}_j$. Now, we make the observation that each $X\bar{a}_j$ defines a line and that each two either intersect or they are parallel (may also coincide). By writing the system of equations $X\bar{a}_j = X\bar{a}_i$ one can remark that we end up splitting the triangle into three regions $R_1$, $R_2$, $R_3$ and we can rewrite our value $v$ as: $$v = \max\limits_{j}\big{\{}\max\limits_{X\in R_j} X\bar{a}_j\big{\}}.$$
+For each region we obtain , in order to find the maximum it is sufficient to look at the coordinates of vertices (by the \textit{Fundamental Theorem of Linear Programming}). For more details on this we refer the reader to \cite{TheoryOfGames}.
 
 \chapter{Conclusion And Evaluation}\label{ch:concl}
 
@@ -697,13 +679,11 @@ The reader may notice that we need to apply N-player games when the front-runner
 % What could we do next ? \\
 
 This project presents a functional simulation of cycling races. It might be a simple one, but it captures the important elements of road cycling. It has been made with modularity in mind, the input format allows to describe easily a wide range of situation in details, and even if only one type of strategy has been implemented, we made sure it would be easy to add more advanced ones. Related to the front-end however, we believe that the project would benefit from a GUI extension, with a better representation of the race. The GUI could have the possibility to analyse the outcome more in depth: being able to generate plots to analyse the effect of different strategies or physical abilities. It could also be created such that you can have the option to pause the race and inspect various parameters and values. We believe that being able to pause a simulation and analyse that specific situation in-depth is a powerful feature for the GUI.
-
-Another issue that this project could benefit from is a proper documentation. As we mentioned earlier above, we have separated our code into multiple small \textit{modules} in order to make the code more flexible. Because of this, you might find our simulation code really hard to understand. Unfortunately we don't have a documentation describing the format of the input and how to add extensions to the simulation. This is also due to the various and multiple changes in our modules, as we were adjusting the code.\\
-
-[Stuff about group theory] \\
-
-A future extension could look into trying to make the simulation and the group theoretical framework work together to produce new results. We could be able to analyse more complex games with information gained from tests on the simulation, for example to determine the pay-off of different strategies. It would also be possible to implement very complex strategies, based on game theory and add them the the simulation. \\
-
+\\\\
+Another issue that this project could benefit from is a proper documentation. As we mentioned earlier above, we have separated our code into multiple small \textit{modules} in order to make the code more flexible. Because of this, you might find our simulation code really hard to understand. Unfortunately we don't have a documentation describing the format of the input and how to add extensions to the simulation. This is also due to the various and multiple changes in our modules, as we were adjusting the code.\\\\
+A further extension could look into trying to make the simulation and the game theoretical framework work together to produce new results. We could be able to analyse more complex games with information gained from tests on the simulation, for example to determine the pay-off of different strategies. It would also be possible to implement very complex strategies, based on game theory and add them to the simulation. \\\\
+By having the game theory model and the simulation working together, we can implement a 3 x 3 matrix game solver (each player has three possible strategies, as mentioned in the previous chapter). See previous chapter for a detailed solution idea. Moreover, a next step is to formalize the idea of the N-person game and try to solve the resulting N-dimensional game. In addition, as the simulation develops further, we can start taking into account, in the game theory model, the altitude the cyclists race  at, as this can have an impact on their performance.
+\\\\
 Overall, it was a great experience working collaboratively on a project with no fixed boundaries, where we had to research and create our objectives. To achieve more  results however, we would have to work on a better time management and organisation. Also, in order to test our Game Theory strategy, we could have run our simulation in a distributed fashion instead of just running it multiple times on our machines. We could have implemented this by using Condor which is already installed on our lab machines.
 
 
@@ -716,7 +696,7 @@ In the simulation team, we worked closely together during the whole duration of 
 \\\\
 On the other hand, for the Game Theory initially we started our research individually. After that, we have discussed the methodology with our supervisor and this led to a draft Game Theory model. Then we had weekly meetings where we would work towards getting closer to finding the final model. The biggest problem with agile methodologies and mathematical models is that everything goes smoothly as long as you know what you are doing. At times when you get stuck you can get seriously stuck and often finding answers was equally difficult challenge. Not to mention the fact that we wanted to make this work our own. All of us needed time to learn concepts of Game Theory which despite being simple requires change in the way we have been taught to reason about games. That has been the major problem with development of the model. All of us developing mathematical model took Operations Research course which our supervisor mentioned as a prerequisite, however, we have found the content of the course to be lacking with respect to actually setting up the game. Material available often is concerned with solving imaginary games, where the one closest resembling reality is the prisoner's dilemma. Our problem, however, was entirely different from the one considered by most authors in the field of Game Theory. Our task was to develop model that would give results to real situation. Every game considered by game theory resembles some aspect of reality, however, none of them is dependent on physiology of players, those games only consider mental effort that everyone is capable of. We think that biological conditions of players play great part in computing the results since, you can only go so fast on a bike.
 \\\\
-Due to nature of our courses we not always managed to solve issues when they arrived. Due to our different obligations for other modules and work applications made the communication between people working on different parts of the project difficult at times. Due to non deterministic nature of learning, there have been weeks during which we managed to make significant progress and others that were not very productive. Furthermore coursework and the fact that three out of five members decided to take more optional modules than average.
+Due to the nature of our courses we did not always manage to solve issues when they arrived. Because our different obligations for other modules and work applications, made the communication between people working on different parts of the project difficult at times. Due to the non deterministic nature of learning, there have been weeks during which we managed to make significant progress and others that were not very productive. Furthermore, coursework and the fact that three out of five members decided to take more optional modules than average also had an impact on the progress.
 
 \section{Software Engineering Practices}\label{sec:softeng}
 What made the biggest difference in the way we had managed this project were software engineering practices - especially agile development. As our project was a mix of mathematical modelling and software development we had initially struggled to adapt these techniques to our needs. What we discovered in the process was that agile development was invented with software development and does not necessarily match well with learning mathematics, especially when the material is completely new and one does not know which parts will become useful later on. We managed to make the system work for us by making incremental changes to our understanding and work, however, these have been difficult to judge. At the point when all of us sufficiently understood background material we did not have problem with adjusting to weakly meetings schedule.
