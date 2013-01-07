@@ -293,7 +293,7 @@ The type cyclist contains the following variables :
 \item \texttt{team :: Int} \\ Team number (constant).
 \end{itemize}
 
-The types \texttt{Speed} and \texttt{Meters} are defined in \texttt{Units.hs} just to make the code clearer and are synonymous of \texttt{Double}.
+The types \texttt{Speed} and \texttt{Meters} are defined in \texttt{Units.hs} just to make the code clearer and are synonyms of \texttt{Double}.
 
 \subsubsection{Pack}
 
@@ -301,7 +301,7 @@ The type \texttt{Pack} is defined here. It has two different constructor :
 
 \begin{itemize}
 \item \texttt{Pack Int Cyclist (Seq Cyclist) Int} \\ Which correspond to a normal pack. The parameters are respectivelly : The type the leader spent in this position, the cyclist that is leading, a sequence of the other cyclists in the Pack and an unique pack id.
-\item \texttt{Breakaway (Seq Cyclist) Int Int} \\ Which correspond to a breakaway pack. The parameters are repectivelly : The sequence of cyclists in the pack, the number of turns before the pack becomes a normal pack, and an unique pack id.
+\item \texttt{Breakaway (Seq Cyclist) Int Int} \\ Which correspond to a breakaway pack. The parameters are respectivelly : The sequence of cyclists in the pack, the number of turns before the pack becomes a normal pack, and an unique pack id.
 \end{itemize}
 
 The module also contains the functions \texttt{defLeader} and \texttt{rotate} which are used to enforce the rotation of the cyclist in the leading position. The \texttt{defLeader} function will start a rotation if the current leader has been in this position for five turns or if he decides to act as a defector and not finish his share. \\
@@ -312,7 +312,7 @@ The rest of the module is composed of utility functions to facilitate the use of
 
 This is the core of the software. It defines the type \texttt{Race} like this : 
 \begin{itemize}
-\item \texttt{Race Int Meters [Pack] [Cyclist] [(Cyclist, Double)]} \\ where the parameters are : the current turn number, the total lenght of the race, a list of the packs in the main part of the race, a list of the cyclists that are in the sprinting phase in the last five kilometers of the race, and a list of the cyclists that have finished the race, coupled with their finish time.
+\item \texttt{Race Int Meters [Pack] [Cyclist] [(Cyclist, Double)]} \\ where the parameters are : the current turn number, the total length of the race, a list of the packs in the main part of the race, a list of the cyclists that are in the sprinting phase in the last five kilometers of the race, and a list of the cyclists that have finished the race, coupled with their finish time.
 \end{itemize}
 
 The principal function is \texttt{turn} which is called repeatedly to go from one state of the race to the next one. The algorithm it performs is as follows : 
