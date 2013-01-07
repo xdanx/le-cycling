@@ -159,7 +159,7 @@ F is Force 	&  	\_bear is friction in the wheel bearings \\
 
 \begin{tabularx}{\linewidth}{|X|}
 
-$l_{c}$  is the length of the cycling crank and \\
+$l_{c}$  is the length of the cycling crank \\
 % maybe use a parbox here? http://tex.stackexchange.com/questions/485/how-to-break-a-line-in-a-table
 $r_{w}$  is the radius of the wheel \\
 $\eta$ 		represents the frictional losses in the drive chain \\
@@ -542,8 +542,9 @@ There is no pure equilibrium strategy, however, on can be found using Linear Pro
 \paragraph{2-person Non-Zero-sum Game} ~\\
 Non-zero-sum game turn out to be considerably more difficult to analyse properly. Even tough we are usually able to find optimal strategy it might not be the best strategy. Furthermore when game is played more than once, strategy presumed to be optimal in single case might not be the most effective one. The most famous example of such game is the Prisoner's Dilemma. Albert W. Tucker formalised this problem giving it its name:
 \begin{quotation}
-    Two members of a criminal gang are arrested and imprisoned. Each prisoner is in solitary confinement with no means of speaking to or exchanging messages with the other. The police admit they don't have enough evidence to convict the pair on the principal charge. They plan to sentence both to a year in prison on a lesser charge. Simultaneously, the police offer each prisoner a Faustian bargain. If he testifies against his partner, he will go free while the partner will get three years in prison on the main charge. Oh, yes, there is a catch ... If both prisoners testify against each other, both will be sentenced to two years in jail.
-\end{quotation}
+\textit{
+    Two members of a criminal gang are arrested and imprisoned. Each prisoner is in solitary confinement with no means of speaking to or exchanging messages with the other. The police admit they don't have enough evidence to convict the pair on the principal charge. They plan to sentence both to a year in prison on a lesser charge. Simultaneously, the police offer each prisoner a Faustian bargain. If he testifies against his partner, he will go free while the partner will get three years in prison on the main charge. Oh, yes, there is a catch ... If both prisoners testify against each other, both will be sentenced to two years in jail.}
+    \end{quotation}
 Above description can be represented by pay-off matrix like this:
 \begin{table}[ht!]
 	\hspace{-2em}
@@ -674,23 +675,23 @@ The reader may notice that we need to apply N-player games when the front-runner
 
 \chapter{Conclusion and evaluation}\label{ch:concl}
 
--- What did we manage to do ? \\
+% What did we manage to do ? \\
 
--- What have we learned ? \\
+% What have we learned ? \\
 
--- What could have been done differently ? \\
+% What could have been done differently ? \\
 
--- What could we do next ? \\
+% What could we do next ? \\
 
-In this project we managed to create a functional simulation of cycling races. It is a simple simulation, but it captures the important elements of road cycling. It has been made with modularity in mind, the input format allows to describe easily a wide range of situation in details, and even if only one type of strategy has been implemented, we made sure it would be easy to add more advanced ones. However it would benefit from a GUI extension, with a better representation of the race, and possibilities to analyse the outcome more in depth (being able to generate plots to analyse the effect of different strategies or physical abilities for example). It also lacks a documentation to describe the format of the input and how to add extensions. \\
+This project presents a functional simulation of cycling races. It might be a simple one, but it captures the important elements of road cycling. It has been made with modularity in mind, the input format allows to describe easily a wide range of situation in details, and even if only one type of strategy has been implemented, we made sure it would be easy to add more advanced ones. Related to the front-end however, we believe that the project would benefit from a GUI extension, with a better representation of the race. The GUI could have the possibility to analyse the outcome more in depth: being able to generate plots to analyse the effect of different strategies or physical abilities. It could also be created such that you can have the option to pause the race and inspect various parameters and values. We believe that being able to pause a simulation and analyse that specific situation in-depth is a powerful feature for the GUI. 
+
+Another issue that this project could benefit from is a proper documentation. As we mentioned earlier above, we have separated our code into multiple small \textit{modules} in order to make the code more flexible. Because of this, you might find our simulation code reallu hard to undesrstand. Unfortunately we don't have a documentation describing the format of the input and how to add extensions to the simulation. This is also due to the various and multiple changes in our modules, as we were adjusting the code.\\
 
 [Stuff about group theory] \\
 
-A future extension could look into trying to make the simulation and the group theoretical framework work together to produce new result. We could be able to analyse more complex games with information gained from tests on the simulation, for example to determine the pay-off of different strategies.
+A future extension could look into trying to make the simulation and the group theoretical framework work together to produce new results. We could be able to analyse more complex games with information gained from tests on the simulation, for example to determine the pay-off of different strategies. It would also be possible to implement very complex strategies, based on game theory and add them the the simulation. \\
 
-It would also be possible to implement very complex strategies, based on game theory, to add the the simulation. \\
-
-It was a very interesting experience to work collaboratively on a project with no fixed boundaries, where we add to research and create our objectives. To achieve better results however, we would have to work on a better time management and organisation.
+Overall, it was a great experience working collaboratively on a project with no fixed boundaries, where we had to research and create our objectives. To achieve more  results however, we would have to work on a better time management and organisation. Also, in order to test our Game Theory strategy, we could have run our simulation in a distributed fashion instead of just running it multiple times on our machines. We could have implemented this by using Condor which is already installed on our lab machines.  
 
 
 \chapter{Project Management}\label{ch:projmanag}
@@ -708,7 +709,7 @@ Despite our attempt to have a productive and dynnamic organisation, our differen
 There have been weeks during which we managed to make significant progress and others that were not very productive. This is due to coursework and the fact that three out of five members decided to take more optional courses than average. 
 
 
-
+ 
 % To add something to the bibliography, look for the "import into BibTex" thingy on google scholar, and add the stuff into refs.bib.
 \bibliographystyle{plain}
 \bibliography{refs}
