@@ -24,6 +24,7 @@ import Units
 data Cyclist = Cyclist {uid :: Int,           -- C Unique ID
                         pmax :: Double,       -- C Max power (W/kg?)
                         pcp :: Double,        -- C Maximum aneorbosfewnqgff power
+                        pped :: Double,        -- Current power output
                         usedEnergy :: Double, -- e_an : used aneorobic energy 
                         energyLim :: Double,  -- C E_an : maximum aneorobic energy
                         packCoop :: RandT StdGen IO Bool, -- General cooperation function
@@ -91,21 +92,21 @@ maxPower c = pmax c * (1 - (usedEnergy c/energyLim c))
 -- Generate one cyclists with the default coop function, the default distribution,
 -- stats from stats and in team team_n
 -- !! Need updating to take the function in the parameters !!
-genCyclist :: Int -> Population -> RandT StdGen IO Cyclist
-genCyclist team_n stats = do
-           _pmax <- normal . pmaxs $ stats
-           _groupProb <- normal . coops $ stats
-           _teamProb <- normal . coops $ stats
-           _energyLim <- normal . energylims $ stats
+genCyclist :: Int -> ((Double -> RandT StdGen IO Bool), Population) -> RandT StdGen IO Cyclist
+genCyclist team_n (strat, distr) = do
+           _pmax <- normal . pmaxs $ distr
+           _groupProb <- normal . coops $ distr
+           _teamProb <- normal . coops $ distr
+           _energyLim <- normal . energylims $ distr
            i <- newID
-           return Cyclist {uid = i, pmax = _pmax, pcp = 0.8*_pmax, usedEnergy = 0, energyLim = _energyLim, packCoop = standardCoop _groupProb, teamCoop = standardCoop _teamProb, groupProb = _groupProb, teamProb = _teamProb, speed = 0, distance = 0, team = team_n}
+           return Cyclist {uid = i, pmax = _pmax, pcp = 0.8*_pmax, pped = 0, usedEnergy = 0, energyLim = _energyLim, packCoop = strat _groupProb, teamCoop = strat _teamProb, groupProb = _groupProb, teamProb = _teamProb, speed = 0, distance = 0, team = team_n}
 
--- Generate team_size cyclists with stats stats for each
+-- Generate team_size cyclists with distr distr for each
 -- team between 0 and n_teams.
-genCyclists :: Int -> Int -> Population -> RandT StdGen IO [Cyclist]
-genCyclists n_teams team_size stats = concatMapM (\t -> replicateM team_size (genCyclist t stats)) [0..(n_teams-1)]
+genCyclists :: Int -> Int -> ((Double -> RandT StdGen IO Bool), Population) -> RandT StdGen IO [Cyclist]
+genCyclists n_teams team_size (strat, distr) = concatMapM (\t -> replicateM team_size (genCyclist t (strat, distr))) [0..(n_teams-1)]
 
-genCyclistsIO :: Int -> Int -> Population -> IO [Cyclist]
-genCyclistsIO n_teams team_size stats = do
+genCyclistsIO :: Int -> Int -> ((Double -> RandT StdGen IO Bool), Population) -> IO [Cyclist]
+genCyclistsIO n_teams team_size (strat, distr) = do
               g <- getStdGen
-              flip evalRandT g $ genCyclists n_teams team_size stats
+              flip evalRandT g $ genCyclists n_teams team_size (strat, distr)
