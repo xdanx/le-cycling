@@ -78,10 +78,10 @@
 \begin{itemize}
 	\item Strategies in races can be crucial
         \pause
-        \vspace{2cm}
+        \vspace{1.2cm}
 	\item Modelling races can lead to improved performance.
 	\pause
-        \vspace{2cm}
+        \vspace{1.2cm}
 	\item This is genuine research!
 \end{itemize}
 
@@ -92,7 +92,7 @@
 
 \begin{itemize}
 	\item Step 1: Simulation
-        \vspace{2cm}
+        \vspace{1.5cm}
 	\item Step 2: Game theoretical model
 \end{itemize}
 
@@ -116,7 +116,7 @@ Simulation has three parts: \\
 \end{frame}
 
 \begin{frame}
-\frametitle{Physical Model}
+\frametitle{Step 1: Simulation - Physical Model}
 
 \begin{columns}
   \begin{column}{0.6\textwidth}
@@ -137,7 +137,7 @@ Simulation has three parts: \\
 \end{frame}
 
 \begin{frame}
-\frametitle{Bicyle model}
+\frametitle{Step 1: Simulation - Bicyle model}
 \begin{columns}
   
   \begin{column}{0.6\textwidth}
@@ -164,7 +164,7 @@ Simulation has three parts: \\
 \end{frame}
 
 \begin{frame}
-\frametitle{Assumptions}
+\frametitle{Step 1: Simulation - Assumptions}
 We made some assumptions about the model:
 \vspace{0.7cm}
 \pause
@@ -177,18 +177,18 @@ We made some assumptions about the model:
 \end{frame}
 
 \begin{frame}
-\frametitle{Slipstream model}
-\vspace{2cm}
+\frametitle{Step 1: Simulation - Slipstream model}
+\begin{block}{Slipstreaming}
 A Slipstream is the low pressure zone in the wake of a moving object. \newline \par
 \pause
 We correct for this by multiplying the aerodynamic drag by a correction factor:
 
 $$ 0.62 - 0.0104*d_w + 0.0452*d_w^2 $$
-
+\end{block}
 \end{frame}
 
 \begin{frame}
-\frametitle{Correction factor}
+\frametitle{Step 1: Simulation - Correction factor}
 \begin{figure}[ht!]
   \centering
     \scalebox{0.6}{\input{plot.tex}}
@@ -197,7 +197,7 @@ $$ 0.62 - 0.0104*d_w + 0.0452*d_w^2 $$
 \end{frame}
 
 \begin{frame}
-\frametitle{Physiological Model}
+\frametitle{Step 1: Simulation - Physiological Model}
 
 \begin{columns}
   \begin{column}{0.6\textwidth}
@@ -234,7 +234,7 @@ $$ 0.62 - 0.0104*d_w + 0.0452*d_w^2 $$
 \end{frame}
 
 \begin{frame}
-\frametitle{Psychological Model}
+\frametitle{Step 1: Simulation - Psychological Model}
 
 \begin{columns}
   \begin{column}{0.6\textwidth}
@@ -272,6 +272,13 @@ $$ 0.62 - 0.0104*d_w + 0.0452*d_w^2 $$
 
 
 \begin{frame}
+\frametitle{Step 1: Simulation - Demonstration}
+\huge
+\hspace{3.5cm} Demonstration
+\end{frame}
+
+
+\begin{frame}
 \frametitle{Step 2: Game Theory - Preliminaries}
 
 \textbf{Pay-off matrix}\\
@@ -295,24 +302,26 @@ The pay-off each player gets by playing certain strategies is contained in a mat
 
 \begin{frame}
 \frametitle{Step 2: Game Theory - Model}
-\begin{block}{2-racer Escape Case}
+\begin{itemize}
+\item 2-racer Escape Case
 	\begin{itemize}
 		\item 2 players
 		\item Cooperation strategy
 		\item Fall back strategy
 		\item Break away strategy
 	\end{itemize}
-\end{block}
+\end{itemize}
 \end{frame}
 
 \begin{frame}
 \frametitle{Step 2: Game Theory - Model}
-\begin{block}{Repeated games}
+\begin{itemize}
+\item Repeated games
 	\begin{itemize}
 		\item Pay-off matrices - one-off games
 		\item Will specify our repeated game depending on moments $\delta^{(n)}$
 	\end{itemize}
-\end{block}
+\end{itemize}
 \end{frame}
 
 \begin{frame}
@@ -340,10 +349,21 @@ The pay-off each player gets by playing certain strategies is contained in a mat
 \begin{frame}
 \frametitle{Achievements and Contribution}
 
+Our goal was to develop tools to help find a winning strategy given a certain knowledge on the situation. \\
+
+\pause
+\vspace{0.3cm}
+
+We provided two tools to this effect :
+\pause
 \begin{itemize}
-	\item Implemented the proposed simulation in papers %add details
-	\item Combined psychological model with performance model
-	\item Game theoretical model which could be valuable for simulating races
+\item A software simualtion
+  \begin{itemize}
+	\item Implemented the proposed simulation in papers \vspace{0.1cm}
+	\item Combined psychological model with performance model \vspace{0.1cm}
+  \end{itemize}
+\pause
+\item Game theoretical model which could be valuable for simulating races \vspace{0.1cm}
 \end{itemize}
 
 \end{frame}
@@ -373,7 +393,6 @@ The pay-off each player gets by playing certain strategies is contained in a mat
 
 \begin{frame}
 \frametitle{Thank you!}
-\huge
 \centering
 \begin{figure}[ht!]
   \includegraphics[scale=0.37]{final.jpg}
