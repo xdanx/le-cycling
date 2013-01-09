@@ -41,5 +41,5 @@ setSprinterSpeed c = updateCyclistSpeed c (0.95 * (pmax c))
 
 -- Update the used energy of a cyclists, depending on his speed
 -- Need to do something different if it's in_pack vs (leader, breakaway or sprint)
-updateEnergy :: Cyclist -> Double -> Cyclist
-updateEnergy c pped = c{usedEnergy = (usedEnergy c) + 60 * (pped - (pcp c))}
+updateEnergy :: Cyclist -> Cyclist
+updateEnergy c = undefined -- c{usedEnergy = (usedEnergy c) + 60 * (pped - (pcp c))}
