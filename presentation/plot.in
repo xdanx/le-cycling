@@ -1,0 +1,7 @@
+set terminal epslatex
+set title "Slipstream correction factor ($CF_{draft}$)"
+set ylabel "$CF_{draft}$"
+set xlabel "$d_w$"
+set xrange [0:3]
+set output "plot.tex"
+plot 0.62 - 0.0104*x + 0.0452*x*x

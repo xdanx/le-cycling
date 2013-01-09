@@ -21,6 +21,7 @@ import Pack
 import Population
 import Simulation
 import Stats
+import Coop
 import Utils
 import Units
 
@@ -51,10 +52,10 @@ parseLine l = do
        then liftIO . putStrLn $ "Warning Can't parse " ++ show (map snd failed)
        else return ()
     let teams = (map ((map read) . fromJust) (filter isJust str_teams''))::[[Int]]
-    concatMapM (\[t,n] -> makeCyclists t n (defaultPop str_profile) str_attrs) teams
+    concatMapM (\[t,n] -> makeCyclists t n (defaultStrat str_profile) str_attrs) teams
 
 --Parses a cyclist representation and produces n cyclists of this kind. TESTED
-makeCyclists :: Int -> Int -> Population -> String -> RandT StdGen IO [Cyclist]
+makeCyclists :: Int -> Int -> ((Double -> RandT StdGen IO Bool), Population) -> String -> RandT StdGen IO [Cyclist]
 makeCyclists t n pop ln = do
   let attr_parse = map (\(x,_:y) -> (x,y)) . map (break (==':')) . words $ ln
       infs = ["pmax", "pcp", "usedEnergy", "energyLim", "genCProb", "teamCProb", "speed", "distance"]
@@ -64,7 +65,9 @@ makeCyclists t n pop ln = do
   replicateM n (genCyclist t pop >>= return . (foldl (.) id trans))
   
 -- Default settings.
-defaultPop :: String -> Population
-defaultPop s 
-  | (strip s) == "avg" = avg
+defaultStrat :: String -> ((Double -> RandT StdGen IO Bool), Population)
+defaultStrat s
+  | (head s') == "standardCoop" && (head . tail $ s') == "avg" = (standardCoop, avg) 
   | otherwise = undefined
+  where
+    s' = map strip (words s)

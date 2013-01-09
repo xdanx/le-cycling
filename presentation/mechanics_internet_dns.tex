@@ -1,0 +1,166 @@
+\documentclass{beamer}
+\usetheme{Madrid} % My favorite!
+
+\setbeamercovered{invisible}
+% To remove the navigation symbols from 
+% the bottom of slides%
+\setbeamertemplate{navigation symbols}{} 
+%
+\usepackage{graphicx}
+%\usepackage{bm}         % For typesetting bold math (not \mathbold)
+%
+\title[Domain Name System]{Mechanics of the Internet - DNS}
+\author{Dan Demeter}
+\institute[Imperial College London]{Imperial College London}
+\date{\today}
+
+%
+\begin{document}
+
+% Our title frame.
+\begin{frame}
+\titlepage
+\end{frame}
+%
+
+\begin{frame}
+\frametitle{DNS}
+Domain Name System\\
+www.apexis.ro -\textgreater 194.116.217.179\\
+\vspace{0.5cm}
+Internet Protocol Suite	:
+\begin{itemize}
+  \item \alert{Application Layer}
+  \item Transport Layer
+  \item Internet Layer
+  \item Link Layer
+\end{itemize}  
+\end{frame}
+
+
+\begin{frame}
+\frametitle{DNS History}
+
+\textless 1982: HOSTS File transferred from a central location ( SRI )\\
+\vspace{0.5cm}
+1983: Berkeley Internet Name Domain ( BIND )\\
+2012: BINDv9, MS DNS server, etc...\\
+\end{frame}
+
+\begin{frame}
+\frametitle{DNS ROOT Servers}
+The backbone of the entire Ineternet\\
+13 ROOT servers:\\
+\{A,B,C,D,E,F,G,H,I,J,K,L,M\}.ROOT-SERVERS.NET\\
+\vspace{0.5cm}
+www.root-servers.org =\textgreater Root servers map
+\end{frame}
+
+\begin{frame}
+\frametitle{DNS Slang}
+TLD = Top Level Domain \\
+gTLD = generic TLD\\
+ccTLD = Country specific TLD\\
+delegation = process to give to another entity full control over that resource\\
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{DNS Registrars}
+Official organizations that delegate domains to organisations/persons/academic institutions/etc...\\
+\vspace{0.5cm}
+\pause
+INAIC: Internet Names Authorization \& Information Center\\
+\vspace{0.5cm}
+\pause
+ISO 3166-1-alpha\\
+\pause
+Will focus mainly on IANA from now on
+\end{frame}
+
+	
+\begin{frame}[fragile]
+\frametitle{DNS Zones}
+For each domain you want to get, you pay a fee ( one time, or annually ):\\
+
+INAIC -\textgreater IANA -\textgreater ccTLDs -\textgreater You\\ 
+OR\\
+INAIC -\textgreater ICANN -\textgreater gTLDs -\textgreater Godaddy, 123-reg -\textgreater You\\
+\vspace{0.5cm} 
+\pause
+How to find the IP address of a zone? 
+\vspace{0.5cm} 
+\begin{verbatim}
+www.apexis.ro => www.apexis.ro. => 
+
+(www).(apexis).(ro) (.)
+
+Command: dig +trace www.apexis.ro.
+
+\end{verbatim}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Configuring your own domain/zone}
+Example config: apexis.ro\\
+\vspace{0.5cm}
+Useful tools:\\
+\begin{itemize}
+  \item Linux/MacOS/UNIX: dig 
+  \item Windows: nslookup 
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{DNS Smart Stuff}
+\begin{itemize}
+  \item TTL
+  \item Recursive Servers
+  \item Load Balancing
+\end{itemize}
+\vspace{0.5cm}
+
+www.apexis.ro vs apexis.ro
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{DNS Attacks}
+Cache Poisoning\\
+\vspace{0.5cm}
+DNS DoS\\ 
+\pause
+GoDaddy ( 15 Sept ) \& AT\&T ( 15 Aug ) recent attacks\\
+\vspace{0.5cm}
+DNS spoofing\\
+Or when www.google.com is NOT www.google.com ?!
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Related Stuff}
+Browser errors : \alert{Could not resolve} vs \alert{Could not connect}\\
+\vspace{0.5cm}
+.com Boom
+\end{frame}
+
+
+\begin{frame}
+\centerline{See you next week!}
+\centerline{http://apexis.ro/\textasciitilde xdanx/icsc/www}
+\vspace{0.5cm} 
+\centerline{For any complaints or suggestions}
+\centerline{use the feedback form on the course website!}
+\vspace{0.5cm}
+\centerline{To register on the mailing check the course website!}
+\vspace{0.5cm}
+\end{frame}
+
+
+% End of slides
+\end{document} 

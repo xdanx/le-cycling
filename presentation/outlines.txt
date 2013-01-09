@@ -1,0 +1,75 @@
+Presentation
+
+
+
+Preliminaries
+* the payoff each player gets by playing certain strategies is contained in a matrix, we call this the
+payoff matrix + example of matrix
+
+Model
+* explain the 2 player escape situation (without group chasing)
+* the three strategies
+* depends on probability of finishing first (formula)
+* depends on drafting behind the leader
+* explain recursion intuitively 
+* explain coop coop case in depth with formulas and payoff
+
+
+
+Slide 1
+Title+name+supervisor
+
+Slide 2
+Imagine this...
++ video
+
+Slide 3
+Outline
+
+Slide 3
+Motivation
+* strategies in races can be crucial
+* modelling races can lead to improved performance
+* this is novel...
+
+Slide
+The solution
+* Step 1: simulation
+* Step 2: game theoretical model
+
+Slide
+Step 1: Simulation
+* mathematical model (link to all papers)
+* ????
+* ???
+
+Slide
+Mathematical model
+
+Next slides on simulation
+
+Slide
+Step 2: Game theory
+
+
+
+
+
+
+Slide
+Achievements
+* Implemented the proposed simulation in papers
+* (found out that one paper is fucked) Combined psychological model with performance model
+* Game theoretical model which could be valuable for simulating races???
+******outline contribution
+
+
+Slide
+Recap: 
+* we've seen there is a problem
+* we solved in ... way 
+* we achieved see previous slide
+* .. future work (what)
+
+Slide
+And now it's time for q, thank you
