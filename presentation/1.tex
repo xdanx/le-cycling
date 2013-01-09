@@ -105,6 +105,93 @@
 
 
 \begin{frame}
+\frametitle{Step 1: Simulation}
+Simulation has three parts: \\
+\pause
+\vspace{0.7cm}
+\begin{itemize}
+\item Physical model
+\pause
+\vspace{0.7cm}
+\item Physiological model
+\pause
+\vspace{0.7cm}
+\item Psychological model
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Physical Model}
+
+\begin{itemize}
+\item Model of the bicycle
+\item Slipstream model (fluid dynamics)
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Bicyle model}
+The Bycicle model we used takes into account:
+\begin{itemize}
+\vspace{0.7cm}
+\pause
+\item Aerodynamic drag
+\vspace{0.7cm}
+\pause
+\item Kinetic energy
+\end{itemize}
+\pause
+\vspace{0.7cm}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Assumptions}
+We made some assumptions about the model:
+\vspace{0.7cm}
+\pause
+\begin{itemize}
+\item Perfectly flat race track.
+\pause
+\vspace{0.7cm}
+\item No losses of energy due to friction.
+\pause
+\vspace{0.7cm}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Slipstream model}
+A Slipstream is the low pressure zone in the wake of a moving object. \newline \par
+\pause
+We correct for this by multiplying the aerodynamic drag by a correction factor:
+
+$$ 0.62 - 0.0104*d_w + 0.0452*d_w^2 $$
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Correction factor}
+\begin{figure}[ht!]
+  \centering
+    \scalebox{0.6}{\input{plot.tex}}
+  \caption{graph of slipstream correction factor.}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Physiological Model}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Psychological Model}
+
+\end{frame}
+
+
+\begin{frame}
 \frametitle{Step 2: Game Theory - Preliminaries}
 
 \textbf{Pay-off matrix}\\
