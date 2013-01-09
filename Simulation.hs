@@ -30,6 +30,7 @@ import Units
 data Race = Race  !Int  !Meters ![Pack]  ![Cyclist]  ![(Cyclist, Double)]
      deriving (Show)
 
+{-
 -- Main function of the simulation. Do all the updates needed from
 -- one state of the race to the next.
 turn :: Race -> RandT StdGen IO Race
@@ -157,3 +158,4 @@ orderFinishers trn len = List.sortBy (\x y -> compare (snd x) (snd y)) . map (id
                      pass c = (len - strt)/(speed c)
                           where
                                   strt = (distance c) - (fromIntegral 60) * (speed c)
+-}
