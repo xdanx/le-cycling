@@ -5,6 +5,7 @@ import Control.Monad.Random
 import Control.Monad.Trans.Class
 import Data.IORef
 import Data.List
+import Data.Word
 import Graphics.Rendering.OpenGL
 import Graphics.SimplePlot
 import Graphics.UI.SDL hiding (flip)
@@ -18,43 +19,38 @@ import Population
 import Rendering
 import Simulation
 
-time = 100 :: Int
+time = 100 :: Word32
 validOption = ["-X", "-P"] :: [String]
 
 main :: IO ()
 main = do
      progname <- getProgName
-     args <- getArgs
-     pics@(background,_,_,_) <- loadPics
-     screen <- setVideoMode (surfaceGetHeight background) (surfaceGetWidth background) 32 [SWSurface]   
+     args <- getArgs   
      let (opt, rest) = partition ((=='-'). head) args 
          [graphics, plt] = map (flip elem opt) $ validOption
          correct = (length rest == 1) && (and . map (flip elem validOption) $ opt)
      unless correct usage
-     when graphics $ do
-                        initialize progname []
-                        createWindow progname
-                        clear [ColorBuffer]
      ref <- (genRace (head rest) >>= newIORef)
-     if graphics
-       then 
-         do
-           render screen pics width ref
-       else loop graphics ref
+     rend <- if(graphics)
+             then do
+              pics@(background,_,_,_) <- loadPics
+              screen <- setVideoMode (surfaceGetHeight background) (surfaceGetWidth background) 32 [SWSurface]
+              return $ render screen pics (surfaceGetWidth background) ref
+              else return $ return ()
+     loop rend ref
      (Race _ _ _ _ leader_board) <- readIORef ref
      print leader_board
 --     when plt . void . plot X11 . Data2D [Style Graphics.SimplePlot.Lines, Title "Classment agains cooperation probability", Graphics.SimplePlot.Color Graphics.SimplePlot.Blue] [] . zip [1..] . map (teamProb . fst) $ leader_board
-     exit
 
-loop :: Bool -> IORef Race -> IO ()
+loop :: IO () -> IORef Race -> IO ()
 loop rend ref = do
   r <- readIORef ref
   n <- getStdGen >>= evalRandT (turn r)
   writeIORef ref n
-  when rend $ render ref
+  rend
   case n of
-    (Race _ _ [] [] _) -> when rend leaveMainLoop
-    (Race _ _ _ _ _) -> (if rend then addTimerCallback time else (Prelude.id)) $ loop rend ref
+    (Race _ _ [] [] _) -> exitSuccess
+    (Race _ _ _ _ _) -> delay time >> loop rend ref
   
 usage :: IO ()
 usage = do
