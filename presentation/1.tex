@@ -1,0 +1,137 @@
+\documentclass{beamer}
+\usetheme{Madrid} % My favorite!
+%\usetheme{Boadilla} % Pretty neat, soft color.
+%\usetheme{default}
+%\usetheme{Warsaw}
+%\usetheme{Bergen} % This template has nagivation on the left
+%\usetheme{Frankfurt} % Similar to the default 
+%with an extra region at the top.
+%\usecolortheme{seahorse} % Simple and clean template
+%\usetheme{Darmstadt} % not so good
+% Uncomment the following line if you want %
+% page numbers and using Warsaw theme%
+% \setbeamertemplate{footline}[page number]
+%\setbeamercovered{transparent}
+\setbeamercovered{invisible}
+% To remove the navigation symbols from 
+% the bottom of slides%
+\setbeamertemplate{navigation symbols}{} 
+%
+\usepackage{graphics}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{tabularx,multirow}
+
+\subject{KKK}
+%\usepackage000000..{bm}         % For typesetting bold math (not \mathbold)
+\logo{\includegraphics[height=0.6cm]{imperial.eps}}
+%
+\title[Cycling simulation]{Cycling simulation \\or\\ \textit{When} to break away}
+
+\author[]{%
+  Dan Demeter\inst{1} \and
+  Alexandru Paunoiu\inst{1} \and
+  C\'esar Prout\'e \inst{1} \and \\
+  Julian Sutherland \inst{1} \and
+  Robert K\inst{1}
+  }
+\institute[Imperial College London]{  
+  \inst{1}%
+  Imperial College London \\
+  Department of Computing \\
+  
+ }  
+\date{\today}
+% \today will show current date. 
+% Alternatively, you can specify a date.
+%
+\begin{document}
+%
+\begin{frame}
+\titlepage
+\end{frame}
+%
+\large
+\begin{frame}
+\frametitle{Motivation}
+\begin{block}
+{Imagine this...}
+video
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Motivation}
+
+\begin{itemize}
+	\item Strategies in races can be crucial
+	\item Modelling races can lead to improved performance
+	\item This is novel...
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{The solution}
+
+\begin{itemize}
+	\item Step 1: Simulation
+	\item Step 2: Game theoretical model
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Step 2: Game theoretical model - Preliminaries}
+
+\textbf{Pay-off matrix}\\
+The pay-off each player gets by playing certain strategies is contained in a matrix, we call this the pay-off matrix. By using this matrix, players can choose the best strategy they should play in certain situations.
+
+\begin{example}[Pay-off matrix]
+\begin{table}[ht!]
+	\hspace{-4em}
+	\centering
+	\begin{tabular}{ccccc|}
+		& & \multicolumn{3}{c}{Player 1}                                \\ \cline{3-5}
+		& & A & B & \multicolumn{1}{c}{C}                               \\ \cline{3-5}
+		\multirow{3}{*}{Player 2} & \multicolumn{1}{|c|}{a} & 2 & 1 & 7 \\
+		& \multicolumn{1}{|c|}{b} & 4 & 5 & 6                           \\
+		& \multicolumn{1}{|c|}{c} & 3 & 1 & 7                           \\ \cline{3-5}
+	\end{tabular}
+\end{table}
+\end{example}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Achievements and Contribution}
+
+\begin{itemize}
+	\item Implemented the proposed simulation in papers %add details
+	\item Combined psychological model with performance model
+	\item Game theoretical model which could be valuable for simulating races
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Recap}
+
+\begin{itemize}
+	\item TODO
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Thank you!}
+
+\huge
+\centering Q\&A
+
+\end{frame}
+
+% End of slides
+\end{document} 
