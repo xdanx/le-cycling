@@ -30,7 +30,7 @@
 
 \author[]{%
   Dan Demeter \and
-  Alexandru Paunoiu \and
+  Alexandru P\u aunoiu \and
   C\'esar Prout\'e \and \\
   Julian Sutherland \and
   Robert Kruszewski
@@ -50,7 +50,7 @@
 \end{frame}
 %
 \begin{frame}
-\frametitle{ mapM \$whoami [Julian, C\'esar, Robert, Alex, Dan] }
+\frametitle{ mapM\_ whoAmI [Julian, C\'esar, Robert, Alex, Dan] }
 
 \begin{itemize}
 	\item Group 29
@@ -85,9 +85,12 @@
 
 \begin{itemize}
 	\item Strategies in races can be crucial
-	\item Modelling races can lead to improved performance
+        \pause
+        \vspace{2cm}
+	\item Modelling races can lead to improved performance.
 	\pause
-	\item But this is novel...
+        \vspace{2cm}
+	\item This is genuine research!
 \end{itemize}
 
 \end{frame}
@@ -97,6 +100,7 @@
 
 \begin{itemize}
 	\item Step 1: Simulation
+        \vspace{2cm}
 	\item Step 2: Game theoretical model
 \end{itemize}
 
@@ -122,8 +126,12 @@ Simulation has three parts: \\
 \begin{frame}
 \frametitle{Physical Model}
 
+Parts of the physical model:
+\vspace{2cm}
 \begin{itemize}
+\pause
 \item Model of the bicycle
+\vspace{1cm}
 \item Slipstream model (fluid dynamics)
 \end{itemize}
 
@@ -131,7 +139,7 @@ Simulation has three parts: \\
 
 \begin{frame}
 \frametitle{Bicyle model}
-The Bycicle model we used takes into account:
+The Bicycle model we used takes into account:
 \begin{itemize}
 \vspace{0.7cm}
 \pause
@@ -162,6 +170,7 @@ We made some assumptions about the model:
 
 \begin{frame}
 \frametitle{Slipstream model}
+\vspace{2cm}
 A Slipstream is the low pressure zone in the wake of a moving object. \newline \par
 \pause
 We correct for this by multiplying the aerodynamic drag by a correction factor:
@@ -181,6 +190,22 @@ $$ 0.62 - 0.0104*d_w + 0.0452*d_w^2 $$
 
 \begin{frame}
 \frametitle{Physiological Model}
+
+There are two ``modes'' in which the human muscle can work:
+\pause
+\begin{itemize}
+\item aerobic
+\item anaerobic
+\end{itemize}
+\vspace{2cm}
+\pause
+To describe the physical attributes of the cyclist, we use to variables:
+\pause
+\begin{itemize}
+\item $P_{max}$, the maximum power output of the cyclist.
+\pause
+\item $P_{CP}$, the maximum aerobic power of the cyclist.
+\end{itemize}
 
 \end{frame}
 
