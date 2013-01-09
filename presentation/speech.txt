@@ -8,6 +8,10 @@ I'm will present our group project called : [read title]
 
 
 
+slide Motivation (Dan):
+
+
+
 slide Our solution (Dan):
 
 The solution we proposed is in two parts :
@@ -20,6 +24,6 @@ Alex and Robert are going to explain this Game Theory framework more indepth, bu
 
 
 
-slide The Simulation (Julian) :
+slide The Simulation (Julian):
 
 
