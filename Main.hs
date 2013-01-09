@@ -23,8 +23,7 @@ time = 100 :: Word32
 validOption = ["-X", "-P"] :: [String]
 
 main :: IO ()
-main = do
-     progname <- getProgName
+main = withInit [InitEverything] $ do
      args <- getArgs   
      let (opt, rest) = partition ((=='-'). head) args 
          [graphics, plt] = map (flip elem opt) $ validOption
@@ -34,7 +33,7 @@ main = do
      rend <- if(graphics)
              then do
               pics@(background,_,_,_) <- loadPics
-              screen <- setVideoMode (surfaceGetHeight background) (surfaceGetWidth background) 32 [SWSurface]
+              screen <- setVideoMode (surfaceGetWidth background) (surfaceGetHeight background) 32 [SWSurface]
               return $ render screen pics (surfaceGetWidth background) ref
               else return $ return ()
      loop rend ref

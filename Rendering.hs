@@ -20,7 +20,10 @@ render screen (background, pack, breakaway, sprinter) width r = do
        let cyclists = (concatMap (\p -> map (case p of
                            Pack {} -> (,Group)
                            Breakaway {} -> (,Break)) (toList . getPack $ p)) racers) ++ (map (,Sprinter) sprint)
+       blitSurface background Nothing screen Nothing
        mapM_ (\(c, tp) -> blitCyclist screen (pack, breakaway, sprinter) tp len (distance c) width) cyclists
+       Graphics.UI.SDL.flip screen
+       return ()
        
 
 blitCyclist :: Surface -> (Surface, Surface, Surface) -> CyclistT -> Int -> Double -> Int -> IO ()
