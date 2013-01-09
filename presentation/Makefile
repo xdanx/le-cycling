@@ -1,4 +1,4 @@
-DOCBASE=1
+DOCBASE=presentation
 
 all: $(DOCBASE).pdf
 
