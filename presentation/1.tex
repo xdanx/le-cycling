@@ -24,7 +24,7 @@
 
 
 %\usepackage000000..{bm}         % For typesetting bold math (not \mathbold)
-\logo{\includegraphics[height=0.6cm]{imperial.pdf}}
+\logo{\includegraphics[height=0.6cm]{imperial.eps}}
 %
 \title[Cycling simulation]{Cycling simulation \\or\\ \textit{When} to break away}
 
@@ -126,14 +126,21 @@ Simulation has three parts: \\
 \begin{frame}
 \frametitle{Physical Model}
 
-Parts of the physical model:
-\vspace{2cm}
-\begin{itemize}
-\pause
-\item Model of the bicycle
-\vspace{1cm}
-\item Slipstream model (fluid dynamics)
-\end{itemize}
+\begin{columns}
+  \begin{column}{0.6\textwidth}
+    \begin{itemize}
+    \item Model of the bicycle
+      \vspace{0.2cm}
+    \item Slipstream model (fluid dynamics)
+    \end{itemize}
+  \end{column}
+  
+  \begin{column}{0.4\textwidth}
+    \begin{figure}[ht!]
+      \includegraphics[scale=0.1]{physical.jpg}
+    \end{figure} 
+  \end{column}
+\end{columns}
 
 \end{frame}
 
@@ -191,26 +198,72 @@ $$ 0.62 - 0.0104*d_w + 0.0452*d_w^2 $$
 \begin{frame}
 \frametitle{Physiological Model}
 
-There are two ``modes'' in which the human muscle can work:
-\pause
-\begin{itemize}
-\item aerobic
-\item anaerobic
-\end{itemize}
-\vspace{2cm}
-\pause
-To describe the physical attributes of the cyclist, we use to variables:
-\pause
-\begin{itemize}
-\item $P_{max}$, the maximum power output of the cyclist.
-\pause
-\item $P_{CP}$, the maximum aerobic power of the cyclist.
-\end{itemize}
+\begin{columns}
+  \begin{column}{0.6\textwidth}
+    There are two ``modes'' in which the human muscle can work:
+    \visible<2->{
+      \begin{itemize}
+        \item aerobic
+        \item anaerobic
+      \end{itemize}
+    }
+    \visible<3->{
+      \vspace{2cm}
+      To describe the physical attributes of the cyclist, we use to variables:
+      }
+    \visible<4->{
+      \begin{itemize}
+      \item $P_{max}$, the maximum power output of the cyclist.
+    }
+    \visible<5->{
+      \item $P_{CP}$, the maximum aerobic power of the cyclist.
+    }
+    \end{itemize}
+  \end{column}
+  
+  \begin{column}{0.4\textwidth}
+    \visible<1->{
+      \begin{figure}[ht!]
+        \includegraphics[scale=0.12]{physiological.jpg}
+      \end{figure} 
+    }
+  \end{column}
+\end{columns}
 
 \end{frame}
 
 \begin{frame}
 \frametitle{Psychological Model}
+
+\begin{columns}
+  \begin{column}{0.5\textwidth}
+    Each cyclist can have his own strategy, the code is designed so that these strategies can easily added.\\
+    \vspace{0.8cm}
+    The model we use limits the decisions to:
+    \begin{itemize}
+      \visible<2->{
+        \item Whether or not to break away.
+      }
+      \visible<3->{
+        \item Whether or not to break away with a team mate.
+      }
+      \visible<4->{
+        \item Whether or not to cooperate with a pack.
+      }
+    \end{itemize}
+    \visible<5->{
+      We implemented a simple probablistic model where the cyclists made each of these decisions with a (truncated) normally distributed probability.
+    }
+  \end{column}
+  
+  \begin{column}{0.5\textwidth}
+    \visible<1->{
+      \begin{figure}[ht!]
+        \includegraphics[scale=0.3]{psychological.jpg}
+      \end{figure} 
+    }
+  \end{column}
+\end{columns}
 
 \end{frame}
 
@@ -226,11 +279,11 @@ The pay-off each player gets by playing certain strategies is contained in a mat
 	\hspace{-4em}
 	\centering
 	\begin{tabular}{ccccc|}
-		& & \multicolumn{3}{c}{Player 1}                                \\ \cline{3-5}
+		& & \multicolumn{3}{c}{Player 2}                                \\ \cline{3-5}
 		& & A & B & \multicolumn{1}{c}{C}                               \\ \cline{3-5}
-		\multirow{3}{*}{Player 2} & \multicolumn{1}{|c|}{a} & 2 & 1 & 7 \\
-		& \multicolumn{1}{|c|}{b} & 4 & 5 & 6                           \\
-		& \multicolumn{1}{|c|}{c} & 3 & 1 & 7                           \\ \cline{3-5}
+		\multirow{3}{*}{Player 1} & \multicolumn{1}{|c|}{a} & (2,1) & (1,3) & (7,2) \\
+		& \multicolumn{1}{|c|}{b} & (4,3) & (5,9) & (6,7)                           \\
+		& \multicolumn{1}{|c|}{c} & (3,1) & (1,2) & (7,4)                           \\ \cline{3-5}
 	\end{tabular}
 \end{table}
 \end{example}
@@ -276,7 +329,7 @@ The pay-off each player gets by playing certain strategies is contained in a mat
 	\begin{itemize}
 		\item Players choose to help each other
 		\item The advantage will tend to go to the player that is second
-		\item Pay-off for the player who is second is: $(1-P)\cdot \dfrac{F_{draft}(s_1)}{F_{max}} + 1$
+		\item Pay-off for the player who is second is: $(1-P)\cdot \dfrac{F_{draft}(s)}{F_{max}} + 1$
 	\end{itemize}
 \end{block}
 \end{frame}
