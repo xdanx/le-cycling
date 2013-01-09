@@ -30,7 +30,7 @@
 
 \author[]{%
   Dan Demeter \and
-  Alexandru Paunoiu \and
+  Alexandru P\u aunoiu \and
   C\'esar Prout\'e \and \\
   Julian Sutherland \and
   Robert Kruszewski
@@ -73,10 +73,26 @@
 
 
 \begin{frame}
+\frametitle{Motivation}
+
+\begin{itemize}
+	\item Strategies in races can be crucial
+        \pause
+        \vspace{2cm}
+	\item Modelling races can lead to improved performance.
+	\pause
+        \vspace{2cm}
+	\item This is genuine research!
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
 \frametitle{The solution}
 
 \begin{itemize}
 	\item Step 1: Simulation
+        \vspace{2cm}
 	\item Step 2: Game theoretical model
 \end{itemize}
 
@@ -122,7 +138,7 @@ Simulation has three parts: \\
 
 \begin{frame}
 \frametitle{Bicyle model}
-The Bycicle model we used takes into account:
+The Bicycle model we used takes into account:
 \begin{itemize}
 \vspace{0.7cm}
 \pause
@@ -153,6 +169,7 @@ We made some assumptions about the model:
 
 \begin{frame}
 \frametitle{Slipstream model}
+\vspace{2cm}
 A Slipstream is the low pressure zone in the wake of a moving object. \newline \par
 \pause
 We correct for this by multiplying the aerodynamic drag by a correction factor:
@@ -175,15 +192,33 @@ $$ 0.62 - 0.0104*d_w + 0.0452*d_w^2 $$
 
 \begin{columns}
   \begin{column}{0.6\textwidth}
-    \begin{itemize}
-    \item Muscule stuff
+    There are two ``modes'' in which the human muscle can work:
+    \visible<2->{
+      \begin{itemize}
+        \item aerobic
+        \item anaerobic
+      \end{itemize}
+    }
+    \visible<3->{
+      \vspace{2cm}
+      To describe the physical attributes of the cyclist, we use to variables:
+      }
+    \visible<4->{
+      \begin{itemize}
+      \item $P_{max}$, the maximum power output of the cyclist.
+    }
+    \visible<5->{
+      \item $P_{CP}$, the maximum aerobic power of the cyclist.
+    }
     \end{itemize}
   \end{column}
   
   \begin{column}{0.4\textwidth}
-    \begin{figure}[ht!]
-      \includegraphics[scale=0.12]{physiological.jpg}
-    \end{figure} 
+    \visible<1->{
+      \begin{figure}[ht!]
+        \includegraphics[scale=0.12]{physiological.jpg}
+      \end{figure} 
+    }
   \end{column}
 \end{columns}
 
@@ -194,15 +229,31 @@ $$ 0.62 - 0.0104*d_w + 0.0452*d_w^2 $$
 
 \begin{columns}
   \begin{column}{0.5\textwidth}
+    Each cyclist can have his own strategy, the code is designed so that these strategies can easily added.\\
+    \vspace{0.8cm}
+    The model we use limits the decisions to:
     \begin{itemize}
-    \item Brain stuff
+      \visible<2->{
+        \item Whether or not to break away.
+      }
+      \visible<3->{
+        \item Whether or not to break away with a team mate.
+      }
+      \visible<4->{
+        \item Whether or not to cooperate with a pack.
+      }
     \end{itemize}
+    \visible<5->{
+      We implemented a simple probablistic model where the cyclists made each of these decisions with a (truncated) normally distributed probability.
+    }
   \end{column}
   
   \begin{column}{0.5\textwidth}
-    \begin{figure}[ht!]
-      \includegraphics[scale=0.3]{psychological.jpg}
-    \end{figure} 
+    \visible<1->{
+      \begin{figure}[ht!]
+        \includegraphics[scale=0.3]{psychological.jpg}
+      \end{figure} 
+    }
   \end{column}
 \end{columns}
 
