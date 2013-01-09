@@ -138,18 +138,29 @@ Simulation has three parts: \\
 
 \begin{frame}
 \frametitle{Bicyle model}
-The Bicycle model we used takes into account:
-\begin{itemize}
-\vspace{0.7cm}
-\pause
-\item Aerodynamic drag
-\vspace{0.7cm}
-\pause
-\item Kinetic energy
-\end{itemize}
-\pause
-\vspace{0.7cm}
+\begin{columns}
+  
+  \begin{column}{0.6\textwidth}
+  The Bicycle model we used takes into account:
+  \begin{itemize}
+    \vspace{0.7cm}
+  \visible<2->{
+  \item Aerodynamic drag
+    \vspace{0.7cm}
+  }
+  \visible<3->{
+  \item Kinetic energy
+  }
+  \end{itemize}
+  \end{column}
 
+  \begin{column}{0.4\textwidth}
+    \begin{figure}[ht!]
+      \includegraphics[scale=0.3]{bicycle.jpg}
+    \end{figure} 
+  \end{column}
+
+\end{columns}
 \end{frame}
 
 \begin{frame}
@@ -162,8 +173,6 @@ We made some assumptions about the model:
 \pause
 \vspace{0.7cm}
 \item No losses of energy due to friction.
-\pause
-\vspace{0.7cm}
 \end{itemize}
 \end{frame}
 
@@ -200,7 +209,7 @@ $$ 0.62 - 0.0104*d_w + 0.0452*d_w^2 $$
       \end{itemize}
     }
     \visible<3->{
-      \vspace{2cm}
+      \vspace{1.5cm}
       To describe the physical attributes of the cyclist, we use to variables:
       }
     \visible<4->{
@@ -228,30 +237,32 @@ $$ 0.62 - 0.0104*d_w + 0.0452*d_w^2 $$
 \frametitle{Psychological Model}
 
 \begin{columns}
-  \begin{column}{0.5\textwidth}
+  \begin{column}{0.6\textwidth}
     Each cyclist can have his own strategy, the code is designed so that these strategies can easily added.\\
+    \visible<2->{
     \vspace{0.8cm}
-    The model we use limits the decisions to:
+    The model we use limits the decisions to:}
     \begin{itemize}
-      \visible<2->{
-        \item Whether or not to break away.
-      }
       \visible<3->{
-        \item Whether or not to break away with a team mate.
+        \item Breaking away.
       }
       \visible<4->{
-        \item Whether or not to cooperate with a pack.
+        \item Follow a team mate in a breakaway.
+      }
+      \visible<5->{
+        \item Cooperate with your pack.
       }
     \end{itemize}
-    \visible<5->{
-      We implemented a simple probablistic model where the cyclists made each of these decisions with a (truncated) normally distributed probability.
+    \visible<6->{
+      \vspace{0.5cm}
+      We implemented a simple probablistic model. %where the cyclists made each of these decisions with a (truncated) normally distributed probability. (say the rest)
     }
   \end{column}
   
-  \begin{column}{0.5\textwidth}
+  \begin{column}{0.4\textwidth}
     \visible<1->{
       \begin{figure}[ht!]
-        \includegraphics[scale=0.3]{psychological.jpg}
+        \includegraphics[scale=0.25]{psychological.jpg}
       \end{figure} 
     }
   \end{column}
