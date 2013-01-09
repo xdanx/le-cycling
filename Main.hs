@@ -1,14 +1,13 @@
-{-# LANGUAGE DoAndIfThenElse #-}
-{-# LANGUAGE TupleSections #-}
+{-# LANGUAGE DoAndIfThenElse, TupleSections #-}
 
+import Control.Monad
 import Control.Monad.Random
 import Control.Monad.Trans.Class
 import Data.IORef
 import Data.List
 import Graphics.Rendering.OpenGL
-
-import Graphics.UI.GLUT
 import Graphics.SimplePlot
+import Graphics.UI.SDL hiding (flip)
 import System.Environment
 import System.Exit
 import System.Mem
@@ -26,64 +25,36 @@ main :: IO ()
 main = do
      progname <- getProgName
      args <- getArgs
+     pics@(background,_,_,_) <- loadPics
+     screen <- setVideoMode (surfaceGetHeight background) (surfaceGetWidth background) 32 [SWSurface]   
      let (opt, rest) = partition ((=='-'). head) args 
          [graphics, plt] = map (flip elem opt) $ validOption
          correct = (length rest == 1) && (and . map (flip elem validOption) $ opt)
-     if not correct
-       then usage
-       else return ()
-     if graphics
-        then
-       do
-         initialize progname []
-         createWindow progname
-         clear [ColorBuffer]
-        else return ()
-     r <- (genRace (head rest) >>= newIORef)
+     unless correct usage
+     when graphics $ do
+                        initialize progname []
+                        createWindow progname
+                        clear [ColorBuffer]
+     ref <- (genRace (head rest) >>= newIORef)
      if graphics
        then 
          do
-           render r
-           displayCallback $= (render r)
-           actionOnWindowClose $= ContinueExectuion
-           addTimerCallback time (loop_wrapper r)
-           mainLoop
-       else
-          do
-            g <- getStdGen
-            runRandT (looper r) g >>= return . fst
-     (Race _ _ _ _ leader_board) <- readIORef r
+           render screen pics width ref
+       else loop graphics ref
+     (Race _ _ _ _ leader_board) <- readIORef ref
      print leader_board
-     if plt
-            then plot X11 $ Data2D [Style Graphics.SimplePlot.Lines, Title "Classment agains cooperation probability", Graphics.SimplePlot.Color Graphics.SimplePlot.Blue] [] (zip [1..] (map (genCProb . fst) leader_board))
-            else return True
+--     when plt . void . plot X11 . Data2D [Style Graphics.SimplePlot.Lines, Title "Classment agains cooperation probability", Graphics.SimplePlot.Color Graphics.SimplePlot.Blue] [] . zip [1..] . map (teamProb . fst) $ leader_board
      exit
 
-loop_wrapper :: IORef Race -> IO ()
-loop_wrapper ref = do
-             r <- readIORef ref
-             g <- getStdGen
-             nr <- evalRandT (loop r) g
-             writeIORef ref nr
-             render ref
-             case nr of
-                  (Race _ _ [] [] _) -> leaveMainLoop
-                  (Race _ _ _ _ _) -> addTimerCallback time (loop_wrapper ref)
-
-loop :: Race -> RandT StdGen IO Race
-loop r = do
-     n <- turn r
-     lift performGC
-     return n
-
-looper :: IORef Race -> RandT StdGen IO ()
-looper ref = do 
-  r <- lift . readIORef $ ref
-  n <- loop r
-  lift . writeIORef ref $ n
+loop :: Bool -> IORef Race -> IO ()
+loop rend ref = do
+  r <- readIORef ref
+  n <- getStdGen >>= evalRandT (turn r)
+  writeIORef ref n
+  when rend $ render ref
   case n of
-    (Race _ _ [] [] _) -> return ()
-    (Race _ _ _ _ _) -> looper ref
+    (Race _ _ [] [] _) -> when rend leaveMainLoop
+    (Race _ _ _ _ _) -> (if rend then addTimerCallback time else (Prelude.id)) $ loop rend ref
   
 usage :: IO ()
 usage = do
