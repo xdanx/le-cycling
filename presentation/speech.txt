@@ -1,40 +1,29 @@
-slide 1:
+slide Title (Dan):
 
-slide 2:
+Hello my name is Dan, and this is how a cycling race looks like :
 
-slide 3:
+Headbutting video ? (other vid ?)
 
-slide 4:
+I'm will present our group project called : [read title]
 
-slide 5:
 
-slide 6:
 
-slide 7:
+slide Motivation (Dan):
 
-slide 8:
 
-slide 9:
 
-slide 10:
+slide Our solution (Dan):
 
-slide 11:
+The solution we proposed is in two parts :
 
-slide 12:
+First a software model of general road cycling races, that tries to simulate the real-life conditions, based on a model we developed following the previous work from various sources.
 
-slide 13:
+Secondly, we have created a Game Theoritical framework, used to decide on optimal stategies in a given situation. For example what happens when a cyclist breaks away alone, or how much he would gain by cooperative with an adversary.
 
-slide 14:
+Alex and Robert are going to explain this Game Theory framework more indepth, but first Julian and César are going to introduce our Software Simulation.
 
-slide 15:
 
-slide 16:
 
-slide 17:
+slide The Simulation (Julian):
 
-slide 18:
-
-slide 19:
-
-slide 20:
 
