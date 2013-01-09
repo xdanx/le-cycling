@@ -20,6 +20,7 @@
 \usepackage{graphics}
 \usepackage{graphicx}
 \usepackage{hyperref}
+\usepackage{tabularx,multirow}
 
 \subject{KKK}
 %\usepackage000000..{bm}         % For typesetting bold math (not \mathbold)
@@ -77,6 +78,29 @@ video
 	\item Step 1: Simulation
 	\item Step 2: Game theoretical model
 \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Step 2: Game theoretical model - Preliminaries}
+
+\textbf{Pay-off matrix}\\
+The pay-off each player gets by playing certain strategies is contained in a matrix, we call this the pay-off matrix. By using this matrix, players can choose the best strategy they should play in certain situations.
+
+\begin{example}[Pay-off matrix]
+\begin{table}[ht!]
+	\hspace{-4em}
+	\centering
+	\begin{tabular}{ccccc|}
+		& & \multicolumn{3}{c}{Player 1}                                \\ \cline{3-5}
+		& & A & B & \multicolumn{1}{c}{C}                               \\ \cline{3-5}
+		\multirow{3}{*}{Player 2} & \multicolumn{1}{|c|}{a} & 2 & 1 & 7 \\
+		& \multicolumn{1}{|c|}{b} & 4 & 5 & 6                           \\
+		& \multicolumn{1}{|c|}{c} & 3 & 1 & 7                           \\ \cline{3-5}
+	\end{tabular}
+\end{table}
+\end{example}
 
 \end{frame}
 
