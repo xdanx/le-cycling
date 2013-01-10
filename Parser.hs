@@ -39,7 +39,8 @@ parse f = do
       len = read h :: Meters
   cs <- sequence . map parseLine $ c
   let (s, r) = partition (\c -> (len - distance c) < 5000) . concat $ cs 
-  return (Race 0 len (getPacks r) s [])
+  packs <- getPacks r 0
+  return (Race 0 len packs s [])
                 
 -- Parse a line to generate the cyclists corresponding to it.
 parseLine :: String -> RandT StdGen IO [Cyclist]

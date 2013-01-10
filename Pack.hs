@@ -7,13 +7,16 @@ Breakaway packs contain the time left before it becomes a normal pack.
 
 module Pack where
 
+import Control.Monad.Trans
 import Control.Monad.Random hiding (fromList)
 import Data.Foldable as Fold
 import Data.List as List
 import Data.Sequence as Sequence
+import System.Exit
 
 import Cyclist
 import Units
+import ID
 
 --               tLead leader   cyclists       uid  |           cyclists       time uid
 data Pack = Pack !Int  !Cyclist !(Seq Cyclist) !Int | Breakaway !(Seq Cyclist) !Int !Int
@@ -58,18 +61,27 @@ defLeader breakP = return breakP -- no leaders in breakaway packs.
 -- Form packs from a list of Cyclists. 
 -- A pack is defined by the maximum set of cyclists such that any cyclist
 -- in the pack is at less than 3 meters from another cyclist in the pack
-getPacks :: [Cyclist] -> [Pack]
-getPacks cyclists =
-  List.zipWith ($) (Prelude.foldl addToPackList [] (List.sort cyclists)) [1..]
+getPacks :: [Cyclist] -> Int -> RandT StdGen IO [Pack]
+getPacks cyclists breakTime =  
+  mapM (\f -> newID >>= return . f) (Prelude.foldl addToPackList [] (List.sort cyclists))
   where
     addToPackList :: [Int -> Pack] -> Cyclist -> [Int -> Pack]
     addToPackList [] c =
-      [Pack 0 c empty ]
+      if breakTime == 0 then [Pack 0 c empty ] else [Breakaway (singleton c) breakTime ]
     addToPackList (h:ps) c
-      | ((distance c) - (distance leader) < 3) = (Pack tLead c (leader <| cs)):ps
-      | otherwise = (Pack 0 c empty):(Pack tLead leader cs):ps
-                    where (Pack tLead leader cs _) = h 0
-        
+      | ((distance c) - (distance leader) < 3) = 
+        if breakTime == 0 then (Pack tLead c (leader <| cs)):ps 
+                          else (Breakaway (c <| (leader <| cs)) breakTime):ps 
+      | otherwise = 
+          if breakTime == 0 then (Pack 0 c empty):(Pack tLead leader cs):ps
+                            else (Breakaway (singleton c) breakTime):(Breakaway (leader <| cs) breakTime):ps
+            where (leader, cs, tLead) = case h 0 of
+                    (Pack t l r _) -> (l, r, t) 
+                    (Breakaway r t _) -> case viewl r of
+                      EmptyL -> error "Not happening bro"
+                      (l :< rs) -> (l, rs, 0)
+                      
+    
 -- rotates leader : TESTED
 -- Puts the leader at the back of the pack and chooses the next leader.
 rotate :: Pack -> Pack

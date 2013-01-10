@@ -62,7 +62,7 @@ updatePosition (Race trn len packs sprint finish) = do
                    (remainingPacks, toSprinters, packFinishers) = (\(a, b, c) -> (mapMaybe id a, List.concat b, List.concat c)) . unzip3 . map (updatePack len) $ movedPacks
                    (sprintFinishers, remainingSprinters) = List.partition (\c -> (distance c) >= len) movedSprinter 
                    orderedFinishers = orderFinishers trn len $ sprintFinishers ++ packFinishers
-                   newPacks = coalescePacks $ remainingPacks
+                   newPacks = coalescePacks {-. splitPacks-} $ remainingPacks
                    finalSprinters = map setSprinterSpeed (List.sort $ toSprinters ++ remainingSprinters)
                when (List.or . map isEmpty $ newPacks) . liftIO . putStrLn $ "The fuck you playing at fool?"
                return (Race trn len newPacks finalSprinters (finish ++ orderedFinishers))
@@ -95,6 +95,7 @@ updatePack len (Breakaway pack time uid) = if(remainingPack == empty)
                  (sprinters, remainingPack) = Sequence.partition (\c -> (distance c) >= (len - 5000)) runners
 
 --Coalesce Packs that have collided
+-- pre: input is sorted
 coalescePacks :: [Pack] -> [Pack]
 coalescePacks [] = []
 coalescePacks packs = Prelude.foldl (\(l:ls) x -> if(overlap x l)
@@ -117,6 +118,17 @@ coalescePacks packs = Prelude.foldl (\(l:ls) x -> if(overlap x l)
                                                   team1 = team h1
                                                   team2 = team h2
                
+-- Split the packs that are broken.
+splitPacks :: [Pack] -> RandT StdGen IO [Pack]
+splitPacks packs = concatMapM splitPack packs
+
+splitPack :: Pack -> RandT StdGen IO [Pack]
+splitPack (Breakaway cs t _) = getPacks (Fold.toList cs) t
+splitPack (Pack tLead l cs _) = do
+  newPacks <- getPacks (Fold.toList $ l<|cs) 0 
+  let (Pack _ l' cs' pid) = head newPacks
+  return ((Pack tLead l' cs' pid):(tail newPacks))
+  
 
 --(fixedish) Make breakaways happen in a pack. Will output the rest of the original pack
 -- and maybe new Breakaway packs.
@@ -127,12 +139,12 @@ doBreakaway (Pack tLead l p pid) = do
       (inBrkTeams, rest) = (Sequence.partition ((seqElem brkTeams) . team)) $ stay
   (break', stay') <- partitionM teamCoop inBrkTeams  
   let stayPack = stay' >< rest
-  brkPacks <- concatMapM (\b -> newID >>= setPackSpeed . (Breakaway b 3)) . groupByTeam $ break >< break'
-  stayPack' <- if seqElem stayPack l 
-               then setPackSpeed (Pack tLead l (Sequence.filter ((uid l /=) . uid) stayPack) pid)
+  brkPacks <- mapM (\b -> newID >>= return . setPackSpeed . (Breakaway b 3)) . groupByTeam $ break >< break'
+  let stayPack' = if seqElem stayPack l
+                  then [setPackSpeed (Pack tLead l (Sequence.filter ((uid l /=) . uid) stayPack) pid)]
                   else case viewl stayPack of
-                            EmptyL -> return []
-                            l' :< cs -> setPackSpeed (Pack 0 l' cs pid)
+                    EmptyL -> []
+                    l' :< cs -> [setPackSpeed (Pack 0 l' cs pid)]
   return $ stayPack' ++ brkPacks
     where
       groupByTeam :: Seq Cyclist -> [Seq Cyclist]
