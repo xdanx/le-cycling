@@ -48,3 +48,6 @@ pped :: Cyclist -> Double
 pped c = 75.7664 * spd^3 + 14844.025288499999 * spd * acc
      where spd = speed c
            acc = acceleration c
+
+pm :: Cyclist -> Double
+pm c = (pmax c) * (1 - ((usedEnergy c)/(energyLim c)))
