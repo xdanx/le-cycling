@@ -24,7 +24,6 @@ import Units
 data Cyclist = Cyclist {uid :: Int,           -- C Unique ID
                         pmax :: Double,       -- C Max power (W/kg?)
                         pcp :: Double,        -- C Maximum aneorbosfewnqgff power
-                        pped :: Double,        -- Current power output
                         usedEnergy :: Double, -- e_an : used aneorobic energy 
                         energyLim :: Double,  -- C E_an : maximum aneorobic energy
                         packCoop :: RandT StdGen IO Bool, -- General cooperation function
@@ -105,7 +104,7 @@ genCyclist team_n (strat, distr) = do
            _teamProb <- normal . coops $ distr
            _energyLim <- normal . energylims $ distr
            i <- newID
-           return Cyclist {uid = i, pmax = _pmax, pcp = 0.8*_pmax, pped = 0, usedEnergy = 0, energyLim = _energyLim, packCoop = strat _groupProb, teamCoop = strat _teamProb, groupProb = _groupProb, teamProb = _teamProb, speed = 1, acceleration = 0.000053894*_pmax, distance = 0, team = team_n}
+           return Cyclist {uid = i, pmax = _pmax, pcp = 0.8*_pmax, usedEnergy = 0, energyLim = _energyLim, packCoop = strat _groupProb, teamCoop = strat _teamProb, groupProb = _groupProb, teamProb = _teamProb, speed = 1, acceleration = 0.000053894*_pmax, distance = 0, team = team_n}
 
 -- Generate team_size cyclists with distr distr for each
 -- team between 0 and n_teams.
