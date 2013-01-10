@@ -1,4 +1,4 @@
-slide Title (Dan):
+﻿slide Title (Dan):
 
 Hello my name is Dan, and this is how a cycling race looks like :
 
@@ -77,3 +77,44 @@ Unfortunatelly we only had time to implement one type of strategy, which is prob
 slide Demo (César):
 
 Demo.
+
+
+Slide GT Model - moments (Alex):
+
+Hi, I'm Alex. I'll continue to present our fascinating theory! 
+
+Firstly, I would like to mention that we are keeping the assumptions we have made in the simulation and in the mathematical model, in order to create the game theory.
+
+As Robert said, we have managed to reduce the repeated games to one-off games. The one-off games will be analysed at each delta n km before the finish.
+
+
+Slide GT Model - formulas 1 (Alex):
+
+Now... the ugly/beautiful part, depends of the perspective... :)
+
+So, the pay-offs firstly depend on each of the two players ability to finish first given their current status.
+
+This status, CS, is given by each player's pedalling power, energy remaining, km before the finish line and current speed.
+
+From this we can obtain a probability of finishing first.
+
+Next formula describes the "advantage" one player gets from being second. This is the drafting force. The main things to remember from it is that
+it depends on the value dw, the distance between two cyclists, the density ro of the medium we are cycling in and the speed x of the player which is drafting. 
+Why density of the medium, because we want to make the project flexible and add the possibility of reasoning about cycling at different altitudes.
+
+Pfiu, almost done...
+
+
+Slide GT Model - formulas 2 (Alex):
+
+Let's look at strategies now, we will only talk about the case when both players cooperate. This means they will want to swap positions at different moments
+such that the trailing player benefits from drafting.
+
+So, what is the payoff a player gets from being second? This is (1-P), where P is his probability of being first, times a drafting value. The +1 is just because
+we want to keep the payoff values in a certain interval, i.e [1,2].
+
+I hope we managed to give an intuitive idea about our GT model.
+
+I will now hand it to... (who is next)
+
+
