@@ -17,21 +17,18 @@ data CyclistT = Group | Break | Sprinter
 render :: Surface -> (Surface, Surface, Surface, Surface) -> Int -> IORef Race -> IO ()
 render screen (background, pack, breakaway, sprinter) width r = do
        (Race _ len racers sprint _) <- readIORef r
-       let cyclists = (concatMap (\p -> map (case p of
-                           Pack {} -> (,Group)
-                           Breakaway {} -> (,Break)) (toList . getPack $ p)) racers) ++ (map (,Sprinter) sprint)
+       let cyclists = (concatMap (\p -> map (Prelude.flip (,) $ case p of
+                           Pack {} -> fst3
+                           Breakaway {} -> snd3) (toList . getPack $ p)) racers) ++ (map (,thd3) sprint)
        blitSurface background Nothing screen Nothing
        mapM_ (\(c, tp) -> blitCyclist screen (pack, breakaway, sprinter) tp len (distance c) width) cyclists
        Graphics.UI.SDL.flip screen
        return ()
        
 
-blitCyclist :: Surface -> (Surface, Surface, Surface) -> CyclistT -> Double -> Double -> Int -> IO ()
+blitCyclist :: Surface -> (Surface, Surface, Surface) -> ((Surface,Surface,Surface) -> Surface) -> Double -> Double -> Int -> IO ()
 blitCyclist screen pics tp len pos width = do
-            let pic = (case tp of 
-                            Group -> fst3
-                            Break -> snd3
-                            Sprinter -> thd3) pics
+            let pic = tp pics
             blitSurface pic Nothing screen (Just (Rect {rectX = (floor $ (pos / len) * (fromIntegral width)), rectY = 310, rectW = 0, rectH = 0}))
             return ()
 
