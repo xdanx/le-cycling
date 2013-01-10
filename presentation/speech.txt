@@ -12,7 +12,6 @@ I'm will present our group project called : [read title]
 slide Motivation (Dan):
 
 
-This project 
 
 
 
@@ -91,7 +90,7 @@ As Robert said, we have managed to reduce the repeated games to one-off games. T
 
 Slide GT Model - formulas 1 (Alex):
 
-Now... the ugly/beautiful part, depends of the perspective... :)
+Now... the ugly/beautiful part, depends on the perspective... :)
 
 So, the pay-offs firstly depend on each of the two players ability to finish first given their current status.
 
