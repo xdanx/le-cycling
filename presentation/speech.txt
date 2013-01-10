@@ -4,34 +4,25 @@ Hello my name is Dan, and this is how a cycling race looks like :
 
 Cavendish video -> www.youtube.com/watch?v=aNJ8ji9RRYI 
 
-As you can see from the video, a combination of multiple good decisions havs been made that allowed our cyclist, Mark Cavendish, get the first place.
-
-The winning cyclist, Mark Cavendish, made the correct decision to break away from the winning pack just before the finish line, which ultimately led him to victory.
+The winning cyclist, Mark Cavendish, made the correct decision to break away from the winning pack just before the finish line. This ultimately led him to victory.
 
 
 slide Motivation (Dan):
-
-Competing games are 
-By generalizing this behaviour, we asked ourselves
-
-
-This is also what motivates us: 
 
 
 
 
 slide Our solution (Dan):
 
-The solution we proposed is in two parts :
+The solution we proposed is split into two parts. We have formed two groups working on those two parts. The main challenge in taking this approach is merging our findings, when both teams have to cooperate in order to obtain the final result. 
 
-First a software model of general road cycling races, that tries to simulate the real-life conditions, based on a model we developed following the previous work from various sources.
+First, (Julian and Cesar created ?) a software model of general road cycling races. it tries to simulate the real-life conditions, based on a model we developed following the previous work from various research papers and books.
 
-Secondly, we have created a Game Theoritical framework, used to decide on optimal stategies in a given situation. For example what happens when a cyclist breaks away alone, or how much he would gain by cooperative with an adversary.
+Secondly, (Alex, Robert and I) have created the Game Theoritical framework, used to decide on optimal stategies in a given situation. For example we ask ourselves what happens when a cyclist breaks away alone, or how much he would gain by cooperative with an adversary.
 
-Alex and Robert are going to explain this Game Theory framework more indepth, but first Julian and César are going to introduce our Software Simulation.
+Being mostly a research project, finding relevant results was very challenging, nonetheless rewarding and we are proud of our research. 
 
-
-
+Alex and Robert are going to explain the Game Theory framework in more depth, but first Julian and César are going to introduce you to our Software Simulation.
 
 
 slide The Simulation (Julian):
@@ -86,7 +77,7 @@ Demo.
 
 Slide GT Model - moments (Alex):
 
-Hi, I'm Alex. I'll continue to present our fascinating theory! 
+Hi, I'm Alex. I'll continue to present our theory! 
 
 Firstly, I would like to mention that we are keeping the assumptions we have made in the simulation and in the mathematical model, in order to create the game theory.
 
@@ -95,31 +86,32 @@ As Robert said, we have managed to reduce the repeated games to one-off games. T
 
 Slide GT Model - formulas 1 (Alex):
 
-Now... the ugly/beautiful part, depends on the perspective... :)
+Now... the ugly or beautiful part. Depends on the perspective... :)
 
-So, the pay-offs firstly depend on each of the two players ability to finish first given their current status.
+So, the pay-offs firstly depends on each of the two players ability to finish first given their current status.
 
 This status, CS, is given by each player's pedalling power, energy remaining, km before the finish line and current speed.
 
 From this we can obtain a probability of finishing first.
 
-Next formula describes the "advantage" one player gets from being second. This is the drafting force. The main things to remember from it is that
-it depends on the value dw, the distance between two cyclists, the density ro of the medium we are cycling in and the speed x of the player which is drafting. 
-Why density of the medium, because we want to make the project flexible and add the possibility of reasoning about cycling at different altitudes.
+Next formula describes the "advantage" that one player gets from being second. Let me introduce the drafting force. What you need to remember is that it depends on the the distance between two cyclists (dw) , the density (ro) of the medium we are cycling in and the speed x of the player which is drafting. ( point at the slides )
 
-Pfiu, almost done...
+The reason we use the density of the medium is because we want to make the project flexible and add the possibility of reasoning about cycling at different altitudes.
 
 
 Slide GT Model - formulas 2 (Alex):
 
-Let's look at strategies now, we will only talk about the case when both players cooperate. This means they will want to swap positions at different moments
-such that the trailing player benefits from drafting.
+Let's look at possible strategies now. Due to time constraints, we will only talk about the case when both players cooperate. Other cases are ...
 
-So, what is the payoff a player gets from being second? This is (1-P), where P is his probability of being first, times a drafting value. The +1 is just because
-we want to keep the payoff values in a certain interval, i.e [1,2].
+When both players cooperate, they swap positions at different moments such that the trailing player benefits from drafting.
+
+So, what is the payoff a player gets from being second? This is (1-P), where P is his probability of being first, times a drafting value. The +1 is just because we want to keep the payoff values at a certain interval, i.e [1,2]. Thus, we can now add this formula in the pay-off matrix.
 
 I hope we managed to give an intuitive idea about our GT model.
 
 I will now hand it to... (who is next)
+
+
+
 
 
