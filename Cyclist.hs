@@ -15,11 +15,10 @@ import Data.Typeable
 import System.Random
 
 import Coop
-import ID
 import Population
 import Stats
-import Utils
 import Units
+import Utils
 
 data Cyclist = Cyclist {uid :: Int,           -- C Unique ID
                         pmax :: Double,       -- C Max power (W/kg?)
