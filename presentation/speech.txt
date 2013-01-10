@@ -8,7 +8,10 @@ I'm will present our group project called : [read title]
 
 
 
+
 slide Motivation (Dan):
+
+
 
 
 
@@ -24,6 +27,53 @@ Alex and Robert are going to explain this Game Theory framework more indepth, bu
 
 
 
+
+
 slide The Simulation (Julian):
 
 
+
+
+
+slide Physiological Model (César): 
+
+So for the physical model, we took into account the two modes in which the muscles can function :
+
+When you exercise your muscle produce lactic acid.
+
+If the exercise your doing is not very intense, the aerobic metabolism is activated, which means that your organism has enough oxygen to eliminate the acid and that you can exercise for long period of time.
+If the exercise is more intensive, the muscle enter in anaerobic mode and your organism can't get rid of the acid fast enough, so you will get tired and your muscle will start to burn when the acid accumulates.
+
+
+We represent this functions by two different values in the simulation :
+
+Pmax which is the maximum power output you can produce with your anaerobic metabolism.
+And Pcp which is the maxium aerobic limit, so the maximum power you can produce without ever getting tired.
+
+Your speed will be computed in different situations based on these values.
+
+
+
+
+
+
+slide Psychological Model (César):
+
+This is the part that deals how the cyclists behave, their strategy.
+Some things are constant, for example in a pack, their speed has to be adapted to the performance of every cyclist in the pack. But each cyclist can take several kind of decisions, and we implemented the code such that different strategies could be added easily.
+
+The decisions one can make are :
+
+To breakaway from a pack or not,
+To follow a teammate in a breakaway, 
+and to act cooperativelly with your pack, which means that you will do your share in taking the lead position, which is more demanding.
+
+Unfortunatelly we only had time to implement one type of strategy, which is probabilistic, each cyclist has a probability of doing each of these decisions. This allows to create a wide range of type of cyclists easily, making them more or less cooperative.
+
+
+
+
+
+slide Demo (César):
+
+Demo.

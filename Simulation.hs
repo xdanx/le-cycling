@@ -36,13 +36,10 @@ turn :: Race -> RandT StdGen IO Race
 turn (Race trn len r s win) = do
      let
         s' = map updateEnergy s
-        r' = map (\p -> packMap updateEnergy p) r
-        (Race _ _ r'' _ _) = updateBrkTime (Race trn len r' s' win)
-     r''' <- mapM defLeader r''
-     cyclists <- concatMapM doBreakaway r'''
-     let before = List.sum . map numCyclists $ r'''
-         after = List.sum . map numCyclists $ cyclists
-     when (before /= after) . liftIO . putStrLn $ "You being foolish again fool, before: " ++ show before ++ ", after: " ++ show after ++ (if before < 5 then show r''' ++ ", " ++ show cyclists else "")
+        r1 = map (\p -> packMap updateEnergy p) r
+        (Race _ _ r2 _ _) = updateBrkTime (Race trn len r1 s' win)
+     r3 <- mapM defLeader r2
+     cyclists <- concatMapM doBreakaway r3
      updatePosition $ (Race (trn + 1) len cyclists s' win)
 
 --Updates the breakaway groups, i.e. reduce the timer then make it into a normal pack.
