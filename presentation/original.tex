@@ -4,7 +4,7 @@
 %\usetheme{default}
 %\usetheme{Warsaw}
 %\usetheme{Bergen} % This template has nagivation on the left
-%\usetheme{Frankfurt} % Similar to the default 
+%\usetheme{Frankfurt} % Similar to the default
 %with an extra region at the top.
 %\usecolortheme{seahorse} % Simple and clean template
 %\usetheme{Darmstadt} % not so good
@@ -13,24 +13,44 @@
 % \setbeamertemplate{footline}[page number]
 %\setbeamercovered{transparent}
 \setbeamercovered{invisible}
-% To remove the navigation symbols from 
+% To remove the navigation symbols from
 % the bottom of slides%
-\setbeamertemplate{navigation symbols}{} 
+\setbeamertemplate{navigation symbols}{}
 %
 \usepackage{graphicx}
+
+\makeatletter
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+    \usebeamerfont{author in head/foot}\insertshortinstitute
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+    \usebeamerfont{title in head/foot}\insertshorttitle
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+    \usebeamerfont{date in head/foot}\insertshortdate{}\hspace*{2em}
+    \insertframenumber{} / \inserttotalframenumber\hspace*{2ex} 
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+\makeatother
+
 %\usepackage{bm}         % For typesetting bold math (not \mathbold)
 %\logo{\includegraphics[height=0.6cm]{yourlogo.eps}}
 %
-\title[Short title of the talk]{Beautiful Presentation using Beamer}
-\author{Name of the Speaker}
-\institute[U of X]
+\title[When to break away?]{Cycling simulation\\\textit{When} to break away?}
+\author[]{Dan Demeter, Robert Kruszewski, Alexandru Paunoiu\\Cesar Proute, Julian Sutherland}
+\institute[Imperial College London]
 {
-University of [...] \\
+Imperial College London \\
 \medskip
-{\emph{email@domain.ca}}
+
 }
 \date{\today}
-% \today will show current date. 
+% \today will show current date.
 % Alternatively, you can specify a date.
 %
 \begin{document}
@@ -66,16 +86,16 @@ Does anybody need an introduction to Beamer?
 I don't think so.
 \end{block}
 % Extra carriage return causes problem with verbatim %
-\end{frame}\end{verbatim} 
+\end{frame}\end{verbatim}
 \end{example}
 \end{frame}
- 
+
 \begin{frame}[fragile]  % notice the fragile option, since the body
 			% contains a verbatim command
 Example of the \verb|\cite| command to give a reference is below:
 Example of citation using \cite{key1} follows on.
 \end{frame}
- 
+
 \begin{frame}
 \frametitle{References}
 \footnotesize{
@@ -86,9 +106,9 @@ Example of citation using \cite{key1} follows on.
 \end{thebibliography}
 }
 \end{frame}
- 
+
 \begin{frame}
 \centerline{The End}
 \end{frame}
 % End of slides
-\end{document} 
+\end{document}

@@ -47,6 +47,7 @@ loop rend ref = do
   n <- getStdGen >>= evalRandT (turn r)
   writeIORef ref n
   rend
+  print r
   case n of
     (Race _ _ [] [] _) -> exitSuccess
     (Race _ _ _ _ _) -> delay time >> loop rend ref

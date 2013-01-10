@@ -62,7 +62,8 @@ updatePosition (Race trn len packs sprint finish) = do
                    (remainingPacks, toSprinters, packFinishers) = (\(a, b, c) -> (mapMaybe id a, List.concat b, List.concat c)) . unzip3 . map (updatePack len) $ movedPacks
                    (sprintFinishers, remainingSprinters) = List.partition (\c -> (distance c) >= len) movedSprinter 
                    orderedFinishers = orderFinishers trn len $ sprintFinishers ++ packFinishers
-                   newPacks = coalescePacks {-. splitPacks-} $ remainingPacks
+               newPacks' <- splitPacks remainingPacks
+               let newPacks = coalescePacks newPacks'
                    finalSprinters = map setSprinterSpeed (List.sort $ toSprinters ++ remainingSprinters)
                when (List.or . map isEmpty $ newPacks) . liftIO . putStrLn $ "The fuck you playing at fool?"
                return (Race trn len newPacks finalSprinters (finish ++ orderedFinishers))
