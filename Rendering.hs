@@ -34,10 +34,10 @@ blitCyclist screen pics tp len pos width = do
 
 loadPics :: IO (Surface, Surface, Surface, Surface)
 loadPics = do
-         background <- loadTyped "background.png" PNG
-         pack <- loadTyped "cyclist_black.png" PNG
-         breakaway <- loadTyped "cyclist_blue.png" PNG
-         sprinter <- loadTyped "cyclist_green.png" PNG
+         background <- loadTyped "img/background.png" PNG
+         pack <- loadTyped "img/cyclist_black.png" PNG
+         breakaway <- loadTyped "img/cyclist_blue.png" PNG
+         sprinter <- loadTyped "img/cyclist_green.png" PNG
          return (background, pack, breakaway, sprinter)
 
 {-render :: IORef Race -> IO ()
