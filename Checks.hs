@@ -16,7 +16,7 @@ import Simulation
 
 instance Arbitrary Cyclist where
   arbitrary = MkGen $ \x y -> unsafePerformIO . flip evalRandT x $ (genCyclist 1 (standardCoop, avg))
-  shrink = (:[])
+  shrink = shrinkNothing
 
 
 instance Arbitrary Pack where
@@ -26,7 +26,7 @@ instance Arbitrary Pack where
     tBreak <- elements [1..3]
     let pid = unsafePerformIO $ newID
     elements [Pack tLead l (Sequence.fromList p) pid, Breakaway (Sequence.fromList a) tBreak pid]
-  shrink = (:[])
+  shrink = shrinkNothing
 
 
 instance Arbitrary Race where
@@ -34,4 +34,7 @@ instance Arbitrary Race where
                    packs <- listOf1 arbitrary
                    sprinters <- listOf1 arbitrary
                    return $ Race 0 10000 packs sprinters []
-         shrink = (:[])
+         shrink = shrinkNothing
+
+
+
