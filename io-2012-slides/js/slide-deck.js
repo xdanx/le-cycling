@@ -310,7 +310,7 @@ SlideDeck.prototype.loadConfig_ = function(config) {
   }
 
   // Builds. Default to on.
-  if (!!!('useBuilds' in settings) || settings.useBuilds) {
+  if (!!!('useBuilds' in settings) || settings.useBuilds) {2
     this.makeBuildLists_();
   }
 
@@ -668,7 +668,7 @@ SlideDeck.prototype.updateSlideClass_ = function(slideNo, className) {
  */
 SlideDeck.prototype.makeBuildLists_ = function () {
   for (var i = this.curSlide_, slide; slide = this.slides[i]; ++i) {
-    var items = slide.querySelectorAll('.build > *');
+    var items = slide.querySelectorAll('.build > :not(.build)');
     for (var j = 0, item; item = items[j]; ++j) {
       if (item.classList) {
         item.classList.add('to-build');
