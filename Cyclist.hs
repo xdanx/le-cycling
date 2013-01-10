@@ -37,7 +37,7 @@ data Cyclist = Cyclist {uid :: Int,           -- C Unique ID
                        }
 
 instance Show Cyclist where
-        show c = "Cyclist {uid = " ++ show (uid c) ++ "}"
+        show c = "Cyclist {uid = " ++ show (uid c) ++ ", distance: " ++ show (distance c) ++ ", speed: " ++ show (speed c) ++ "}"
 
 setPmax :: Cyclist -> Double -> Cyclist
 setPmax c x = c{pmax = x}

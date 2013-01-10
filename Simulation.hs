@@ -55,17 +55,16 @@ updateBrkTime (Race trn len r s w) = (Race trn len (map update r) s w)
 
 
 -- Update position of Racers
-updatePosition :: Race -> RandT StdGen IO Race
-updatePosition (Race trn len packs sprint finish) = do
-               let movedPacks = map updatePackPosition . List.filter (not . isEmpty) $ packs
+updatePosition :: Race -> RandT StdGen IO Race --
+updatePosition (Race trn len packs sprint finish) = do --
+               let movedPacks = map updatePackPosition . List.filter (not . isEmpty) $ packs 
                    movedSprinter = map (\c -> c{distance = (distance c) + 60*(speed c)}) sprint
-                   (remainingPacks, toSprinters, packFinishers) = (\(a, b, c) -> (mapMaybe id a, List.concat b, List.concat c)) . unzip3 . map (updatePack len) $ movedPacks
+                   (remainingPacks, toSprinters, packFinishers) = (\(a, b, c) -> (mapMaybe id a, List.concat b, List.concat c)) . unzip3 . map (updatePack len) $ movedPacks --
                    (sprintFinishers, remainingSprinters) = List.partition (\c -> (distance c) >= len) movedSprinter 
                    orderedFinishers = orderFinishers trn len $ sprintFinishers ++ packFinishers
                newPacks' <- splitPacks remainingPacks
                let newPacks = coalescePacks newPacks'
                    finalSprinters = map setSprinterSpeed (List.sort $ toSprinters ++ remainingSprinters)
-               when (List.or . map isEmpty $ newPacks) . liftIO . putStrLn $ "The fuck you playing at fool?"
                return (Race trn len newPacks finalSprinters (finish ++ orderedFinishers))
 
 
@@ -133,28 +132,26 @@ splitPack (Pack tLead l cs _) = do
 
 --(fixedish) Make breakaways happen in a pack. Will output the rest of the original pack
 -- and maybe new Breakaway packs.
-doBreakaway :: Pack -> RandT StdGen IO [Pack]
-doBreakaway (Pack tLead l p pid) = do
-  (break, stay) <- partitionM packCoop (l <| p) 
-  let brkTeams = fmap team break
-      (inBrkTeams, rest) = (Sequence.partition ((seqElem brkTeams) . team)) $ stay
-  (break', stay') <- partitionM teamCoop inBrkTeams  
-  let stayPack = stay' >< rest
-  brkPacks <- mapM (\b -> newID >>= return . setPackSpeed . (Breakaway b 3)) . groupByTeam $ break >< break'
-  let stayPack' = if seqElem stayPack l
-                  then [setPackSpeed (Pack tLead l (Sequence.filter ((uid l /=) . uid) stayPack) pid)]
+doBreakaway :: Pack -> RandT StdGen IO [Pack] --
+doBreakaway (Pack tLead l p pid) = do --
+  (break, stay) <- partitionM packCoop (l <| p) --
+  let brkTeams = fmap team break --
+      (inBrkTeams, rest) = (Sequence.partition ((seqElem brkTeams) . team)) $ stay --
+  (break', stay') <- partitionM teamCoop inBrkTeams  -- 
+  let stayPack = stay' >< rest --
+  brkPacks <- mapM (\b -> newID >>= return . setPackSpeed . (Breakaway b 3)) . groupByTeam $ break >< break' -- ~ (assume groupByTeam)
+  let stayPack' = if seqElem stayPack l --
+                  then [setPackSpeed (Pack tLead l (Sequence.filter ((uid l /=) . uid) stayPack) pid)]  --
                   else case viewl stayPack of
-                    EmptyL -> []
-                    l' :< cs -> [setPackSpeed (Pack 0 l' cs pid)]
-  return $ stayPack' ++ brkPacks
-    where
-      groupByTeam :: Seq Cyclist -> [Seq Cyclist]
-      groupByTeam cs =
-        case viewl cs of 
-          EmptyL -> []
-          c :< cs' -> brkPack : (groupByTeam cs'')
-            where
-              (brkPack, cs'') = Sequence.partition (\c' -> team c == team c') cs'
+                    EmptyL -> [] --
+                    l' :< cs -> [setPackSpeed (Pack 0 l' cs pid)] --
+  return $ stayPack' ++ brkPacks  --
+  where groupByTeam :: Seq Cyclist -> [Seq Cyclist]
+        groupByTeam cs = case viewl cs of 
+                              EmptyL -> []
+                              c :< cs' -> (c <| brkPack) : (groupByTeam cs'')
+                                where
+                                        (brkPack, cs'') = Sequence.partition (\c' -> team c == team c') cs'
 
 doBreakaway p = return [p]
 

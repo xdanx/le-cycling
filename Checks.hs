@@ -1,6 +1,7 @@
 module Checks where
 
 import Control.Monad.Random
+import Data.Maybe
 import Data.Sequence as Sequence
 import System.IO.Unsafe
 import Test.QuickCheck
@@ -31,8 +32,12 @@ instance Arbitrary Pack where
 instance Arbitrary Race where
          arbitrary = do
                    packs <- listOf1 arbitrary
-                   sprinters <- listOf1 arbitrary
+                   sprinters <- listOf arbitrary
                    return $ Race 0 10000 packs sprinters []
+         shrink = shrinkNothing
+
+instance (Arbitrary a) => Arbitrary (Seq a) where
+         arbitrary = arbitrary >>= return . Sequence.fromList
          shrink = shrinkNothing
 
 lenPack :: Pack -> Int
@@ -50,6 +55,10 @@ testPack f l = (lenPack $ l) == (lenPack . f $ l)
 testListPack :: ([Pack] -> [Pack]) -> [Pack] -> Bool
 testListPack f l = (sum . map lenPack $ l) == (sum . map lenPack . f $ l)
 
+testListPackM :: (Pack -> RandT StdGen IO [Pack]) -> Pack -> Bool
+testListPackM f l = (lenPack l) == (sum . map lenPack . unsafePerformIO . flip evalRandT g . f $ l)
+              where g = unsafePerformIO $ getStdGen
+
 testRace :: (Race -> Race) -> Race -> Bool
 testRace f l = (lenRace l) == (lenRace . f $ l)
 
@@ -57,6 +66,16 @@ testRaceM :: (Race -> RandT StdGen IO Race) -> Race -> Bool
 testRaceM f l = (lenRace l) == (lenRace . unsafePerformIO . flip evalRandT g . f $ l)
           where g = unsafePerformIO $ getStdGen
 
+
+testUpdatePack :: Pack -> Bool
+testUpdatePack p = (lenPack p) == ((Prelude.length (sprint ++ win)) + lp')
+               where (p', sprint, win) = updatePack 10000 p
+                     lp' = if isJust p'
+                           then lenPack . fromJust $ p'
+                           else 0
+
+testSeqListCyclist :: (Seq Cyclist -> [Seq Cyclist]) -> Seq Cyclist -> Bool
+testSeqListCyclist f s = (Sequence.length s) == (sum . map Sequence.length . f $ s)
 -- all testEq1 []
 
 

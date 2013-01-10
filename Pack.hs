@@ -117,7 +117,7 @@ getPack (Breakaway pack _ _) = pack
 -- Test if a pack as no cyclists in it.
 isEmpty :: Pack -> Bool
 isEmpty (Breakaway cs _ _) = cs == empty
-isEmpty _ = True -- <--- Why do we return True here ?
+isEmpty _ = False -- <--- Why do we return True here ?
 
 -- Number of cyclists contained in a pack.
 numCyclists :: Pack -> Int
