@@ -43,3 +43,8 @@ setSprinterSpeed c = updateCyclistPhysics c (0.95 * (pmax c))
 -- Need to do something different if it's in_pack vs (leader, breakaway or sprint)
 updateEnergy :: Cyclist -> Cyclist
 updateEnergy c = c{usedEnergy = (usedEnergy c) + 60 * ((pped c) - (pcp c))}
+
+pped :: Cyclist -> Double
+pped c = 75.7664 * spd^3 + 14844.025288499999 * spd * acc
+     where spd = speed c
+           acc = acceleration c
