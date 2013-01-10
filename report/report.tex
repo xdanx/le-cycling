@@ -101,13 +101,13 @@ In this research project, we aim to present new results and further develop prev
 
 \chapter{Introduction}\label{ch:intro}
 
-The first cycling race is assumed to be held on the $31^{th}$ of May 1868 in Paris. Nowadays, after roughly 145 years, cycling is one of the top 10 most popular sports during the Summer Olympics \cite{TopEndSportsUrl} and attracts millions of fans worldwide. Cycling competitions are divided into three main categories: \textit{road, track and off-road events}. Like in any popular sports, researchers showed their interest in strategies that could simulate the outcome of races. Efforts have been made to characterize as accurately as possible cycling races, and led to formulas taking into consideration almost all the of the factors  that could affect the outcome of the race. Some examples can be seen in \cite{AgentModel} or \cite{SlipStream} .
+The first cycling race is thought to have been held on the $31^{th}$ of May 1868 in Paris. Nowadays, after roughly 145 years, cycling is one of the top 10 most popular sports during the Summer Olympics \cite{TopEndSportsUrl} and attracts millions of fans worldwide. Cycling competitions are divided into three main categories: \textit{road, track and off-road events}. Like in any popular sport, researcher have shown their interest in methods that could simulate the outcome of races. Efforts have been made to characterize as accurately as possible cycling races. This has led to formulas taking into consideration almost all of the factors that could affect the outcome of the race. Some examples can be seen in \cite{AgentModel} or \cite{SlipStream} .
 \\\\
-During our project, we have focused mainly on \textit{road events}: \textbf{road race, criterium, hill climbing and stage races} and Sprint \textit{track events}. For a novice watching those competitions, it might seem peculiar the way athletes compete with each other. Even though they are racing against each other, their only chance of success is teaming up with their competitors. Unfortunately, as more members join the break-away group, the rider's chances of crossing the finish line first decrease. However, this can help racers who lack pace as they have the chance to cooperate with others. This behaviour is mostly noted in the Stage Races like Tour de France or Tour de Faso in Africa where even entire teams with no chance of winning are teaming up with top teams in order to help them out. Also, during a competition riders can be taken by surprise by their break-away companions who start sprinting towards the finish line earlier than expected.
+During our project, we have focused mainly on \textit{road events}: \textbf{road race, criterium, hill climbing and stage races} and Sprint \textit{track events}. For a novice watching those competitions, it might seem peculiar the way athletes compete with each other. Even though they are racing against each other, their only chance of success is teaming up with their competitors. Unfortunately, as more members join break-away groups, the rider's chances of crossing the finish line first decreases. However, this can help racers who lack pace as they have the chance to cooperate with others. This behaviour is mostly noted in the Stage Races like the Tour de France or the Tour de Faso in Africa where entire teams that have no chance of winning team up with top teams in order to help them out. Also, during a competition riders can be taken by surprise by their break-away companions who start sprinting towards the finishing line earlier than expected.
 \\\\
-In the following report we will focus on races where players are forced to cooperate and ask ourselves whether we can derive a game theory model that can model the optimal behaviour for a cyclist. The aims of this project are to first create a cycling race simulation that could realistically reproduce the progress of a race. Secondly, to create a game theoretical framework able to determine the optimal strategy for a cyclist in a certain situation. The final goal is to make it possible to join these together and develop the game theory using data collected from the simulation, as well as include strategies designed from the game theory framework into the simulation.
+In the following report we will focus on races where players are forced to cooperate and ask ourselves whether we can derive a game theoretical model that can predict the optimal behaviour for a cyclist. The aims of this project are to first create a cycling race simulation that could realistically reproduce the progress of a race. Secondly, to create a game theoretical framework able to determine the optimal strategy for a cyclist in a certain situation. The final goal is to make it possible to join these together and develop the game theoretical model using data collected from the simulation, as well as include strategies designed from the game theory framework in the simulation.
 \\\\
-We have managed to create a simulation of road races and aimed to make it as realistic as possible. The reader should, however, take note of the fact that we made certain assumptions along the way. The simulation is described in section \ref{sec:softmodel}. We have also proposed a game theoretical model that  covers the possible outcomes of a race in several type of situations, this being described in section \ref{sec:gameth}. Lastly, we are using the model in order to validate the resulrts from the simulation.
+We have managed to create a road race simulation and aimed to make it as realistic as possible. The reader should however take note of the fact that we made certain assumptions. The simulation is described in section \ref{sec:softmodel}. We have also proposed a game theoretical model that  covers the possible outcomes of a race in several types of situations. These where described in section \ref{sec:gameth}. Lastly, we are using the model in order to validate the results from the simulation.
 
 \chapter{Design and Implementation}\label{ch:design&impl}
 
@@ -362,8 +362,8 @@ The main function then loads the input file and generates the corresponding race
 \section{Game Theory Model}\label{sec:gameth}
 
 In order to create a thorough mathematical model we aim to construct a game theoretical model. This model will help racers to change their strategies and choose the optimal one as the race unfolds. To create a sound model, we based our assumptions on the simulation previously described. We managed to abstract the mathematical foundations of the simulation to develop the game theory.\\\\
-Modelling bike races can be quite challenging, hence we will begin with the simplest case in order to introduce our methodology and explain the simplifying assumptions we are making. When participating in a race we can argue that racers are at each point faced with three possible options: either break-away from their current group or fall back to the group preceding the current one or cooperate with the other members of the group (which essentially implies copying the strategy of the other players in their group - which will be discussed later). Each of the racers can change his mind as often as he wants, however, changes in strategy will likely incur penalties on their performance. In this section we try to determine whether there is dominant strategy and try to find at which point in race it is beneficial for racer to change his strategy. We can easily see that strategy chosen by players will depend on their skills and fitness, i.e. better racers can afford more aggressive, less cooperative strategy in hope of being able to outdistance opponents. On the other hand weaker players will tend to cooperate more. The difficulty of this part is not the actual solution to the model since it might happen there will not be a general solution but fitting the model to the actual situation. It is fairly easy to construct arbitrary game theoretical games, however, when the games have to even remotely represent reality they get complicated very quickly.\\\\
-Before we can dive into discussion of game theoretical models we have created we aim to present short introduction to game theoretical concepts we are using. Also short summary of core principles of game theory is included with references to further reading. We then continue to consideration of case with two racers when the group chasing them is very far from them and does not affect the strategies. Thus, they are guaranteed to come first and second.
+Modelling bike races can be quite challenging, hence we will begin with the simplest case in order to introduce our methodology and explain the simplifying assumptions we are making. When participating in a race we can argue that racers are at each point faced with three possible options: either break-away from their current group or fall back to the group preceding the current one or cooperate with the other members of the group (which essentially implies copying the strategy of the other players in their group - which will be discussed later). Each of the racers can change his mind as often as he wants, however, changes in strategy will likely incur penalties on their performance. In this section we try to determine whether there is a dominant strategy and try to find at which point in race it is beneficial for racer to change his strategy. We can easily see that strategy chosen by players will depend on their skills and fitness, i.e. better racers can afford more aggressive, less cooperative strategy in hope of being able to outdistance opponents. On the other hand weaker players will tend to cooperate more. The difficulty of this part is not the actual solution to the model since it might happen there will not be a general solution but fitting the model to the actual situation. It is fairly easy to construct arbitrary theoretical games, however, when the games have to even remotely represent reality they get complicated very quickly.\\\\
+Before we can dive into discussion of game theoretical models we have created we aim to present short introduction to game theoretical concepts we are using. Also short a summary of core principles of game theory is included with references to further readings. We then continue to consideration of cases with two racers when the group chasing them is very far from them and does not affect the strategies. Thus, they are guaranteed to come first and second.
 
 \subsection{Definitions}\label{subsec:defs}
 
@@ -372,7 +372,7 @@ Before we can indulge ourselves in discussion of game theory can be used to appr
 \paragraph{2-person Zero-sum Game} ~\\
 Two-person zero-sum game describes conflict of interest between two players with strictly opposite interests. Formally this means that any change in the pay-off of one player has to be offset with equal decrease in amount of payout to the second player. These types of games can be divided into three subsections depending on the achievable results to the game. We can have a dominant strategy equilibrium, pure strategy Nash equilibrium and mixed strategy Nash equilibrium each with less strictness imposed on the result.
 \paragraph{Dominant Strategy Equilibrium}
-is represented by table below. Ease of analysing such games stems from the fact that there is always a clear strategy that a player has to follow in order to achieve maximum payout.\\
+is represented by the table below. Ease of analysing such games stems from the fact that there is always a clear strategy that a player has to follow in order to achieve maximum payout.\\
 
 % Dominant strategy equilibrium derivation %
 
@@ -388,11 +388,11 @@ is represented by table below. Ease of analysing such games stems from the fact 
 	\end{tabular}
 	\caption{2-person zero-sum game\\ dominant strategy equilibrium}
 \end{table}
-\noindent In order to find dominant strategy equilibrium we need to find dominant strategy.
+\noindent In order to find a dominant strategy equilibrium we need to find a dominant strategy.
 \paragraph{Row player} strategy $i$ dominates strategy $j$ (for row player) if $\forall k. a_{ik} \ge a_{jk}$ and $\exists k.a_{ik} > a_{jk}$.
 \paragraph{Column player} strategy $i$ dominates strategy $j$ if $\forall k. a_{ki} \le a_{kj}$ and $\exists k.a_{ki} < a_{kj}$.
 \\\\
-Using these rules we can reduce pay-off matrix. It is clear that strategy $C$ is dominated by either $A$ and $B$. Hence, the matrix is reduced to:
+Using these rules we can reduce the pay-off matrix. It is clear that strategy $C$ is dominated by either $A$ and $B$. Hence, the matrix is reduced to:
 \begin{table}[ht!]
 	\hspace{-4em}
 	\centering
@@ -406,7 +406,7 @@ Using these rules we can reduce pay-off matrix. It is clear that strategy $C$ is
 	\caption{2-person zero-sum game\\ dominant strategy equilibrium}
 \end{table}
 \\\\
-Furthermore one can spot that both strategy $a$ and $c$ are dominated by $b$
+Furthermore one can spot that both strategies $a$ and $c$ are dominated by $b$
 \begin{table}[ht!]
 	\hspace{-4em}
 	\centering
@@ -418,7 +418,7 @@ Furthermore one can spot that both strategy $a$ and $c$ are dominated by $b$
 	\caption{2-person zero-sum game\\ dominant strategy equilibrium}
 \end{table}
 \\\\
-Which comes down to the following.
+Which comes down to the following :
 \begin{table}[ht!]
 	\hspace{-4em}
 	\centering
@@ -434,7 +434,7 @@ Hence the final and dominant strategy pair is $(A,b)$.
 
 % Pure Nash equilibrium derivation
 
-\paragraph{Pure Nash Strategy Equilibrium} represents a situation when no player has an incentive to deviate from the strategy chosen, since no player can choose a better strategy given the choices of the other players. Consider following table.
+\paragraph{Pure Nash Strategy Equilibrium} represents a situation when no player has an incentive to deviate from the strategy chosen, since no player can choose a better strategy given the choices of the other players. Consider the following table.
 \begin{table}[ht!]
 	\hspace{-4em}
 	\centering
@@ -448,7 +448,7 @@ Hence the final and dominant strategy pair is $(A,b)$.
 	\caption{2-person zero-sum game\\ pure strategy Nash equilibrium}
 \end{table}
 \\
-One can put Nash strategy equilibria in simpler words the row player (Player 2) wants to maximise minimal gain from the game and column player (Player 1) wants to minimise maximal payout of the game. We can then easily derive Nash strategy equilibrium by looking at rows and following the rules. Consider the table below.
+To put Nash strategy equilibria in simpler words the row player (Player 2) wants to maximise minimal gain from the game and column player (Player 1) wants to minimise maximal payout of the game. We can then easily derive Nash strategy equilibrium by looking at rows and following the rules. Consider the table below.
 \begin{table}[ht!]
 	\hspace{-4em}
 	\centering
@@ -463,9 +463,9 @@ One can put Nash strategy equilibria in simpler words the row player (Player 2) 
 	\caption{2-person zero-sum game\\ pure strategy Nash equilibrium}
 \end{table}
 \\
-The resulting table allows to easily point the Nash equilibrium. Other way of looking at this solution is to realise that it is a saddle point in the graph of strategy space. Hence, neither of the players has incentive to deviate from it. In case of above matrix one can deduce that Nash equilibrium is at $(B,b)$.
+The resulting table allows to easily point the Nash equilibrium. Another way of looking at this solution is to realise that it is a saddle point in the graph of strategy space. Hence, neither of the players has incentive to deviate from it. In case of above matrix one can deduce that Nash equilibrium is at $(B,b)$.
 
-\paragraph{Mixed Strategy Nash Equilibrium} is a situation when there is no pure strategy, hence we cannot state that one strategy is better than the other always. However, we can still obtain a solution to this game by assigning probabilities to strategies. By playing strategies according to their corresponding probabilities one can achieve optimal expected output of the game. Following table show situation like this
+\paragraph{Mixed Strategy Nash Equilibrium} is a situation when there is no pure strategy, hence we cannot state that one strategy is always better than the other. However, we can still obtain a solution to this game by assigning probabilities to strategies. By playing strategies according to their corresponding probabilities one can achieve optimal expected output of the game. Following table show situation like this
 \begin{table}[ht!]
 	\hspace{-2em}
 	\centering
@@ -479,7 +479,7 @@ The resulting table allows to easily point the Nash equilibrium. Other way of lo
 	\caption{2-person zero-sum game\\mixed strategy Nash equilibrium}
 \end{table}
 \\
-There is no pure equilibrium strategy, however, on can be found using Linear Programming techniques. If we apply such technique to this problem we will find out following probabilities (given in brackets) for this game.
+There is no pure equilibrium strategy, however, on can be found using Linear Programming techniques. If we apply such technique to this problem we will find out the following probabilities (given in brackets) for this game.
 \begin{table}[ht!]
 	\hspace{-2em}
 	\centering
@@ -640,11 +640,11 @@ For each region we obtain , in order to find the maximum it is sufficient to loo
 
 % What could we do next ? \\
 
-This project presents a functional simulation of cycling races. It might be a simple one, but it captures the important elements of road cycling. It has been made with modularity in mind, the input format allows to describe easily a wide range of situation in details, and even if only one type of strategy has been implemented, we made sure it would be easy to add more advanced ones. Related to the front-end however, we believe that the project would benefit from a GUI extension, with a better representation of the race. The GUI could have the possibility to analyse the outcome more in depth: being able to generate plots to analyse the effect of different strategies or physical abilities. It could also be created such that you can have the option to pause the race and inspect various parameters and values. We believe that being able to pause a simulation and analyse that specific situation in-depth is a powerful feature for the GUI.
+This project presents a functional simulation of cycling races. It might be a simple one, but it captures the important elements of road cycling. It has been made with modularity in mind, the input format allows to describe easily a wide range of situation in details, and even if only one type of strategy has been implemented, we made sure it would be easy to add more advanced ones. Related to the front-end however, we believe that the project would benefit from a GUI extension, with a better representation of the race. The GUI could have the possibility to analyse the outcome more in depth: being able to generate plots to analyse the effect of different strategies or physical abilities. It could also be created such that you can have the option to pause the race and inspect various parameters and values. We believe that being able to pause a simulation and analyse that specific situation in-depth would be a powerful feature for the GUI.
 \\\\
-Another issue that this project could benefit from is a proper documentation. As we mentioned earlier above, we have separated our code into multiple small \textit{modules} in order to make the code more flexible. Unfortunately we don't have a documentation describing the format of the input and how to add extensions to the simulation. This is also due to the various and multiple incremental changes in our modules, as we were adjusting the code.\\\\
+This project could also benefit from a proper documentation. As we mentioned earlier above, we have separated our code into multiple small \textit{modules} in order to make the code more flexible. Unfortunately we don't have a documentation describing the format of the input and how to add extensions to the simulation. This is also due to the various and multiple incremental changes in our modules, as we were adjusting the code.\\\\
 A further extension could look into trying to make the simulation and the game theoretical framework work together to produce new results. We could be able to analyse more complex games with information gained from tests on the simulation, for example to determine the pay-off of different strategies. It would also be possible to implement very complex strategies, based on game theory and add them to the simulation. \\\\
-By having the game theory model and the simulation working together, we can implement a 3 x 3 matrix game solver (each player has three possible strategies, as mentioned in the previous chapter). See previous chapter for a detailed solution idea. Moreover, a next step is to formalize the idea of the N-person game and try to solve the resulting N-dimensional game. In addition, as the simulation develops further, we can start taking into account, in the game theory model, the altitude the cyclists race at, as this can have an impact on their performance.
+By having the game theory model and the simulation working more closely together, we can implement a 3 x 3 matrix game solver (each player has three possible strategies, as mentioned in the previous chapter). See previous chapter for a detailed solution idea. Moreover, a next step is to formalize the idea of the N-person game and try to solve the resulting N-dimensional game. In addition, as the simulation develops further, we can start taking into account, in the game theory model, the altitude the cyclists race at, as this can have an impact on their performance.
 \\\\
 Overall, it was a great experience working collaboratively on a project with no fixed boundaries, where we had to research and create our objectives. To achieve more  results however, we would have to work on a better time management and organisation. Also, in order to test our Game Theory strategy, we could have run our simulation in a distributed fashion instead of just running it multiple times on our machines. We could have implemented this by using Condor which is already installed on our lab machines.
 
