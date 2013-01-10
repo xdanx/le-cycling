@@ -1,20 +1,17 @@
 module Checks where
 
+import Control.Monad.Random
+import System.IO.Unsafe
 import Test.QuickCheck
+import Test.QuickCheck.Gen
 
-import Simulation
-import Pack
+import Coop
 import Cyclist
+import Pack
+import Population
+import Simulation
 
 
 instance Arbitrary Cyclist where
-  arbitrary = 
-    _uid <- undefined
-    _pmax <- choose (0, 2.6)
-    _ 
-    Cyclist {uid = ,
-             pmax = choose ()}
-  
-  
-  shrink = :[]
-
+  arbitrary = MkGen $ \x y -> unsafePerformIO . flip evalRandT x $ (genCyclist 1 (standardCoop, avg))
+  shrink = (:[])
