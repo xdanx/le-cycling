@@ -33,6 +33,7 @@ data Cyclist = Cyclist {uid :: Int,           -- C Unique ID
                         teamProb :: Double,   -- used, these stores the probabilities.
                         speed :: Speed,       -- Current speed
                         distance :: Meters,   -- Current distance
+                        acceleration :: Acceleration, -- Current acceleration
                         team :: Int           -- C Team number.
                        }
 
@@ -57,8 +58,13 @@ setPackCoop c x = c{packCoop = x}
 setTeamCoop :: Cyclist -> RandT StdGen IO Bool -> Cyclist
 setTeamCoop c x = c{teamCoop = x}
 
+sanitiseSpeed :: Speed -> Speed
+sanitiseSpeed x = if(x < 1)
+                  then 1
+                  else x
+
 setSpeed :: Cyclist -> Speed -> Cyclist
-setSpeed c x = c{speed = x}
+setSpeed c x = c{speed = sanitiseSpeed x}
 
 setDistance :: Cyclist -> Meters -> Cyclist
 setDistance c x = c{distance = x}
@@ -99,7 +105,7 @@ genCyclist team_n (strat, distr) = do
            _teamProb <- normal . coops $ distr
            _energyLim <- normal . energylims $ distr
            i <- newID
-           return Cyclist {uid = i, pmax = _pmax, pcp = 0.8*_pmax, pped = 0, usedEnergy = 0, energyLim = _energyLim, packCoop = strat _groupProb, teamCoop = strat _teamProb, groupProb = _groupProb, teamProb = _teamProb, speed = 0, distance = 0, team = team_n}
+           return Cyclist {uid = i, pmax = _pmax, pcp = 0.8*_pmax, pped = 0, usedEnergy = 0, energyLim = _energyLim, packCoop = strat _groupProb, teamCoop = strat _teamProb, groupProb = _groupProb, teamProb = _teamProb, speed = 1, acceleration = 0.000053894*_pmax, distance = 0, team = team_n}
 
 -- Generate team_size cyclists with distr distr for each
 -- team between 0 and n_teams.

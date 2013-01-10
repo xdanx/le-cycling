@@ -43,7 +43,7 @@ updateCyclistSpeed !c !(D# pped) = c{speed = D# (rk4 s pped)}
                    where !(D# s) = speed c
 
 f :: Double# -> Double# -> Double# -> Double# -> Double#
-f !pped !t !y_1 !y_2 = (pped -## 15.1533## *## y_1 **## 3.0##) /## (2968.8050577## *## (sqrtDouble# (2.0## *## y_2)))
+f !pped !t !y_1 !y_2 = (pped -## 75.7665## *## y_1 **## 3.0##) /## (14844.025288499999## *## (sqrtDouble# (2.0## *## y_2)))
 
 g :: Double# -> Double# -> Double# -> Double# -> Double#
-g !pped !t !y_1 !y_2 = (pped -## 15.1533## *## y_1 **## 3.0##) /## 2968.8050577##
+g !pped !t !y_1 !y_2 = (pped -## 75.7665## *## y_1 **## 3.0##) /## 14844.025288499999##
