@@ -362,8 +362,8 @@ The main function then loads the input file and generates the corresponding race
 \section{Game Theory Model}\label{sec:gameth}
 
 In order to create a thorough mathematical model we aim to construct a game theoretical model. This model will help racers to change their strategies and choose the optimal one as the race unfolds. To create a sound model, we based our assumptions on the simulation previously described. We managed to abstract the mathematical foundations of the simulation to develop the game theory.\\\\
-Modelling bike races can be quite challenging, hence we will begin with the simplest case in order to introduce our methodology and explain the simplifying assumptions we are making. When participating in a race we can argue that racers are at each point faced with three possible options: either break-away from their current group or fall back to the group preceding the current one or cooperate with the other members of the group (which essentially implies copying the strategy of the other players in their group - which will be discussed later). Each of the racers can change his mind as often as he wants, however, changes in strategy will likely incur penalties on their performance. In this section we try to determine whether there is dominant strategy and try to find at which point in race it is beneficial for racer to change his strategy. We can easily see that strategy chosen by players will depend on their skills and fitness, i.e. better racers can afford more aggressive, less cooperative strategy in hope of being able to outdistance opponents. On the other hand weaker players will tend to cooperate more. The difficulty of this part is not the actual solution to the model since it might happen there will not be a general solution but fitting the model to the actual situation. It is fairly easy to construct arbitrary game theoretical games, however, when the games have to even remotely represent reality they get complicated very quickly.\\\\
-Before we can dive into discussion of game theoretical models we have created we aim to present short introduction to game theoretical concepts we are using. Also short summary of core principles of game theory is included with references to further reading. We then continue to consideration of case with two racers when the group chasing them is very far from them and does not affect the strategies. Thus, they are guaranteed to come first and second.
+Modelling bike races can be quite challenging, hence we will begin with the simplest case in order to introduce our methodology and explain the simplifying assumptions we are making. When participating in a race we can argue that racers are at each point faced with three possible options: either break-away from their current group or fall back to the group preceding the current one or cooperate with the other members of the group (which essentially implies copying the strategy of the other players in their group - which will be discussed later). Each of the racers can change his mind as often as he wants, however, changes in strategy will likely incur penalties on their performance. In this section we try to determine whether there is a dominant strategy and try to find at which point in race it is beneficial for racer to change his strategy. We can easily see that strategy chosen by players will depend on their skills and fitness, i.e. better racers can afford more aggressive, less cooperative strategy in hope of being able to outdistance opponents. On the other hand weaker players will tend to cooperate more. The difficulty of this part is not the actual solution to the model since it might happen there will not be a general solution but fitting the model to the actual situation. It is fairly easy to construct arbitrary theoretical games, however, when the games have to even remotely represent reality they get complicated very quickly.\\\\
+Before we can dive into discussion of game theoretical models we have created we aim to present short introduction to game theoretical concepts we are using. Also short a summary of core principles of game theory is included with references to further readings. We then continue to consideration of cases with two racers when the group chasing them is very far from them and does not affect the strategies. Thus, they are guaranteed to come first and second.
 
 \subsection{Definitions}\label{subsec:defs}
 
@@ -372,7 +372,7 @@ Before we can indulge ourselves in discussion of game theory can be used to appr
 \paragraph{2-person Zero-sum Game} ~\\
 Two-person zero-sum game describes conflict of interest between two players with strictly opposite interests. Formally this means that any change in the pay-off of one player has to be offset with equal decrease in amount of payout to the second player. These types of games can be divided into three subsections depending on the achievable results to the game. We can have a dominant strategy equilibrium, pure strategy Nash equilibrium and mixed strategy Nash equilibrium each with less strictness imposed on the result.
 \paragraph{Dominant Strategy Equilibrium}
-is represented by table below. Ease of analysing such games stems from the fact that there is always a clear strategy that a player has to follow in order to achieve maximum payout.\\
+is represented by the table below. Ease of analysing such games stems from the fact that there is always a clear strategy that a player has to follow in order to achieve maximum payout.\\
 
 % Dominant strategy equilibrium derivation %
 
@@ -388,11 +388,11 @@ is represented by table below. Ease of analysing such games stems from the fact 
 	\end{tabular}
 	\caption{2-person zero-sum game\\ dominant strategy equilibrium}
 \end{table}
-\noindent In order to find dominant strategy equilibrium we need to find dominant strategy.
+\noindent In order to find a dominant strategy equilibrium we need to find a dominant strategy.
 \paragraph{Row player} strategy $i$ dominates strategy $j$ (for row player) if $\forall k. a_{ik} \ge a_{jk}$ and $\exists k.a_{ik} > a_{jk}$.
 \paragraph{Column player} strategy $i$ dominates strategy $j$ if $\forall k. a_{ki} \le a_{kj}$ and $\exists k.a_{ki} < a_{kj}$.
 \\\\
-Using these rules we can reduce pay-off matrix. It is clear that strategy $C$ is dominated by either $A$ and $B$. Hence, the matrix is reduced to:
+Using these rules we can reduce the pay-off matrix. It is clear that strategy $C$ is dominated by either $A$ and $B$. Hence, the matrix is reduced to:
 \begin{table}[ht!]
 	\hspace{-4em}
 	\centering
@@ -406,7 +406,7 @@ Using these rules we can reduce pay-off matrix. It is clear that strategy $C$ is
 	\caption{2-person zero-sum game\\ dominant strategy equilibrium}
 \end{table}
 \\\\
-Furthermore one can spot that both strategy $a$ and $c$ are dominated by $b$
+Furthermore one can spot that both strategies $a$ and $c$ are dominated by $b$
 \begin{table}[ht!]
 	\hspace{-4em}
 	\centering
@@ -418,7 +418,7 @@ Furthermore one can spot that both strategy $a$ and $c$ are dominated by $b$
 	\caption{2-person zero-sum game\\ dominant strategy equilibrium}
 \end{table}
 \\\\
-Which comes down to the following.
+Which comes down to the following :
 \begin{table}[ht!]
 	\hspace{-4em}
 	\centering
