@@ -5,7 +5,9 @@ Utility functions used in various parts of the code.
 module Utils where
 
 import Control.Monad
+import Control.Monad.Trans
 import Data.Sequence
+import Data.Unique
 
 -- same as concatMap but for monadic functions.
 concatMapM :: (Monad m) => (a -> m [b]) -> [a] -> m [b]
@@ -31,3 +33,7 @@ partitionM f seq = case (viewl seq) of
                           if classification
                              then return (h <| true, false)
                              else return (true, h <| false)
+
+-- Return a new unused ID
+newID ::(MonadIO m) => m Int
+newID = liftIO (newUnique >>= return . hashUnique)

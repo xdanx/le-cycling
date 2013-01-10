@@ -16,7 +16,7 @@ import System.Exit
 
 import Cyclist
 import Units
-import ID
+import Utils
 
 --               tLead leader   cyclists       uid  |           cyclists       time uid
 data Pack = Pack !Int  !Cyclist !(Seq Cyclist) !Int | Breakaway !(Seq Cyclist) !Int !Int

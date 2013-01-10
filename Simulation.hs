@@ -19,11 +19,10 @@ import Data.Maybe
 import Data.Sequence as Sequence
 
 import Cyclist
-import ID
 import Modeling
 import Pack
-import Utils
 import Units
+import Utils
 
 -- Data type encoding the state of a race.
 --                turns length  runners  sprinters   (finishers, finishTime)
