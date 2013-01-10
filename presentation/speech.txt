@@ -39,6 +39,13 @@ Alex and Robert are going to explain this Game Theory framework more indepth, bu
 slide The Simulation (Julian):
 
 
+The Model is made up of three.
+
+the physical model describes how the bicycle and the air around the cyclists acts,
+
+the physiological model describes the biology of the cyclist, definining what they are physically able to do
+
+and the Psychological model describes how the cyclists will act, whether they will stay in a packor breakaway and run ahead and whether they'll stay at the front of the pack for a fair share of time or not.
 
 
 
