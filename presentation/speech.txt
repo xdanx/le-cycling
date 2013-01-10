@@ -1,4 +1,4 @@
-slide Title (Dan):
+﻿slide Title (Dan):
 
 Hello my name is Dan, and this is how a cycling race looks like :
 
@@ -8,6 +8,7 @@ As you can see from the video, a combination of multiple good decisions havs bee
 
 The winning cyclist, Mark Cavendish, made the correct decision to break away from the winning pack just before the finish line, which ultimately led him to victory.
 
+
 slide Motivation (Dan):
 
 Competing games are 
@@ -15,6 +16,8 @@ By generalizing this behaviour, we asked ourselves
 
 
 This is also what motivates us: 
+
+
 
 
 slide Our solution (Dan):
@@ -29,7 +32,11 @@ Alex and Robert are going to explain this Game Theory framework more indepth, bu
 
 
 
+
+
 slide The Simulation (Julian):
+
+
 
 
 
@@ -49,3 +56,70 @@ Pmax which is the maximum power output you can produce with your anaerobic metab
 And Pcp which is the maxium aerobic limit, so the maximum power you can produce without ever getting tired.
 
 Your speed will be computed in different situations based on these values.
+
+
+
+
+
+
+slide Psychological Model (César):
+
+This is the part that deals how the cyclists behave, their strategy.
+Some things are constant, for example in a pack, their speed has to be adapted to the performance of every cyclist in the pack. But each cyclist can take several kind of decisions, and we implemented the code such that different strategies could be added easily.
+
+The decisions one can make are :
+
+To breakaway from a pack or not,
+To follow a teammate in a breakaway, 
+and to act cooperativelly with your pack, which means that you will do your share in taking the lead position, which is more demanding.
+
+Unfortunatelly we only had time to implement one type of strategy, which is probabilistic, each cyclist has a probability of doing each of these decisions. This allows to create a wide range of type of cyclists easily, making them more or less cooperative.
+
+
+
+
+
+slide Demo (César):
+
+Demo.
+
+
+Slide GT Model - moments (Alex):
+
+Hi, I'm Alex. I'll continue to present our fascinating theory! 
+
+Firstly, I would like to mention that we are keeping the assumptions we have made in the simulation and in the mathematical model, in order to create the game theory.
+
+As Robert said, we have managed to reduce the repeated games to one-off games. The one-off games will be analysed at each delta n km before the finish.
+
+
+Slide GT Model - formulas 1 (Alex):
+
+Now... the ugly/beautiful part, depends on the perspective... :)
+
+So, the pay-offs firstly depend on each of the two players ability to finish first given their current status.
+
+This status, CS, is given by each player's pedalling power, energy remaining, km before the finish line and current speed.
+
+From this we can obtain a probability of finishing first.
+
+Next formula describes the "advantage" one player gets from being second. This is the drafting force. The main things to remember from it is that
+it depends on the value dw, the distance between two cyclists, the density ro of the medium we are cycling in and the speed x of the player which is drafting. 
+Why density of the medium, because we want to make the project flexible and add the possibility of reasoning about cycling at different altitudes.
+
+Pfiu, almost done...
+
+
+Slide GT Model - formulas 2 (Alex):
+
+Let's look at strategies now, we will only talk about the case when both players cooperate. This means they will want to swap positions at different moments
+such that the trailing player benefits from drafting.
+
+So, what is the payoff a player gets from being second? This is (1-P), where P is his probability of being first, times a drafting value. The +1 is just because
+we want to keep the payoff values in a certain interval, i.e [1,2].
+
+I hope we managed to give an intuitive idea about our GT model.
+
+I will now hand it to... (who is next)
+
+

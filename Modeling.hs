@@ -26,7 +26,7 @@ setPackSpeed (Pack tLead l p uid) = do undefined
     cyclists = sortBy (\x y -> compare (pmax x) (pmax y)) (l <| p)
     avgs = Sequence.zipWith (/) (Sequence.scanl1 (+) (fmap pmax cyclists)) (Sequence.fromList [1..])
     (drop, stay) = Sequence.partition (\(c,pm) -> (pmax c) < (0.8 * pm)) (Sequence.zip cyclists avgs)
-    newCyclists = (fmap (\c -> updateCyclistSpeed c (0.8 * (pmax c))) (fmap fst stay))
+    newCyclists = (fmap (\c -> updateCyclistPhysics c (0.8 * (pmax c))) (fmap fst stay))
     newPack = undefined
     dropPack = undefined
 setPackSpeed (Breakaway p t uid) = undefined
@@ -37,9 +37,14 @@ avgpmax p = (Fold.foldl (+) 0 (fmap pmax p)) / (fromIntegral $ Sequence.length p
 
 -- Updates the speed of a single sprinter cyclist
 setSprinterSpeed :: Cyclist -> Cyclist
-setSprinterSpeed c = updateCyclistSpeed c (0.95 * (pmax c))
+setSprinterSpeed c = updateCyclistPhysics c (0.95 * (pmax c))
 
 -- Update the used energy of a cyclists, depending on his speed
 -- Need to do something different if it's in_pack vs (leader, breakaway or sprint)
 updateEnergy :: Cyclist -> Cyclist
 updateEnergy c = c{usedEnergy = (usedEnergy c) + 60 * ((pped c) - (pcp c))}
+
+pped :: Cyclist -> Double
+pped c = 75.7664 * spd^3 + 14844.025288499999 * spd * acc
+     where spd = speed c
+           acc = acceleration c
