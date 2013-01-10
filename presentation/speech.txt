@@ -11,7 +11,14 @@ I'm will present our group project called : [read title]
 
 slide Motivation (Dan):
 
-
+I think the previous video perfectly reflects our motivation
+in the sense that you could have noticed how crucial strategies
+can be. Not only are they important for the last few metres,
+but they also have a great impact during the race. Thus, being
+able to correctly model races can lead to improved performance
+of cyclists. Without giving anything away for the moment, I will
+just say that both simulating races and having a solid game theory
+are of key importance.
 
 
 
@@ -98,7 +105,7 @@ This status, CS, is given by each player's pedalling power, energy remaining, km
 
 From this we can obtain a probability of finishing first.
 
-Next formula describes the "advantage" one player gets from being second. This is the drafting force. The main things to remember from it is that
+Next formula describes the "advantage" one player gets from being second. This is the drafting force. The main things to remember from it are that
 it depends on the value dw, the distance between two cyclists, the density ro of the medium we are cycling in and the speed x of the player which is drafting. 
 Why density of the medium, because we want to make the project flexible and add the possibility of reasoning about cycling at different altitudes.
 
