@@ -1,42 +1,38 @@
-﻿slide Title (Dan):
+﻿*** slide Title (Dan):
 
 Hello my name is Dan, and this is how a cycling race looks like :
 
-Headbutting video ? (other vid ?)
+Cavendish video -> www.youtube.com/watch?v=aNJ8ji9RRYI 
 
-I'm will present our group project called : [read title]
-
-
+The winning cyclist, Mark Cavendish, made the correct decision to break away from the winning pack just before the finish line. This ultimately led him to victory.
 
 
-slide Motivation (Dan):
+*** slide Motivation (Dan):
 
-I think the previous video perfectly reflects our motivation
-in the sense that you could have noticed how crucial strategies
-can be. Not only are they important for the last few metres,
-but they also have a great impact during the race. Thus, being
-able to correctly model races can lead to improved performance
-of cyclists. Without giving anything away for the moment, I will
-just say that both simulating races and having a solid game theory
-are of key importance.
+The previous video perfectly reflects our motivation: in sports events the strategies used are of paramount importance. 
+
+Using the correct strategy during the last few hundreads of meters can decide the winner. But this is not a sufficient condition! In order to fight for the lead, one must choose the optimal strategies throughout the entire race.
+
+Thus, being able to correctly model races can lead to improved performance of cyclists.  We believe that both simulating races and having a solid game theory are of key importance.
 
 
+*** slide Our solution (Dan):
 
-slide Our solution (Dan):
+The solution we proposed is split into two parts. We have formed two groups working on those two parts. The main challenge in taking this approach is merging our findings, when both teams have to cooperate in order to obtain the final result. 
 
-The solution we proposed is in two parts :
+First, (Julian and Cesar created ?) a software model of general road cycling races. it tries to simulate the real-life conditions, based on a model we developed following the previous work from various research papers and books.
 
-First a software model of general road cycling races, that tries to simulate the real-life conditions, based on a model we developed following the previous work from various sources.
+Secondly, (Alex, Robert and I) have created the Game Theoritical framework, used to decide on optimal stategies in a given situation. For example we ask ourselves what happens when a cyclist breaks away alone, or how much he would gain by cooperative with an adversary.
 
-Secondly, we have created a Game Theoritical framework, used to decide on optimal stategies in a given situation. For example what happens when a cyclist breaks away alone, or how much he would gain by cooperative with an adversary.
+Being mostly a research project, finding relevant results was very challenging, nonetheless rewarding and we are proud of our research. 
 
-Alex and Robert are going to explain this Game Theory framework more indepth, but first Julian and César are going to introduce our Software Simulation.
+Alex and Robert are going to explain the Game Theory framework in more depth, but first Julian and César are going to introduce you to our Software Simulation.
 
+
+*** slide The Simulation (Julian):
 
 
 
-
-slide The Simulation (Julian):
 
 
 The Model is made up of three.
@@ -49,7 +45,8 @@ and the Psychological model describes how the cyclists will act, whether they wi
 
 
 
-slide Physiological Model (César): 
+
+*** slide Physiological Model (César): 
 
 So for the physical model, we took into account the two modes in which the muscles can function :
 
@@ -69,9 +66,7 @@ Your speed will be computed in different situations based on these values.
 
 
 
-
-
-slide Psychological Model (César):
+*** slide Psychological Model (César):
 
 This is the part that deals how the cyclists behave, their strategy.
 Some things are constant, for example in a pack, their speed has to be adapted to the performance of every cyclist in the pack. But each cyclist can take several kind of decisions, and we implemented the code such that different strategies could be added easily.
@@ -85,28 +80,25 @@ and to act cooperativelly with your pack, which means that you will do your shar
 Unfortunatelly we only had time to implement one type of strategy, which is probabilistic, each cyclist has a probability of doing each of these decisions. This allows to create a wide range of type of cyclists easily, making them more or less cooperative.
 
 
-
-
-
-slide Demo (César):
+*** slide Demo (César):
 
 Demo.
 
 
-Slide GT Model - moments (Alex):
+*** Slide GT Model - moments (Alex):
 
-Hi, I'm Alex. I'll continue to present our fascinating theory! 
+Hi, I'm Alex. I'll continue to present our theory! 
 
 Firstly, I would like to mention that we are keeping the assumptions we have made in the simulation and in the mathematical model, in order to create the game theory.
 
 As Robert said, we have managed to reduce the repeated games to one-off games. The one-off games will be analysed at each delta n km before the finish.
 
 
-Slide GT Model - formulas 1 (Alex):
+*** Slide GT Model - formulas 1 (Alex):
 
-Now... the ugly/beautiful part, depends on the perspective... :)
+Now... the ugly or beautiful part. Depends on the perspective... :)
 
-So, the pay-offs firstly depend on each of the two players ability to finish first given their current status.
+So, the pay-offs firstly depends on each of the two players ability to finish first given their current status.
 
 This status, CS, is given by each player's pedalling power, energy remaining, km before the finish line and current speed.
 
@@ -116,19 +108,38 @@ Next formula describes the "advantage" one player gets from being second. This i
 it depends on the value dw, the distance between two cyclists, the density ro of the medium we are cycling in and the speed x of the player which is drafting. 
 Why density of the medium, because we want to make the project flexible and add the possibility of reasoning about cycling at different altitudes.
 
-Pfiu, almost done...
+The reason we use the density of the medium is because we want to make the project flexible and add the possibility of reasoning about cycling at different altitudes.
 
 
-Slide GT Model - formulas 2 (Alex):
+*** Slide GT Model - formulas 2 (Alex):
 
-Let's look at strategies now, we will only talk about the case when both players cooperate. This means they will want to swap positions at different moments
-such that the trailing player benefits from drafting.
+Let's look at possible strategies now. Due to time constraints, we will only talk about the case when both players cooperate. Other cases are ...
 
-So, what is the payoff a player gets from being second? This is (1-P), where P is his probability of being first, times a drafting value. The +1 is just because
-we want to keep the payoff values in a certain interval, i.e [1,2].
+When both players cooperate, they swap positions at different moments such that the trailing player benefits from drafting.
+
+So, what is the payoff a player gets from being second? This is (1-P), where P is his probability of being first, times a drafting value. The +1 is just because we want to keep the payoff values at a certain interval, i.e [1,2]. Thus, we can now add this formula in the pay-off matrix.
 
 I hope we managed to give an intuitive idea about our GT model.
 
-I will now hand it to... (who is next)
+( I will now hand it to... (who is next) )
+
+Dan kicks in
+
+*** Slide Achievements (Dan)
+
+Our goal was to develop tools to help find a winning strategy given a certain knowledge on the situation. 
+
+During this prsesentation we have proposed two tools:
+
+1) One software simulation, based on previous research papers. Our contribution is that it combines the performance model, seen in the pervious papers with the psychological model.
+2) One game theory model that can be valuable for simulating future races. The presented GT model aims to be as realistic as possible.
+
+*** Future work (Dan) ***
+
+Due to the team size, this projects was a challange for all of us but we enjoyed working at it. One further developments might, for example, creating a tool that would facilitate interptering the results generated for the simulation. This would enable us to run the simulation distributed and collect and analyse all the results in a central location. 
+
+On the game theory side, one development might be finding the analytical formula for the value of the game.
+
+With these being said, our team would like to thank you for listening!
 
 
