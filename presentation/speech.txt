@@ -8,7 +8,11 @@ I'm will present our group project called : [read title]
 
 
 
+
 slide Motivation (Dan):
+
+
+This project 
 
 
 
@@ -24,7 +28,11 @@ Alex and Robert are going to explain this Game Theory framework more indepth, bu
 
 
 
+
+
 slide The Simulation (Julian):
+
+
 
 
 
@@ -44,3 +52,29 @@ Pmax which is the maximum power output you can produce with your anaerobic metab
 And Pcp which is the maxium aerobic limit, so the maximum power you can produce without ever getting tired.
 
 Your speed will be computed in different situations based on these values.
+
+
+
+
+
+
+slide Psychological Model (César):
+
+This is the part that deals how the cyclists behave, their strategy.
+Some things are constant, for example in a pack, their speed has to be adapted to the performance of every cyclist in the pack. But each cyclist can take several kind of decisions, and we implemented the code such that different strategies could be added easily.
+
+The decisions one can make are :
+
+To breakaway from a pack or not,
+To follow a teammate in a breakaway, 
+and to act cooperativelly with your pack, which means that you will do your share in taking the lead position, which is more demanding.
+
+Unfortunatelly we only had time to implement one type of strategy, which is probabilistic, each cyclist has a probability of doing each of these decisions. This allows to create a wide range of type of cyclists easily, making them more or less cooperative.
+
+
+
+
+
+slide Demo (César):
+
+Demo.
