@@ -127,7 +127,7 @@ URL: https://code.google.com/p/io-2012-slides
 
   <slide>
     <hgroup>
-      <h2>Step 1: Simulation - Slipstream model</h2>
+      <h2>Step 1: Simulation - Slipstream Model</h2>
     </hgroup>
     <article class="flexbox vleft">
       <p>A Slipstream is the low pressure zone in the wake of a moving object.</p>
@@ -137,21 +137,104 @@ URL: https://code.google.com/p/io-2012-slides
 
   <slide>
     <hgroup>
-      <h>Slide with Bullets</h2>
+      <h2>Step 1: Simulation - Correction Factor</h2>
     </hgroup>
-    <article>
-      <ul>
-        <li>Titles are formatted as Open Sans with bold applied and font size is set at 45</li>
-        <li>Title capitalization is title case
-          <ul>
-            <li>Subtitle capitalization is title case</li>
-          </ul>
-        </li>
-        <li>Subtitle capitalization is title case</li>
-        <li>Titles and subtitles should never have a period at the end</li>
+    <article class="flexbox vleft">
+      
+    </article>
+  </slide>
+  
+  <slide>
+    <hgroup>
+      <h2>Step 1: Simulation - Physiological Model</h2>
+    </hgroup>
+    <article class="flexbox vleft">
+      <p>There are two &quot;modes&quot; in which the human muscle can work.</p>
+      <ul class="build">
+        <li>aerobic</li>
+        <li>anaerobic</li>
+      </ul>
+      
+      <p>To describe the physical attributes of the cyclist, we use two variables:</p>
+      <ul class="build">
+        <li>$P_{max}$, the maximum power output of the cyclist.</li>
+        <li>$P_{CP}$, the maximum aerobic power of the cyclist.</li>
       </ul>
     </article>
   </slide>
+  
+  <slide>
+    <hgroup>
+      <h2>Step 1: Simulation - Psychological Model</h2>
+    </hgroup>
+    <article class="flexbox vleft">
+      <p>Each cyclist can have his own strategy, the code is designed so that these strategies can easily added.</p>
+      <p>The model we use limits the decisions to:</p>
+      <ul class="build">
+        <li>Break-away</li>
+        <li>Follow a team mate in a break-away.</li>
+        <li>Cooperate with your pack.</li>
+      </ul>
+      
+      <p>We implemented a simple probabilistic model.</p>
+    </article>
+  </slide>
+  
+   <slide>
+    <hgroup>
+      <h2>Step 1: Simulation - Demonstration</h2>
+    </hgroup>
+    <article class="flexbox vcenter">
+      <p><h2>Demonstration</h2></p>
+    </article>
+  </slide>
+  
+  <slide>
+    <hgroup>
+      <h2>Step 2: Game Theory - Preliminaries</h2>
+    </hgroup>
+    <article class="flexbox vcenter">
+      <p>The pay-off each player gets by playing certain strategies is contained in a matrix, we call this the pay-off matrix. By using this matrix, players can choose the best strategy they should play in certain situations.</p>
+      
+      <table>
+        <tr>
+          <th></th><th>Column 1</th><th>Column 2</th><th>Column 3</th><th>Column 4</th>
+        </tr>
+        <tr>
+          <td>Row 1</td><td>placeholder</td><td class="highlight">placeholder</td><td>placeholder</td><td>placeholder</td>
+        </tr>
+        <tr>
+          <td>Row 2</td><td>placeholder</td><td>placeholder</td><td>placeholder</td><td>placeholder</td>
+        </tr>
+        <tr>
+          <td>Row 3</td><td>placeholder</td><td>placeholder</td><td>placeholder</td><td>placeholder</td>
+        </tr>
+        <tr>
+          <td>Row 4</td><td>placeholder</td><td>placeholder</td><td>placeholder</td><td>placeholder</td>
+        </tr>
+        <tr>
+          <td>Row 5</td><td>placeholder</td><td>placeholder</td><td>placeholder</td><td>placeholder</td>
+        </tr>
+      </table>
+      
+    </article>
+  </slide>
+	
+	<slide>
+    <hgroup>
+      <h2>Step 2: Game Theory - Model</h2>
+    </hgroup>
+    <article class="flexbox vleft">
+      <p>2-racer Escape Case</p>
+      <ul class="build">
+        <li>2 players</li>
+        <li>Cooperation strategy</li>
+        <li>Fall back strategy</li>
+        <li>Break-away strategy</li>
+      </ul>
+    </article>
+  </slide>
+  
 
   <slide>
     <hgroup>
