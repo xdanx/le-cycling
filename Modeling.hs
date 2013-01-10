@@ -12,7 +12,7 @@ import Data.Sequence as Sequence
 import Control.Monad
 import Control.Monad.Random
 import Control.Monad.Trans
-
+import System.Exit
 
 import Cyclist
 import Pack
@@ -20,16 +20,11 @@ import RungeKutta
 
 -- Updates the speed of the cyclists in a pack
 -- Creates new packs if some cyclists are too weak to follow the rest
-setPackSpeed :: (MonadRandom m, MonadIO m) => Pack -> m [Pack]
-setPackSpeed (Pack tLead l p uid) = do undefined
+setPackSpeed :: Pack -> Pack
+setPackSpeed pack = packMap (\c -> updateCyclistPhysics c (max (pm c) avgPped)) pack
   where
-    cyclists = sortBy (\x y -> compare (pmax x) (pmax y)) (l <| p)
-    avgs = Sequence.zipWith (/) (Sequence.scanl1 (+) (fmap pmax cyclists)) (Sequence.fromList [1..])
-    (drop, stay) = Sequence.partition (\(c,pm) -> (pmax c) < (0.8 * pm)) (Sequence.zip cyclists avgs)
-    newCyclists = (fmap (\c -> updateCyclistPhysics c (0.8 * (pmax c))) (fmap fst stay))
-    newPack = undefined
-    dropPack = undefined
-setPackSpeed (Breakaway p t uid) = undefined
+    avgPped = coef * (avgpmax (getPack pack))
+    coef = if isBreak pack then 0.9 else 0.8
 
 -- Average pmax of a sequence of cyclists
 avgpmax :: (Seq Cyclist) -> Double
@@ -45,6 +40,16 @@ updateEnergy :: Cyclist -> Cyclist
 updateEnergy c = c{usedEnergy = (usedEnergy c) + 60 * ((pped c) - (pcp c))}
 
 pped :: Cyclist -> Double
-pped c = 75.7664 * spd^3 + 14844.025288499999 * spd * acc
+pped c = 75.7664 * (0.62 - 0.0104*d_w + 0.0452*d_w^2) * spd^3 + 14844.025288499999 * spd * acc
      where spd = speed c
            acc = acceleration c
+           d_w = 1.5
+
+ppedLead :: Cyclist -> Double
+ppedLead c = 75.7664 * (0.62 - 0.0104*d_w + 0.0452*d_w^2) * spd^3 + 14844.025288499999 * spd * acc
+     where spd = speed c
+           acc = acceleration c
+           d_w = 3
+
+pm :: Cyclist -> Double
+pm c = (pmax c) * (1 - ((usedEnergy c)/(energyLim c)))

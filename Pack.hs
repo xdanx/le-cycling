@@ -111,3 +111,8 @@ isEmpty _ = True -- <--- Why do we return True here ?
 numCyclists :: Pack -> Int
 numCyclists (Breakaway cs _ _) = Sequence.length cs
 numCyclists (Pack _ _ cs _) = Sequence.length cs + 1
+
+-- Is it a breakaway pack ?
+isBreak :: Pack -> Bool
+isBreak (Pack {}) = False
+isBreak (Breakaway {}) = True
