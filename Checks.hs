@@ -10,10 +10,10 @@ import Test.QuickCheck.Gen
 
 import Coop
 import Cyclist
-import ID
 import Pack
 import Population
 import Simulation
+import Utils
 
 
 instance Arbitrary Cyclist where
