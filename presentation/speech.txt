@@ -4,14 +4,17 @@ Hello my name is Dan, and this is how a cycling race looks like :
 
 Cavendish video -> www.youtube.com/watch?v=aNJ8ji9RRYI 
 
+Please pay close attention to this guy here.
+
 The winning cyclist, Mark Cavendish, made the correct decision to break away from the winning pack just before the finish line. This ultimately led him to victory.
 
 
 *** slide Motivation (Dan):
 
-The previous video perfectly reflects our motivation: in sports events the strategies used are of paramount importance. 
+This video perfectly reflects our motivation: in sports events the strategies used are of paramount importance. 
 
-Using the correct strategy during the last few hundreads of meters can decide the winner. But this is not a sufficient condition! In order to fight for the lead, one must choose the optimal strategies throughout the entire race.
+Using the correct strategy during the last few hundread meters can decide the winner. But this is not a sufficient condition! In order to fight for the lead, one must choose the optimal strategies throughout the entire race.
+
 
 Thus, being able to correctly model races can lead to improved performance of cyclists.  We believe that both simulating races and having a solid game theory are of key importance.
 
@@ -19,10 +22,6 @@ Thus, being able to correctly model races can lead to improved performance of cy
 *** slide Our solution (Dan):
 
 The solution we proposed is split into two parts. We have formed two groups working on those two parts. The main challenge in taking this approach is merging our findings, when both teams have to cooperate in order to obtain the final result. 
-
-First, (Julian and Cesar created ?) a software model of general road cycling races. it tries to simulate the real-life conditions, based on a model we developed following the previous work from various research papers and books.
-
-Secondly, (Alex, Robert and I) have created the Game Theoritical framework, used to decide on optimal stategies in a given situation. For example we ask ourselves what happens when a cyclist breaks away alone, or how much he would gain by cooperative with an adversary.
 
 Being mostly a research project, finding relevant results was very challenging, nonetheless rewarding and we are proud of our research. 
 
@@ -87,7 +86,6 @@ Demo.
 
 *** Slide GT Model - moments (Alex):
 
-Hi, I'm Alex. I'll continue to present our theory! 
 
 Firstly, I would like to mention that we are keeping the assumptions we have made in the simulation and in the mathematical model, in order to create the game theory.
 
@@ -129,16 +127,19 @@ Dan kicks in
 
 Our goal was to develop tools to help find a winning strategy given a certain knowledge on the situation. 
 
-During this prsesentation we have proposed two tools:
+During this prsesentation we have proposed:
 
-1) One software simulation, based on previous research papers. Our contribution is that it combines the performance model, seen in the pervious papers with the psychological model.
-2) One game theory model that can be valuable for simulating future races. The presented GT model aims to be as realistic as possible.
+1) One software simulation, based on previous research papers, created by Julian and Cesar. Our contribution is that it combines the performance model, seen in the pervious papers with the psychological model. 
+2) On the other hand, Alex, Robert and I developed a game theory model that can be valuable for simulating future races. Also, the presented model aims to be as realistic as possible 
+
 
 *** Future work (Dan) ***
 
-Due to the team size, this projects was a challange for all of us but we enjoyed working at it. One further developments might, for example, creating a tool that would facilitate interptering the results generated for the simulation. This would enable us to run the simulation distributed and collect and analyse all the results in a central location. 
+Due to the team size, this projects was a challange for all of us but we enjoyed working at it. One further developments might be, for example, creating a tool that would facilitate interptering the results generated for the simulation. This would enable us to run the simulation distributed and collect and analyse all the results in a central location. 
 
-On the game theory side, one development might be finding the analytical formula for the value of the game.
+On the game theory side, another development would be taking into account unexpected scenarious, just like this one here:
+
+Video head butt : http://www.youtube.com/watch?v=VXrLIJ3H_FA , min: 2:18
 
 With these being said, our team would like to thank you for listening!
 
