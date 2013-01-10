@@ -11,7 +11,7 @@ Model
 * the three strategies
 * depends on probability of finishing first (formula)
 * depends on drafting behind the leader
-* explain recursion intuitively 
+* explain recursion intuitively
 * explain coop coop case in depth with formulas and payoff
 
 
@@ -65,9 +65,9 @@ Achievements
 
 
 Slide
-Recap: 
+Recap:
 * we've seen there is a problem
-* we solved in ... way 
+* we solved in ... way
 * we achieved see previous slide
 * .. future work (what)
 
