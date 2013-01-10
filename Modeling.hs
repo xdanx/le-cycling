@@ -40,9 +40,16 @@ updateEnergy :: Cyclist -> Cyclist
 updateEnergy c = c{usedEnergy = (usedEnergy c) + 60 * ((pped c) - (pcp c))}
 
 pped :: Cyclist -> Double
-pped c = 75.7664 * spd^3 + 14844.025288499999 * spd * acc
+pped c = 75.7664 * (0.62 - 0.0104*d_w + 0.0452*d_w^2) * spd^3 + 14844.025288499999 * spd * acc
      where spd = speed c
            acc = acceleration c
+           d_w = 1.5
+
+ppedLead :: Cyclist -> Double
+ppedLead c = 75.7664 * (0.62 - 0.0104*d_w + 0.0452*d_w^2) * spd^3 + 14844.025288499999 * spd * acc
+     where spd = speed c
+           acc = acceleration c
+           d_w = 3
 
 pm :: Cyclist -> Double
 pm c = (pmax c) * (1 - ((usedEnergy c)/(energyLim c)))
