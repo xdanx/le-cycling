@@ -3,16 +3,17 @@ module Checks where
 import Control.Monad.Random
 import Data.Maybe
 import Data.Sequence as Sequence
+import Debug.Trace
 import System.IO.Unsafe
 import Test.QuickCheck
 import Test.QuickCheck.Gen
 
 import Coop
 import Cyclist
-import ID
 import Pack
 import Population
 import Simulation
+import Utils
 
 
 instance Arbitrary Cyclist where
@@ -56,8 +57,9 @@ testListPack :: ([Pack] -> [Pack]) -> [Pack] -> Bool
 testListPack f l = (sum . map lenPack $ l) == (sum . map lenPack . f $ l)
 
 testListPackM :: (Pack -> RandT StdGen IO [Pack]) -> Pack -> Bool
-testListPackM f l = (lenPack l) == (sum . map lenPack . unsafePerformIO . flip evalRandT g . f $ l)
+testListPackM f l = (lenPack l) == (sum . map lenPack . unsafePerformIO . flip evalRandT g $ res)
               where g = unsafePerformIO $ getStdGen
+                    res = (\x -> trace (show . unsafePerformIO . evalRandT x $ g) x) $ f l
 
 testRace :: (Race -> Race) -> Race -> Bool
 testRace f l = (lenRace l) == (lenRace . f $ l)

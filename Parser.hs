@@ -16,14 +16,13 @@ import Data.String.Utils
 import Text.Regex
 
 import Cyclist
-import ID
 import Pack
 import Population
 import Simulation
 import Stats
 import Coop
-import Utils
 import Units
+import Utils
 
 -- Function to call to generate a race.
 genRace :: String -> IO Race
