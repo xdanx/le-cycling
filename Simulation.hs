@@ -139,7 +139,7 @@ doBreakaway (Pack tLead l p pid) = do --
   (break', stay') <- partitionM teamCoop inBrkTeams  -- 
   let stayPack = stay' >< rest --
   brkPacks <- mapM (\b -> newID >>= return . setPackSpeed . (Breakaway b 3)) . groupByTeam $ break >< break' -- ~ (assume groupByTeam)
-  liftIO $ print stayPack
+--  liftIO $ print stayPack
   let stayPack' = if seqElemWith stayPack l (\c1 c2 -> uid c1 == uid c2) --
                   then [setPackSpeed (Pack tLead l (Sequence.filter ((uid l /=) . uid) stayPack) pid)]  --
                   else case viewl stayPack of

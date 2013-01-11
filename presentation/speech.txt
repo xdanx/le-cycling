@@ -47,42 +47,41 @@ and the Psychological model describes how the cyclists will act, whether they wi
 
 *** slide Physiological Model (César): 
 
-So for the physical model, we took into account the two modes in which the muscles can function :
+For the physiological model, we took into account the two modes in which the human muscles can function :
 
 When you exercise your muscle produce lactic acid.
 
-If the exercise your doing is not very intense, the aerobic metabolism is activated, which means that your organism has enough oxygen to eliminate the acid and that you can exercise for long period of time.
-If the exercise is more intensive, the muscle enter in anaerobic mode and your organism can't get rid of the acid fast enough, so you will get tired and your muscle will start to burn when the acid accumulates.
+If the exercise your doing is not very intense, the aerobic metabolism is activated. This means that your organism has enough oxygen to eliminate the acid as it is produced and that you can exercise for extended periods of time.
+If the exercise is more intensive, the muscle enter in anaerobic mode and your organism can't get rid of the acid fast enough. This means you will get tired and your muscle will start to burn when the acid accumulates.
 
 
-We represent this functions by two different values in the simulation :
+We represented this functions by two different values in the simulation :
 
-Pmax which is the maximum power output you can produce with your anaerobic metabolism.
-And Pcp which is the maxium aerobic limit, so the maximum power you can produce without ever getting tired.
+Pmax which is the maximum power output a cyclist can produce with your anaerobic metabolism.
+And Pcp which is the maxium aerobic limit. This is the maximum power a cyclist can produce without ever getting tired.
 
-Your speed will be computed in different situations based on these values.
-
-
+The speed of a cyclist will be computed depending on the situation based on these two values.
 
 
 *** slide Psychological Model (César):
 
-This is the part that deals how the cyclists behave, their strategy.
-Some things are constant, for example in a pack, their speed has to be adapted to the performance of every cyclist in the pack. But each cyclist can take several kind of decisions, and we implemented the code such that different strategies could be added easily.
+Now for the psychological model, this the part deals with how the cyclists behave, what their strategies are.
+At any point, each cyclist can take several decisions, and we implemented the code such that it could easily be extended with new strategies.
 
 The decisions one can make are :
 
-To breakaway from a pack or not,
-To follow a teammate in a breakaway, 
-and to act cooperativelly with your pack, which means that you will do your share in taking the lead position, which is more demanding.
+Whether or not to breakaway from your current pack.
+When a team mate breaks away, whether or not to follow him.
+and finally, whether or not to act cooperativelly towards your pack. That means that you will do your share in taking the lead position, which is more demanding.
 
-Unfortunatelly we only had time to implement one type of strategy, which is probabilistic, each cyclist has a probability of doing each of these decisions. This allows to create a wide range of type of cyclists easily, making them more or less cooperative.
+Unfortunatelly we only did not have time to implement many different strategies. The only one we implemented is probabilistic, each cyclist has a probability of doing each of the previously stated decisions. This allowed us to create a wide range of cyclists with different properties, making them more or less cooperative.
 
 
 *** slide Demo (César):
 
 Demo.
 
+Now I am going to leave you with Robert, who is going to present you the game theory.
 
 *** Slide GT Model - moments (Alex):
 
