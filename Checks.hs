@@ -12,6 +12,7 @@ import Coop
 import Cyclist
 import Pack
 import Population
+import RungeKutta
 import Simulation
 import Utils
 
@@ -80,5 +81,6 @@ testSeqListCyclist :: (Seq Cyclist -> [Seq Cyclist]) -> Seq Cyclist -> Bool
 testSeqListCyclist f s = (Sequence.length s) == (sum . map Sequence.length . f $ s)
 -- all testEq1 []
 
-
-
+testRunge :: Cyclist -> Bool
+testRunge c = ((not . isNaN . speed $ res) && (not . isNaN . acceleration $ res))
+          where res = updateCyclistPhysics c 0.1

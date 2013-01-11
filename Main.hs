@@ -50,7 +50,7 @@ loop rend ref = do
   print r
   case n of
     (Race _ _ [] [] _) -> exitSuccess
-    (Race _ _ _ _ _) -> delay time >> loop rend ref
+    (Race _ _ _ _ _) -> loop rend ref
   
 usage :: IO ()
 usage = do
