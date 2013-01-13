@@ -50,7 +50,8 @@ loop :: IO () -> IORef (Race, StdGen) -> [[(Int,Double)]] -> IO [[(Int,Double)]]
 loop rend ref log = do
   (r,g) <- readIORef ref
   n@(Race turn len run sprint win, g')  <- runRandT (turn r) g
-  let logEntry = (map (\c -> (uid c, speed c)) . Prelude.concatMap toList . map getPack $ run) ++ map (\c -> (uid c, speed c)) sprint
+  let logEntry = (map (\c -> (uid c, usedEnergy c)) . Prelude.concatMap toList . map getPack $ run) ++ map (\c -> (uid c, usedEnergy c)) sprint
+  putStrLn $ "logEntry: " ++ show logEntry
   writeIORef ref n
   rend
   case n of
