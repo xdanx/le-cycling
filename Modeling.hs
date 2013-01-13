@@ -21,7 +21,7 @@ import RungeKutta
 -- Updates the speed of the cyclists in a pack
 -- Creates new packs if some cyclists are too weak to follow the rest
 setPackSpeed :: Pack -> Pack
-setPackSpeed pack = packMap (\c -> updateCyclistPhysics c (max (pm c) avgPped)) pack
+setPackSpeed pack = packMap (\c -> updateCyclistPhysics c (min (pm c) avgPped)) pack
   where
     avgPped = coef * (avgpmax (getPack pack))
     coef = if isBreak pack then 0.9 else 0.8
@@ -32,7 +32,7 @@ avgpmax p = (Fold.foldl (+) 0 (fmap pmax p)) / (fromIntegral $ Sequence.length p
 
 -- Updates the speed of a single sprinter cyclist
 setSprinterSpeed :: Cyclist -> Cyclist
-setSprinterSpeed c = updateCyclistPhysics c (0.95 * (pmax c))
+setSprinterSpeed c = updateCyclistPhysics c (min (pm c) (0.95 * (pmax c)))
 
 -- Update the used energy of a cyclists, depending on his speed
 -- Need to do something different if it's in_pack vs (leader, breakaway or sprint)
