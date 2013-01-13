@@ -26,12 +26,10 @@ main :: IO ()
 main = withInit [InitEverything] $ do
      args <- getArgs   
      let (opt, rest) = partition ((=='-'). head) args 
-         [graphics, plt] = map (flip elem opt) $ validOption
+         prs@[graphics, plt] = map (flip elem opt) $ validOption
          correct = (length rest == 1) && (and . map (flip elem validOption) $ opt)
      unless correct usage
      g <- getStdGen
---     let g = read "710075201 1" :: StdGen
-     print g
      ref <- (genRace (head rest) >>= newIORef . (,g))
      rend <- if(graphics)
              then do
@@ -50,9 +48,8 @@ loop rend ref = do
   n@(Race turn len run sprint win, g')  <- runRandT (turn r) g
   writeIORef ref n
   rend
-  print r
   case n of
-    (Race _ _ [] [] _, _) -> exitSuccess
+    (Race _ _ [] [] _, _) -> return ()
     (Race _ _ _ _ _, _) -> performGC >> delay 10 >> loop rend ref
   
 usage :: IO ()
