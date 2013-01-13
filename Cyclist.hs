@@ -98,10 +98,10 @@ maxPower c = pmax c * (1 - (usedEnergy c/energyLim c))
 -- !! Need updating to take the function in the parameters !!
 genCyclist :: Int -> ((Double -> RandT StdGen IO Bool), Population) -> RandT StdGen IO Cyclist
 genCyclist team_n (strat, distr) = do
-           _pmax <- normal . pmaxs $ distr
-           _groupProb <- normal . coops $ distr
-           _teamProb <- normal . coops $ distr
-           _energyLim <- normal . energylims $ distr
+           _pmax <- fmap (max 0.1) . normal . pmaxs $ distr
+           _groupProb <- fmap (min 1 . max 0) . normal . coops $ distr
+           _teamProb <- fmap (min 1 . max 0) . normal . coops $ distr
+           _energyLim <- fmap (max 0.1) . normal . energylims $ distr
            i <- newID
            return Cyclist {uid = i, pmax = _pmax, pcp = 0.8*_pmax, usedEnergy = 0, energyLim = _energyLim, packCoop = strat _groupProb, teamCoop = strat _teamProb, groupProb = _groupProb, teamProb = _teamProb, speed = 1, acceleration = 0.000053894*_pmax, distance = 0, team = team_n}
 
