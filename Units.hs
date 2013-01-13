@@ -8,3 +8,6 @@ type Seconds = Int
 type Meters  = Double
 type Speed   = Double
 type Acceleration = Double
+
+
+tick = 60 :: Seconds

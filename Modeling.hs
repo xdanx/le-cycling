@@ -13,6 +13,7 @@ import Data.Sequence as Sequence
 import Cyclist
 import Pack
 import RungeKutta
+import Units
 
 -- Updates the speed of the cyclists in a pack
 -- Creates new packs if some cyclists are too weak to follow the rest
@@ -33,7 +34,7 @@ setSprinterSpeed c = updateCyclistPhysics c (min (pm c) (0.95 * (pmax c)))
 -- Update the used energy of a cyclists, depending on his speed
 -- Need to do something different if it's in_pack vs (leader, breakaway or sprint)
 updateEnergy :: Cyclist -> Cyclist
-updateEnergy c = c{usedEnergy = min (energyLim c) . max 0 $ (usedEnergy c) + 60 * ((pped c) - (pcp c))}
+updateEnergy c = c{usedEnergy = min (energyLim c) . max 0 $ (usedEnergy c) + (fromIntegral tick) * ((pped c) - (pcp c))}
 
 pped :: Cyclist -> Double
 pped c = 75.7664 * (0.62 - 0.0104*d_w + 0.0452*d_w^2) * spd^3 + 14844.025288499999 * spd * acc

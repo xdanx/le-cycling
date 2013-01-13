@@ -57,7 +57,7 @@ updateBrkTime (Race trn len r s w) = (Race trn len (map update r) s w)
 updatePosition :: Race -> RandT StdGen IO Race --
 updatePosition (Race trn len packs sprint finish) = do --
                let movedPacks = map updatePackPosition . List.filter (not . isEmpty) $ packs 
-                   movedSprinter = map (\c -> c{distance = (distance c) + 60*(speed c)}) sprint
+                   movedSprinter = map (\c -> c{distance = (distance c) + (fromIntegral tick)*(speed c)}) sprint
                    (remainingPacks, toSprinters, packFinishers) = (\(a, b, c) -> (mapMaybe id a, List.concat b, List.concat c)) . unzip3 . map (updatePack len) $ movedPacks --
                    (sprintFinishers, remainingSprinters) = List.partition (\c -> (distance c) >= len) movedSprinter 
                    orderedFinishers = orderFinishers trn len $ sprintFinishers ++ packFinishers
@@ -69,10 +69,10 @@ updatePosition (Race trn len packs sprint finish) = do --
 
 -- Updates the position of a Pack (Pack or Breakaway): TESTED
 updatePackPosition :: Pack -> Pack
-updatePackPosition (Pack tLead leader pack uid) = let traveled = (speed leader)*60 in Pack tLead leader{distance = (distance leader) + traveled} (fmap (\c -> c{distance = (distance c) + traveled}) pack) uid
+updatePackPosition (Pack tLead leader pack uid) = let traveled = (speed leader)*(fromIntegral tick) in Pack tLead leader{distance = (distance leader) + traveled} (fmap (\c -> c{distance = (distance c) + traveled}) pack) uid
 updatePackPosition (Breakaway pack time uid) = (Breakaway (fmap (\c -> c{distance = (distance c) + traveled}) pack) time uid)
                    where (h:<_) = viewl pack
-                         traveled = 60 * speed h
+                         traveled = (fromIntegral tick) * speed h
 
 
 --Splits pack into Pack, sprinters and finishers : TESTED
@@ -159,8 +159,8 @@ doBreakaway p = return [p]
 --Takes the number of minutes already passed, the length of the race and a list of
 -- cyclists and returns a list of pairs of cyclists and their respective finishing times : TESTED
 orderFinishers :: Int -> Meters -> [Cyclist] -> [(Cyclist, Double)]
-orderFinishers trn len = List.sortBy (\x y -> compare (snd x) (snd y)) . map (id &&& ((+fromIntegral(60*trn)) . pass)) 
+orderFinishers trn len = List.sortBy (\x y -> compare (snd x) (snd y)) . map (id &&& ((+fromIntegral(tick*trn)) . pass)) 
                where pass :: Cyclist -> Double
                      pass c = (len - strt)/(speed c)
                           where
-                                  strt = (distance c) - (fromIntegral 60) * (speed c)
+                                  strt = (distance c) - (fromIntegral tick) * (speed c)
