@@ -8,8 +8,7 @@ by Thorsten Dahmen, Stefan Wolf and Dietmar Saupe]
 
 module RungeKutta(updateCyclistPhysics) where
 
-import GHC.Exts
-import GHC.Prim
+-- import GHC.Exts
 
 import Cyclist(Cyclist(Cyclist), speed, acceleration)
 
@@ -40,12 +39,12 @@ rk4' !pped !t !h !e !xn !yn = if cont
 
 
 updateCyclistPhysics :: Cyclist -> Double -> Cyclist
-updateCyclistPhysics !c !(D pped) = c{speed = D spd, acceleration = D acc}
-                   where !(D s) = speed c
-                         ( spd, acc ) = rk4 s pped
+updateCyclistPhysics !c !pped = c{speed = spd, acceleration = acc}
+                   where s = speed c
+                         (spd, acc) = rk4 s pped
 
 f :: Double -> Double -> Double -> Double -> Double
-f !pped !t !y_1 !y_2 = (pped - 75.7665 * y_1 ** 3.0) / (14844.025288499999 * (sqrtDouble (2.0 * y_2)))
+f !pped !t !y_1 !y_2 = (pped - 75.7665 * y_1 ** 3.0) / (14844.025288499999 * (sqrt (2.0 * y_2)))
 
 g :: Double -> Double -> Double -> Double -> Double
 g !pped !t !y_1 !y_2 = (pped - 75.7665 * y_1 ** 3.0) / 14844.025288499999
