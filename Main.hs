@@ -40,7 +40,7 @@ main = withInit [InitEverything] $ do
      loop rend ref
      (Race _ _ _ _ leader_board, _) <- readIORef ref
      print leader_board
-     when plt . void . plot X11 . Data2D [Style Graphics.SimplePlot.Lines, Title "Classment agains cooperation probability", Graphics.SimplePlot.Color Graphics.SimplePlot.Blue] [] . zip [1..] . map (pmax . fst) $ leader_board
+     when plt . void . plot X11 . Data2D [Style Graphics.SimplePlot.Lines, Title "Classment agains cooperation probability", Graphics.SimplePlot.Color Graphics.SimplePlot.Blue] [] . (flip zip) [1..] . map (pmax . fst) $ leader_board
 
 loop :: IO () -> IORef (Race, StdGen) -> IO ()
 loop rend ref = do
