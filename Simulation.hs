@@ -122,9 +122,9 @@ splitPacks :: [Pack] -> RandT StdGen IO [Pack]
 splitPacks packs = concatMapM splitPack packs
 
 splitPack :: Pack -> RandT StdGen IO [Pack]
-splitPack (Breakaway cs t _) = getPacks (Fold.toList cs) t
+splitPack (Breakaway cs t _) = getPacks cs t
 splitPack (Pack tLead l cs _) = do
-  newPacks <- getPacks (Fold.toList $ l<|cs) 0 
+  newPacks <- getPacks (l<|cs) 0 
   let (Pack _ l' cs' pid) = head newPacks
   return ((Pack tLead l' cs' pid):(tail newPacks))
   
