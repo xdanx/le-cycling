@@ -3,6 +3,7 @@
 import Control.Monad
 import Control.Monad.Random
 import Control.Monad.Trans.Class
+import Data.Foldable
 import Data.IORef
 import Data.List
 import Data.Word
@@ -14,6 +15,7 @@ import System.Exit
 import System.Mem
 
 import Cyclist
+import Pack
 import Parser
 import Population
 import Rendering
@@ -26,8 +28,8 @@ main :: IO ()
 main = withInit [InitEverything] $ do
      args <- getArgs   
      let (opt, rest) = partition ((=='-'). head) args 
-         prs@[graphics, plt] = map (flip elem opt) $ validOption
-         correct = (length rest == 1) && (and . map (flip elem validOption) $ opt)
+         prs@[graphics, plt] = map (flip Prelude.elem opt) $ validOption
+         correct = (length rest == 1) && (Prelude.and . map (flip Prelude.elem validOption) $ opt)
      unless correct usage
      g <- getStdGen
      ref <- (genRace (head rest) >>= newIORef . (,g))
@@ -37,20 +39,23 @@ main = withInit [InitEverything] $ do
               screen <- setVideoMode (surfaceGetWidth background) (surfaceGetHeight background) 32 [SWSurface]
               return $ render screen pics (surfaceGetWidth background) ref
               else return $ return ()
-     loop rend ref
+     speedLog <- fmap (map (snd . head)) $ loop rend ref []
      (Race _ _ _ _ leader_board, _) <- readIORef ref
-     print leader_board
-     when plt . void . plot X11 . Data2D [Style Graphics.SimplePlot.Lines, Title "Classment agains cooperation probability", Graphics.SimplePlot.Color Graphics.SimplePlot.Blue] [] . zip [1..] . map (pmax . fst) $ leader_board
+--     print leader_board
+     print speedLog
+     when plt . void . plot X11 . Data2D [Style Graphics.SimplePlot.Lines, Title "Classment agains cooperation probability", Graphics.SimplePlot.Color Graphics.SimplePlot.Blue] [] . zip [1..] $ speedLog
+-- . map (pmax . fst) $ leader_board
 
-loop :: IO () -> IORef (Race, StdGen) -> IO ()
-loop rend ref = do
+loop :: IO () -> IORef (Race, StdGen) -> [[(Int,Double)]] -> IO [[(Int,Double)]]
+loop rend ref log = do
   (r,g) <- readIORef ref
   n@(Race turn len run sprint win, g')  <- runRandT (turn r) g
+  let logEntry = (map (\c -> (uid c, speed c)) . Prelude.concatMap toList . map getPack $ run) ++ map (\c -> (uid c, speed c)) sprint
   writeIORef ref n
   rend
   case n of
-    (Race _ _ [] [] _, _) -> return ()
-    (Race _ _ _ _ _, _) -> performGC >> delay 10 >> loop rend ref
+    (Race _ _ [] [] _, _) -> return log
+    (Race _ _ _ _ _, _) -> performGC >> delay 10 >> loop rend ref (log ++ [logEntry])
   
 usage :: IO ()
 usage = do
