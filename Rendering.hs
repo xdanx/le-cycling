@@ -2,6 +2,7 @@
 module Rendering where
 
 import Control.Arrow
+import Control.Monad.Random
 import Data.Foldable hiding (mapM_, concatMap)
 import Data.IORef
 import Data.Tuple.Utils
@@ -14,9 +15,9 @@ import Simulation
 
 data CyclistT = Group | Break | Sprinter
 
-render :: Surface -> (Surface, Surface, Surface, Surface) -> Int -> IORef Race -> IO ()
+render :: Surface -> (Surface, Surface, Surface, Surface) -> Int -> IORef (Race, StdGen) -> IO ()
 render screen (background, pack, breakaway, sprinter) width r = do
-       (Race _ len racers sprint _) <- readIORef r
+       (Race _ len racers sprint _, _) <- readIORef r
        let cyclists = (concatMap (\p -> map (Prelude.flip (,) $ case p of
                            Pack {} -> fst3
                            Breakaway {} -> snd3) (toList . getPack $ p)) racers) ++ (map (,thd3) sprint)

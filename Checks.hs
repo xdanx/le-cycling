@@ -48,6 +48,11 @@ lenPack = Sequence.length . getPack
 lenRace :: Race -> Int
 lenRace (Race _ _ runners sprinters win ) = (sum . map lenPack $ runners) + Prelude.length sprinters + Prelude.length win
 
+
+testUpdateCyclistPhysics :: Cyclist -> Bool
+testUpdateCyclistPhysics c = (not .isNaN . speed $ eval) && (not . isNaN . acceleration $ eval) && (speed eval > 0)
+                         where eval = updateCyclistPhysics c 0.267
+
 testListCyclist :: ([Cyclist] -> [Cyclist]) -> [Cyclist] -> Bool
 testListCyclist f l = (Prelude.length (f l) == Prelude.length l)
 

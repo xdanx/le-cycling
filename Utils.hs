@@ -37,3 +37,4 @@ partitionM f seq = case (viewl seq) of
 -- Return a new unused ID
 newID ::(MonadIO m) => m Int
 newID = liftIO (newUnique >>= return . hashUnique)
+

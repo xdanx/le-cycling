@@ -29,7 +29,10 @@ main = withInit [InitEverything] $ do
          [graphics, plt] = map (flip elem opt) $ validOption
          correct = (length rest == 1) && (and . map (flip elem validOption) $ opt)
      unless correct usage
-     ref <- (genRace (head rest) >>= newIORef)
+--     g <- getStdGen
+     let g = read "710075201 1" :: StdGen
+     print g
+     ref <- (genRace (head rest) >>= newIORef . (,g))
      rend <- if(graphics)
              then do
               pics@(background,_,_,_) <- loadPics
@@ -37,20 +40,20 @@ main = withInit [InitEverything] $ do
               return $ render screen pics (surfaceGetWidth background) ref
               else return $ return ()
      loop rend ref
-     (Race _ _ _ _ leader_board) <- readIORef ref
+     (Race _ _ _ _ leader_board, _) <- readIORef ref
      print leader_board
 --     when plt . void . plot X11 . Data2D [Style Graphics.SimplePlot.Lines, Title "Classment agains cooperation probability", Graphics.SimplePlot.Color Graphics.SimplePlot.Blue] [] . zip [1..] . map (teamProb . fst) $ leader_board
 
-loop :: IO () -> IORef Race -> IO ()
+loop :: IO () -> IORef (Race, StdGen) -> IO ()
 loop rend ref = do
-  r <- readIORef ref
-  n <- getStdGen >>= evalRandT (turn r)
+  (r,g) <- readIORef ref
+  n@(Race turn len run sprint win, g')  <- runRandT (turn r) g
   writeIORef ref n
   rend
-  print r
+--  print r
   case n of
-    (Race _ _ [] [] _) -> exitSuccess
-    (Race _ _ _ _ _) -> loop rend ref
+    (Race _ _ [] [] _, _) -> exitSuccess
+    (Race _ _ _ _ _, _) -> delay 10 >> loop rend ref
   
 usage :: IO ()
 usage = do

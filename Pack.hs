@@ -128,3 +128,9 @@ numCyclists (Pack _ _ cs _) = Sequence.length cs + 1
 isBreak :: Pack -> Bool
 isBreak (Pack {}) = False
 isBreak (Breakaway {}) = True
+
+{-packFilter :: (Cyclist -> Bool) -> Pack -> Bool
+packFilter (Breakaway cs tim uid ) = Sequence.foldl (&& (\c -> (not . isNan . distance $ c) && (not . isNan . speed $ c)) cs) tim uid
+packFilter (Pack tLead leader cs uid) = Pack tLead' leader cs uid
+                              where tLead' 
+-}
