@@ -116,6 +116,8 @@ SlideDeck.prototype.onDomLoaded_ = function(e) {
  */
 SlideDeck.prototype.addEventListeners_ = function() {
   document.addEventListener('keydown', this.onBodyKeyDown_.bind(this), false);
+  document.addEventListener('click', this.onBodyMouseClick_(true).bind(this), false);
+  document.addEventListener('contextmenu', this.onBodyMouseClick_(false).bind(this), false);
   window.addEventListener('popstate', this.onPopState_.bind(this), false);
 
   // var transEndEventNames = {
@@ -158,6 +160,20 @@ SlideDeck.prototype.onPopState_ = function(e) {
     this.updateSlides_(true);
   }
 };
+
+SlideDeck.prototype.onBodyMouseClick_ = function(i) {
+  if (i) {
+    return function(e) {
+      this.nextSlide();
+      e.preventDefault();
+    }
+  } else {
+     return function(e) {
+      this.prevSlide();
+      e.preventDefault();
+    }
+  }
+}
 
 /**
  * @param {Event} e

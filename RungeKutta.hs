@@ -43,7 +43,9 @@ updateCyclistPhysics !c !pped = c{speed = spd, acceleration = acc}
                          ( spd, acc ) = rk4 s pped
 
 f :: Double -> Double -> Double -> Double -> Double
-f !pped !t !y_1 !y_2 = (pped - 75.7665 * y_1 ** 3.0) / (14844.025288499999 * (sqrt (2.0 * y_2)))
+f !pped !t !y_1 !y_2 = (pped - 75.7665 * y_1 ** 3.0) / (14844.025288499999 * (sqrt (2.0 * y_2')))
+  where
+    y_2' = if y_2 == 0.0 then 0.01 else y_2
 
 g :: Double -> Double -> Double -> Double -> Double
 g !pped !t !y_1 !y_2 = (pped - 75.7665 * y_1 ** 3.0) / 14844.025288499999

@@ -15,13 +15,16 @@ concatMapM f xs = liftM concat (mapM f xs)
 
 
 -- Finds if element e in the sequence seq.
-seqElem :: Eq a => Seq a -> a -> Bool
-seqElem seq e = 
+seqElemWith :: Eq a => Seq a -> a -> (a -> a -> Bool) -> Bool
+seqElemWith seq e comp = 
   case viewl seq of
     EmptyL -> False
-    a :< seq' -> if a == e 
+    a :< seq' -> if comp a e 
                     then True
-                    else seqElem seq' e
+                    else seqElemWith seq' e comp
+                         
+seqElem :: Eq a => Seq a -> a -> Bool 
+seqElem seq e = seqElemWith seq e (==)
 
 -- same as partition, but with monads.
 partitionM :: (Monad m) => (a -> m Bool) -> Seq a -> m (Seq a, Seq a)

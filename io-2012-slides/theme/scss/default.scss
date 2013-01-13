@@ -190,7 +190,7 @@ slides > slide {
     }
   }
 
-  &.title-slide {
+  /*&.title-slide {
     &:after {
       content: '';
       background: url(../../images/bg-cr-logo.png) no-repeat 100% 50%;
@@ -201,7 +201,7 @@ slides > slide {
       width: 100%;
       height: 60px;
     }
-  }
+  }*/
 
   &.backdrop {
     z-index: -10;
@@ -341,7 +341,7 @@ ul {
       margin-bottom: 0;
 
       li:before {
-        content: '-';
+        content: '·';
         font-weight: 600;
       }
     }
@@ -780,24 +780,35 @@ article.smaller {
 }
 
 .proper-box {
+  display: -webkit-flex !important;
   display: flex !important;
+  -webkit-flex-flow: row nowrap;
   flex-flow: row nowrap;
+  -webkit-justify-content: center;
   justify-content: center;
+  -webkit-align-content: center;
   align-content: center;
+  -webkit-align-items: center;
   align-items: center;
   width: 100%;
   height: 80%;
 
   .left-box {
     order: 1;
+    -webkit-order: 1;
     flex: 1 1 auto;
+    -webkit-flex: 1 1 auto;
     align-self: auto;
+    -webkit-align-self: auto;
   }
 
   .right-box {
     order: 2;
+    -webkit-order: 2;
     flex: 0 1 auto;
+    -webkit-flex: 0 1 auto;
     align-self: auto;
+    -webkit-align-self: auto;
   }
 
 }
