@@ -86,10 +86,6 @@ instance Ord Cyclist where
              | a < b = a
              | otherwise = b
 
--- Gives the current maximum power output of a cyclist,
-maxPower :: Cyclist -> Double
-maxPower c = pmax c * (1 - (usedEnergy c/energyLim c))
-
 
 -- Functions to generate the cyclists to start the race.
 
