@@ -89,3 +89,7 @@ testSeqListCyclist f s = (Sequence.length s) == (sum . map Sequence.length . f $
 testRunge :: Cyclist -> Bool
 testRunge c = ((not . isNaN . speed $ res) && (not . isNaN . acceleration $ res))
           where res = updateCyclistPhysics c 0.1
+
+
+testIsSorted :: Seq Cyclist -> Bool
+testIsSorted cs = (fmap uid (Sequence.sort cs)) == (fmap uid cs) 

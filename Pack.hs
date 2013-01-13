@@ -61,9 +61,10 @@ defLeader breakP = return breakP -- no leaders in breakaway packs.
 -- Form packs from a list of Cyclists. 
 -- A pack is defined by the maximum set of cyclists such that any cyclist
 -- in the pack is at less than 3 meters from another cyclist in the pack
-getPacks :: [Cyclist] -> Int -> RandT StdGen IO [Pack]
+-- assumes cyclists are sorted
+getPacks :: Seq Cyclist -> Int -> RandT StdGen IO [Pack]
 getPacks cyclists breakTime =  
-  mapM (\f -> newID >>= return . f) (Prelude.foldl addToPackList [] (List.sort cyclists))
+  mapM (\f -> newID >>= return . f) (Fold.foldl addToPackList [] cyclists)
   where
     addToPackList :: [Int -> Pack] -> Cyclist -> [Int -> Pack]
     addToPackList [] c =

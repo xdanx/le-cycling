@@ -12,6 +12,7 @@ import Data.Dynamic
 import Data.List
 import Data.List.Split
 import Data.Maybe
+import Data.Sequence (fromList)
 import Data.String.Utils
 import Text.Regex
 
@@ -38,7 +39,7 @@ parse f = do
       len = read h :: Meters
   cs <- sequence . map parseLine $ c
   let (s, r) = partition (\c -> (len - distance c) < 5000) . concat $ cs 
-  packs <- getPacks r 0
+  packs <- getPacks (Data.Sequence.fromList r) 0
   return (Race 0 len packs s [])
                 
 -- Parse a line to generate the cyclists corresponding to it.
