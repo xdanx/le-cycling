@@ -34,8 +34,8 @@ data Race = Race  !Int  !Meters ![Pack]  ![Cyclist]  ![(Cyclist, Double)]
 turn :: Race -> RandT StdGen IO Race
 turn (Race trn len r s win) = do
      let
-        s' = map updateEnergy s
-        r1 = map (\p -> packMap updateEnergy p) r
+        s' = map (updateEnergy True) s
+        r1 = map updatePackEnergy r
         (Race _ _ r2 _ _) = updateBrkTime (Race trn len r1 s' win)
      r3 <- mapM defLeader r2
      cyclists <- concatMapM doBreakaway r3
