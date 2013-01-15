@@ -7,4 +7,4 @@ module Population where
 data Population = Population {pmaxs :: (Double, Double), coops :: (Double, Double), energylims :: (Double, Double)}
 
 avg :: Population
-avg = Population {pmaxs = (2000, 142), coops = (0.48, 0.21), energylims = (200000, 300)}
+avg = Population {pmaxs = (2500, 200), coops = (0.48, 0.21), energylims = (200000, 300)}

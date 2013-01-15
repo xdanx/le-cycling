@@ -46,7 +46,7 @@ main = withInit [InitEverything] $ do
 --     when plt . void . plot X11 . Data2D [Style Graphics.SimplePlot.Lines, Title "Classment agains cooperation probability", Graphics.SimplePlot.Color Graphics.SimplePlot.Blue] [] . zip [1..] $ speedLog
 -- . map (pmax . fst) $ leader_board
 
-loop :: IO () -> IORef (Race, StdGen) -> [[(Int, Int,Double)]] -> IO [[(Int, Int,Double)]]
+-- loop :: IO () -> IORef (Race, StdGen) -> [[(Int, Int,Double)]] -> IO [[(Int, Int,Double)]]
 loop rend ref log = do
   (r,g) <- readIORef ref
   n@(Race turn len run sprint win, g')  <- runRandT (turn r) g
