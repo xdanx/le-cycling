@@ -44,7 +44,7 @@ updateEnergy :: Bool -> Cyclist -> Cyclist
 updateEnergy lead c = c{usedEnergy = min (energyLim c) . max 0 $ (usedEnergy c) + (fromIntegral tick) * ((pped lead c) - (pcp c))}
 
 pped :: Bool -> Cyclist -> Double
-pped lead c = 75.7664 * (0.62 - 0.0104*d_w + 0.0452*d_w^2) * spd^3 + 14844.025288499999 * spd * acc
+pped lead c = 108.237684393 * (0.62 - 0.0104*d_w + 0.0452*d_w^2) * spd^3 + 14844.025288499999 * spd * acc
      where spd = speed c
            acc = acceleration c
            d_w = if lead then 3 else 1.5

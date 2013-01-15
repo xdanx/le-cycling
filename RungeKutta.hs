@@ -11,9 +11,10 @@ module RungeKutta(updateCyclistPhysics) where
 -- import GHC.Exts
 
 import Cyclist(Cyclist(Cyclist), speed, acceleration)
+import Units
 
 rk4 :: Double -> Double -> ( Double, Double )
-rk4 !s !pped = rk4' pped (-60.0) h 0.0 s y0
+rk4 !s !pped = rk4' pped (- (fromIntegral tick)) h 0.0 s y0
     where !h = 0.01
           !y0 = 0.5 * s * s
 

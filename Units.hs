@@ -10,4 +10,4 @@ type Speed   = Double
 type Acceleration = Double
 
 
-tick = 60 :: Seconds
+tick = 1 :: Seconds

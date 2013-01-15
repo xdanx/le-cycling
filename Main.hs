@@ -39,18 +39,18 @@ main = withInit [InitEverything] $ do
               screen <- setVideoMode (surfaceGetWidth background) (surfaceGetHeight background) 32 [SWSurface]
               return $ render screen pics (surfaceGetWidth background) ref
               else return $ return ()
-     speedLog <- fmap (map (snd . head)) $ loop rend ref []
+     loop rend ref []
      (Race _ _ _ _ leader_board, _) <- readIORef ref
---     print leader_board
-     print speedLog
-     when plt . void . plot X11 . Data2D [Style Graphics.SimplePlot.Lines, Title "Classment agains cooperation probability", Graphics.SimplePlot.Color Graphics.SimplePlot.Blue] [] . zip [1..] $ speedLog
+     print leader_board
+--     print speedLog
+--     when plt . void . plot X11 . Data2D [Style Graphics.SimplePlot.Lines, Title "Classment agains cooperation probability", Graphics.SimplePlot.Color Graphics.SimplePlot.Blue] [] . zip [1..] $ speedLog
 -- . map (pmax . fst) $ leader_board
 
-loop :: IO () -> IORef (Race, StdGen) -> [[(Int,Double)]] -> IO [[(Int,Double)]]
+loop :: IO () -> IORef (Race, StdGen) -> [[(Int, Int,Double)]] -> IO [[(Int, Int,Double)]]
 loop rend ref log = do
   (r,g) <- readIORef ref
   n@(Race turn len run sprint win, g')  <- runRandT (turn r) g
-  let logEntry = (map (\c -> (uid c, usedEnergy c)) . Prelude.concatMap toList . map getPack $ run) ++ map (\c -> (uid c, usedEnergy c)) sprint
+  let logEntry = (map (\c -> (1, uid c, speed c)) . Prelude.concatMap toList . map getPack $ run) ++ map (\c -> (2, uid c, speed c)) sprint
   putStrLn $ "logEntry: " ++ show logEntry
   writeIORef ref n
   rend
