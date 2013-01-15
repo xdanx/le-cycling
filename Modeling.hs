@@ -18,10 +18,12 @@ import Units
 -- Updates the speed of the cyclists in a pack
 -- Creates new packs if some cyclists are too weak to follow the rest
 setPackSpeed :: Pack -> Pack
-setPackSpeed pack = packMap (\c -> updateCyclistPhysics c (min (pm c) avgPped)) pack
+setPackSpeed pack@(Pack tLead leader body uid) = Pack tLead (updateCyclistPhysics leader (min (pm leader) avgPped) 3) (fmap (\c -> updateCyclistPhysics c (min (pm c) avgPped) 1.5) body) uid
   where
-    avgPped = coef * (avgpmax (getPack pack))
-    coef = if isBreak pack then 0.9 else 0.8
+    avgPped = 0.8 * (avgpmax (getPack pack))
+setPackSpeed (Breakaway pack time uid) = Breakaway (fmap (\c -> updateCyclistPhysics c (min (pm c) avgPped) 3) pack) time uid
+  where
+    avgPped = 0.9 * (avgpmax pack)
 
 -- Average pmax of a sequence of cyclists
 avgpmax :: (Seq Cyclist) -> Double
@@ -29,7 +31,7 @@ avgpmax p = (Fold.foldl (+) 0 (fmap pmax p)) / (fromIntegral $ Sequence.length p
 
 -- Updates the speed of a single sprinter cyclist
 setSprinterSpeed :: Cyclist -> Cyclist
-setSprinterSpeed c = updateCyclistPhysics c (min (pm c) (0.95 * (pmax c)))
+setSprinterSpeed c = updateCyclistPhysics c (min (pm c) (0.95 * (pmax c))) 3
 
 -- Update the used energy of a cyclists, depending on his speed
 -- Need to do something different if it's in_pack vs (leader, breakaway or sprint)
