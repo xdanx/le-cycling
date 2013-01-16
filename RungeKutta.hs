@@ -40,7 +40,7 @@ rk4' !pped !t !h !e !xn !yn !dw = if cont
 
 
 updateCyclistPhysics :: Cyclist -> Double -> Double -> Cyclist
-updateCyclistPhysics !c !pped !dw = c{speed = spd, acceleration = acc}
+updateCyclistPhysics !c !pped !dw = c{speed = 1.12*spd, acceleration = acc}
                    where s = speed c
                          (spd, acc) = rk4 s pped dw
 

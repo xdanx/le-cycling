@@ -48,7 +48,7 @@ instance Ord Pack where
 defLeader :: Pack -> RandT StdGen IO Pack
 defLeader pack@(Pack tLead l p i) = do
                                   leaderCoops <- packCoop l
-                                  if tLead > 5
+                                  if tLead > 5*(60 `div` tick)
                                        then return . rotate $ pack
                                        else if leaderCoops
                                                then return $ Pack (tLead + 1) l p i
