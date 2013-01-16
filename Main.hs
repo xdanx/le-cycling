@@ -1,5 +1,6 @@
 {-# LANGUAGE DoAndIfThenElse, TupleSections #-}
 
+import Control.Concurrent
 import Control.Monad
 import Control.Monad.Random
 import Control.Monad.Trans.Class
@@ -39,15 +40,15 @@ main = withInit [InitEverything] $ do
               screen <- setVideoMode (surfaceGetWidth background) (surfaceGetHeight background) 32 [SWSurface]
               return $ render screen pics (surfaceGetWidth background) ref
               else return $ return ()
-     loop rend ref []
+     loop rend (cleanup graphics) ref []
      (Race _ _ _ _ leader_board, _) <- readIORef ref
-     print leader_board
+--     print leader_board
 --     print speedLog
---     when plt . void . plot X11 . Data2D [Style Graphics.SimplePlot.Lines, Title "Classment agains cooperation probability", Graphics.SimplePlot.Color Graphics.SimplePlot.Blue] [] . zip [1..] $ speedLog
+     when plt . void . plot X11 . Data2D [Style Graphics.SimplePlot.Lines, Title "Classment agains cooperation probability", Graphics.SimplePlot.Color Graphics.SimplePlot.Blue] [] . zip [1..] . map (pmax . fst)$ leader_board
 -- . map (pmax . fst) $ leader_board
 
 -- loop :: IO () -> IORef (Race, StdGen) -> [[(Int, Int,Double)]] -> IO [[(Int, Int,Double)]]
-loop rend ref log = do
+loop rend clean ref log = do
   (r,g) <- readIORef ref
   n@(Race turn len run sprint win, g')  <- runRandT (turn r) g
   let logEntry = (map (\c -> (1, uid c, speed c)) . Prelude.concatMap toList . map getPack $ run) ++ map (\c -> (2, uid c, speed c)) sprint
@@ -56,8 +57,13 @@ loop rend ref log = do
   rend
   case n of
     (Race _ _ [] [] _, _) -> return log
-    (Race _ _ _ _ _, _) -> performGC >> delay 10 >> loop rend ref (log ++ [logEntry])
+    (Race _ _ _ _ _, _) -> clean >> loop rend clean ref (log ++ [logEntry])
   
+cleanup :: Bool -> IO ()
+cleanup isRend = do
+                        forkIO performGC
+                        when isRend (delay 10)
+
 usage :: IO ()
 usage = do
   putStrLn "Usage: Cycling [args] [input file]"

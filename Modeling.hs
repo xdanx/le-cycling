@@ -38,7 +38,7 @@ setSprinterSpeed c = updateCyclistPhysics c (min (pm c) (0.95 * (pmax c))) 3
 
 updatePackEnergy :: Pack -> Pack
 updatePackEnergy (Pack tLead l p pid) = (Pack tLead (updateEnergy True l) (fmap (updateEnergy False) p) pid)
-updatePackEnergy (Breakaway p t pid) = (Breakaway ((updateEnergy True l)<|(fmap (updateEnergy False) p)) t pid)
+updatePackEnergy (Breakaway p t pid) = (Breakaway ((updateEnergy True l)<|(fmap (updateEnergy False) p')) t pid)
   where
     (l:<p') = viewl p
 
